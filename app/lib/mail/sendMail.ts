@@ -1,3 +1,4 @@
+import { APP_NAME } from '@/app/constants';
 import getConfig from 'next/config';
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
@@ -28,13 +29,14 @@ export async function sendEmail({
 
   return {
     customerMessageTransporter: await transporter.sendMail({
-      from: serverRuntimeConfig.SEND_EMAIL,
+
+      from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
       to,
       subject,
       html,
     }),
     supportMessageTransporter: await transporter.sendMail({
-      from: serverRuntimeConfig.SEND_EMAIL,
+      from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
       to: serverRuntimeConfig.SEND_EMAIL,
       subject,
       html,
