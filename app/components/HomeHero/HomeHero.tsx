@@ -1,8 +1,7 @@
-import { Container, Text, Button, Group } from '@mantine/core';
-import { GithubIcon } from '@mantinex/dev-icons';
+import { Container, Text, Group } from '@mantine/core';
 import classes from './HomeHero.module.css';
-import Link from 'next/link';
-import { registerPath } from '@/app/constants';
+import HomeHeroButton from './HomeHeroButton';
+import { APP_NAME } from '@/app/constants';
 
 export default function HomeHero() {
   return (
@@ -11,27 +10,18 @@ export default function HomeHero() {
         <h1 className={classes.title}>
           Meet{' '}
           <Text component="span" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }} inherit>
-            Lead Thing
+            {APP_NAME}
           </Text>{' '}
           Your Simplified Lead Generation Solution!
         </h1>
 
         <Text className={classes.description} color="dimmed">
-          Effortlessly create leads across multiple newsletter systems with Lead Thing's intuitive
+          Effortlessly create leads across multiple newsletter systems with {APP_NAME}'s intuitive
           API interface. Say goodbye to complexity and hello to streamlined lead generation.
         </Text>
 
         <Group className={classes.controls}>
-          <Link href={registerPath}>
-            <Button
-              size="xl"
-              className={classes.control}
-              variant="gradient"
-              gradient={{ from: 'blue', to: 'cyan' }}
-            >
-              Get started today!
-            </Button>
-          </Link>
+          <HomeHeroButton />
         </Group>
       </Container>
     </div>

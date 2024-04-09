@@ -1,3 +1,4 @@
+import DocsPage from '@/app/components/DocsPage/DocsPage';
 import NotFound from '@/app/components/NotFound/NotFound';
 import {
   getresponsePath,
@@ -22,10 +23,4 @@ export default function Page({ params }: { params: { systemName: string } }) {
     default:
       return <NotFound />;
   }
-
-  return <div>My Post: {params.systemName}</div>;
-}
-
-function DocsPage({ systemName }: { systemName: string }) {
-  return <div>ttert</div>;
 }

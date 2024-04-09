@@ -46,7 +46,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             },
           },
 
-          forceOptIn: subscriptionMode === 'OPT_IN' ? true : false,
+          forceOptIn: subscriptionMode === 'FORCE_OPT_IN' ? true : false,
           ...(tag ? { tags: [tag] } : {}),
         }),
       });

@@ -10,11 +10,11 @@ export interface GetresponsePostRequest extends PostRequest {
   // countryCode: string;
   // salutation: string;
   listId: string;
-  // subscriptionMode: 'OPT_IN' | 'DOUBLE_OPT_IN';
+  // subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
-  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group. A double opt-in subscription.
-  // OPT_IN
-  //  New contacts are added to the group without notification. OPT_IN is creating self-subscribers.
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
   tagId?: string;
   getresponseApiKey: string;
 }
@@ -25,14 +25,12 @@ export interface MappPostRequest extends PostRequest {
   countryCode: string;
   // salutation: string;
   // tag: string;
-  listId: string | number;
-  subscriptionMode: 'OPT_IN' | 'DOUBLE_OPT_IN' | 'CONFIRMED_OPT_IN';
-  // CONFIRMED_OPT_IN
-  //  New contacts receive a welcome message via email when they are added to the group. The contact does not need to confirm the subscription. A single opt-in subscription.
+  listId: string;
+  subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
-  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group. A double opt-in subscription.
-  // OPT_IN
-  //  New contacts are added to the group without notification. OPT_IN is creating self-subscribers.
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
   mappUsername: string;
   mappPassword: string;
   mappDomain: string;
@@ -45,11 +43,11 @@ export interface SailthruPostRequest extends PostRequest {
   // salutation: string;
   // tag: string;
   listName: string;
-  // subscriptionMode: 'OPT_IN' | 'DOUBLE_OPT_IN';
+  // subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
-  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group. A double opt-in subscription.
-  // OPT_IN
-  //  New contacts are added to the group without notification. OPT_IN is creating self-subscribers.
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
   sailthruApiKey: string;
   sailthruSecret: string;
 }
@@ -60,12 +58,12 @@ export interface SalesforcePostRequest extends PostRequest {
   // countryCode: string;
   // salutation: string;
   // tag: string;
-  listId: string | number;
-  // subscriptionMode: 'OPT_IN' | 'DOUBLE_OPT_IN';
+  listId: string;
+  // subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
-  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group. A double opt-in subscription.
-  // OPT_IN
-  //  New contacts are added to the group without notification. OPT_IN is creating self-subscribers.
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
   SalesforceSubDomain: string;
   SalesforceClientId: string;
   SalesforceClientSecret: string;
@@ -79,14 +77,57 @@ export interface SalesmanagoPostRequest extends PostRequest {
   // salutation: string;
   tag: string;
   // listId: string | number;
-  subscriptionMode: 'OPT_IN' | 'DOUBLE_OPT_IN';
+  subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
-  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group. A double opt-in subscription.
-  // OPT_IN
-  //  New contacts are added to the group without notification. OPT_IN is creating self-subscribers.
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
   salesManagoClientId: string;
   salesManagoApiKey: string;
   salesManagoSha: string;
   salesManagoSubDomain: string;
   salesManagoOwner: string;
 }
+
+export interface AllPossiblePostRequestParameters
+  extends GetresponsePostRequest,
+    MappPostRequest,
+    SailthruPostRequest,
+    SalesforcePostRequest,
+    SalesmanagoPostRequest {
+  gender: 'MALE' | 'FEMALE';
+}
+
+export type avialableSystemsType =
+  | 'getresponse'
+  | 'mapp'
+  | 'sailthru'
+  | 'salesforce'
+  | 'salesmanago';
+
+export type availableRequestProperties =
+  | 'firstname'
+  | 'lastname'
+  | 'email'
+  | 'ip'
+  | 'gender'
+  | 'countryCode'
+  | 'subscriptionMode'
+  | 'listId'
+  | 'listName'
+  | 'getresponseApiKey'
+  | 'mappUsername'
+  | 'mappPassword'
+  | 'mappDomain'
+  | 'sailthruApiKey'
+  | 'sailthruSecret'
+  | 'SalesforceSubDomain'
+  | 'SalesforceClientId'
+  | 'SalesforceClientSecret'
+  | 'SalesforceAccountId'
+  | 'tag'
+  | 'salesManagoClientId'
+  | 'salesManagoApiKey'
+  | 'salesManagoSha'
+  | 'salesManagoSubDomain'
+  | 'salesManagoOwner';

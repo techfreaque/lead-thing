@@ -50,7 +50,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             body: JSON.stringify({
               email,
               groupId: parseInt(String(listId)),
-              subscriptionMode: subscriptionMode,
+              subscriptionMode:
+                subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode,
             }),
           }
         );

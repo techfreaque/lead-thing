@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <div className={classes.footer}>
       <Container className={classes.inner}>
-        <Logo size={28} />
+        <Logo />
         <Group className={classes.links}>{items}</Group>
       </Container>
     </div>

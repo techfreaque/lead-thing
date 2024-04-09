@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { APP_NAME } from '@/app/constants';
+import { APP_NAME, freeTierApiCalls } from '@/app/constants';
 
 export default async function executeIfAuthenticated(
   request: NextRequest,
@@ -8,17 +8,32 @@ export default async function executeIfAuthenticated(
 ) {
   const apiKey = request.headers.get('apiKey');
   if (apiKey) {
-    let user = await prisma.user.findUnique({
-      select: { apiKeyValidUntil: true },
+    const user = await prisma.user.findUnique({
+      select: {
+        apiCallsPerMonth: true,
+        apiCallsInThisPeriod: true,
+      },
       where: { apiKey },
     });
 
     if (user) {
-      if (isApiKeyStillValid(user.apiKeyValidUntil)) {
-        return await functionToexecute();
+      if (
+        isStillQuotaLeft({
+          apiCallsInThisPeriod: user.apiCallsInThisPeriod,
+          apiCallsPerMonth: user.apiCallsPerMonth,
+        })
+      ) {
+        const response = await functionToexecute();
+        if (response.ok) {
+          await bumpApiCallsInThisPeriod({
+            apiKey,
+            apiCallsInThisPeriod: user.apiCallsInThisPeriod,
+          });
+        }
+        return response;
       } else {
         return ApiResponse(
-          `Your ${APP_NAME} API key is expired, please renew your subscription. Your key expired on ${user.apiKeyValidUntil}`,
+          `Your ${APP_NAME} account doesnt have any api calls left for this period. Please upgade your account.`,
           403
         );
       }
@@ -36,8 +51,36 @@ export default async function executeIfAuthenticated(
   }
 }
 
-function isApiKeyStillValid(apiKeyValidUntil: Date) {
-  return new Date(apiKeyValidUntil.toDateString()) > new Date(new Date().toDateString());
+function isStillQuotaLeft({
+  apiCallsPerMonth,
+  apiCallsInThisPeriod,
+}: {
+  apiCallsPerMonth: number | null;
+  apiCallsInThisPeriod: number;
+}): boolean {
+  const _apiCallsPerMonth = apiCallsPerMonth || freeTierApiCalls;
+  const isStillQuotaLeft = _apiCallsPerMonth >= apiCallsInThisPeriod;
+  if (isStillQuotaLeft) {
+    return true;
+  }
+  return false;
+}
+
+async function bumpApiCallsInThisPeriod({
+  apiKey,
+  apiCallsInThisPeriod,
+}: {
+  apiKey: string;
+  apiCallsInThisPeriod: number;
+}) {
+  await prisma.user.update({
+    where: {
+      apiKey,
+    },
+    data: {
+      apiCallsInThisPeriod: parseInt(String(apiCallsInThisPeriod + 1)),
+    },
+  });
 }
 
 export function ApiResponse(message: string, status: number = 200): NextResponse {
@@ -74,4 +117,20 @@ export function formatApiCallDetails({
   listId?: number | string;
 }): string {
   return `- Contact:${firstname ? ' firstname: ' + firstname : ''}${lastname ? ' lastname: ' + lastname : ''}${email ? ' email: ' + email : ''}${ip ? ' ip: ' + ip : ''}${gender ? ' gender: ' + gender : ''}${countryCode ? ' countryCode: ' + countryCode : ''}${salutation ? ' salutation: ' + salutation : ''}${tag ? ' tag: ' + tag : ''}${tagId ? ' tagId: ' + tagId : ''}${subscriptionMode ? ' subscriptionMode: ' + subscriptionMode : ''}${listName ? ' listName: ' + listName : ''}${listId ? ' listId: ' + listId : ''}`;
+}
+
+export async function handleResponse(response: Response): Promise<{
+  jsonResponse: any;
+  httpStatusCode: number;
+}> {
+  try {
+    const jsonResponse = await response.json();
+    return {
+      jsonResponse,
+      httpStatusCode: response.status,
+    };
+  } catch (err) {
+    const errorMessage = await response.text();
+    throw new Error(errorMessage);
+  }
 }
