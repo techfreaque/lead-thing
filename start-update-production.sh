@@ -2,6 +2,8 @@ cd /leadthing
 git stash
 git pull
 
+chmod a+x start-update-production.sh
+
 cp -n .env-example .env
 docker build --tag leadthing .
 mkdir /leadthing-data
