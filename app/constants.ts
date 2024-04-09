@@ -321,3 +321,50 @@ export const fieldsBySystem = {
     'salesManagoOwner',
   ],
 };
+
+export interface subscriptionTiersType {
+  [key: string]: {
+    title: string;
+    price: number;
+    apiCalls: number;
+    canBeSold: boolean;
+    billingPeriod: 'monthly';
+  };
+}
+
+export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise';
+
+export const subscriptionTiers: subscriptionTiersType = {
+  free: {
+    title: 'Free',
+    price: 0,
+    // rebatePercent: 0,
+    apiCalls: 100,
+    canBeSold: true,
+    billingPeriod: 'monthly',
+  },
+  base: {
+    title: 'Base',
+    price: 10,
+    // rebatePercent: 0,
+    apiCalls: 750,
+    canBeSold: true,
+    billingPeriod: 'monthly',
+  },
+  pro: {
+    title: 'Pro',
+    price: 20,
+    // rebatePercent: 25,
+    apiCalls: 2000,
+    canBeSold: true,
+    billingPeriod: 'monthly',
+  },
+  enterprise: {
+    title: 'Enterprise',
+    price: 40,
+    // rebatePercent: 25,
+    apiCalls: 20000,
+    canBeSold: true,
+    billingPeriod: 'monthly',
+  },
+};

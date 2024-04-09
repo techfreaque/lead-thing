@@ -34,6 +34,7 @@ model Orders {
   email         String
   createdAt     DateTime  @default(now())
   payedAt       DateTime?
+  validUntil    DateTime?
   paymentStatus String    @default("unpaid")
   productId     String
   amount        Float

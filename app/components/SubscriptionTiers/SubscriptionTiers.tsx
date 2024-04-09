@@ -4,37 +4,70 @@ import { IconMailBolt } from '@tabler/icons-react';
 import classes from './SubscriptionTiers.module.css';
 import { Title2, Title2SubText } from '../Texts/Texts';
 import Link from 'next/link';
-import { apiDocsPath, registerPath } from '@/app/constants';
-import { useContext } from 'react';
-import { UserContext, UserContextType } from '@/app/lib/authentication';
+import {
+  mySubscriptionUrl,
+  registerPath,
+  subscriptionTierIdType,
+  subscriptionTiers,
+} from '@/app/constants';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
+import { OrderType, getCurrentSubscription } from '@/app/lib/orders';
 
-export default function SubscriptionTiers() {
+export default function SubscriptionTiersSection() {
+  const { user } = useContext(UserContext) as UserContextType;
   return (
     <Container size="lg">
       <Title2>Get started for free!</Title2>
       <Title2SubText>No credit card required - no strings attached</Title2SubText>
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} mt="xl">
-        <SubscriptionTier title={'Free'} price={0} rebatePercent={0} apiCalls={100} />
-        <SubscriptionTier title={'Base'} price={10} rebatePercent={0} apiCalls={750} />
-        <SubscriptionTier title={'Pro'} price={20} rebatePercent={25} apiCalls={2000} />
-        <SubscriptionTier title={'Enterprise'} price={40} rebatePercent={25} apiCalls={20000} />
-      </SimpleGrid>
+      <SubscriptionTiers user={user} />
     </Container>
+  );
+}
+
+export function SubscriptionTiers({ user }: { user: UserType | undefined }) {
+  const [currentSubscription, setCurrentSubscription] = useState<OrderType | undefined>();
+  console.log(currentSubscription);
+  useEffect(() => {
+    user &&
+      getCurrentSubscription(user.email).then((subscription) =>
+        setCurrentSubscription(subscription)
+      );
+  }, [user]);
+  return (
+    <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} mt="xl">
+      {Object.keys(subscriptionTiers).map((productId) => (
+        <SubscriptionTier
+          key={productId}
+          active={currentSubscription?.productId === productId}
+          productId={productId as subscriptionTierIdType}
+          user={user}
+          title={subscriptionTiers[productId as subscriptionTierIdType].title}
+          price={subscriptionTiers[productId as subscriptionTierIdType].price}
+          // rebatePercent={subscriptionTiers[productId as subscriptionTierIdType].rebatePercent}
+          apiCalls={subscriptionTiers[productId as subscriptionTierIdType].apiCalls}
+        />
+      ))}
+    </SimpleGrid>
   );
 }
 function SubscriptionTier({
   title,
   price,
-  rebatePercent,
+  productId,
+  // rebatePercent,
+  active,
+  user,
   apiCalls,
 }: {
+  productId: subscriptionTierIdType;
   title: string;
   price: number;
   apiCalls: number;
-  rebatePercent: number;
+  active: boolean;
+  // rebatePercent: number;
+  user: UserType | undefined;
 }) {
-  const { user } = useContext(UserContext) as UserContextType;
-
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Group justify="space-between" mt="md">
@@ -66,10 +99,16 @@ function SubscriptionTier({
               per month
             </Text>
           </div>
-          <Link href={user ? apiDocsPath : registerPath}>
-            <Button radius="xl" style={{ flex: 1 }}>
-              Sign up
-            </Button>
+          <Link href={user ? mySubscriptionUrl : registerPath}>
+            {active ? (
+              <Button disabled radius="xl" style={{ flex: 1 }}>
+                Active
+              </Button>
+            ) : (
+              <Button radius="xl" style={{ flex: 1 }}>
+                {user ? 'Upgrade' : 'Sign up'}
+              </Button>
+            )}
           </Link>
         </Group>
       </Card.Section>

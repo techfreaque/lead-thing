@@ -28,7 +28,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     zipCode,
     country,
   }: RegisterPostRequest = await request.json();
-  let existingUser = await prisma.user.findUnique({
+  const existingUser = await prisma.user.findUnique({
     select: { email: true },
     where: { email },
   });
