@@ -5,6 +5,7 @@ import classes from './SubscriptionTiers.module.css';
 import { Title2, Title2SubText } from '../Texts/Texts';
 import Link from 'next/link';
 import {
+  checkoutUrl,
   mySubscriptionUrl,
   registerPath,
   subscriptionTierIdType,
@@ -25,7 +26,13 @@ export default function SubscriptionTiersSection() {
   );
 }
 
-export function SubscriptionTiers({ user }: { user: UserType | undefined }) {
+export function SubscriptionTiers({
+  user,
+  isSubscriptionPage,
+}: {
+  user: UserType | undefined;
+  isSubscriptionPage?: boolean;
+}) {
   const [currentSubscription, setCurrentSubscription] = useState<OrderType | undefined>();
   console.log(currentSubscription);
   useEffect(() => {
@@ -42,6 +49,7 @@ export function SubscriptionTiers({ user }: { user: UserType | undefined }) {
           active={currentSubscription?.productId === productId}
           productId={productId as subscriptionTierIdType}
           user={user}
+          isSubscriptionPage={isSubscriptionPage}
           title={subscriptionTiers[productId as subscriptionTierIdType].title}
           price={subscriptionTiers[productId as subscriptionTierIdType].price}
           // rebatePercent={subscriptionTiers[productId as subscriptionTierIdType].rebatePercent}
@@ -59,6 +67,7 @@ function SubscriptionTier({
   active,
   user,
   apiCalls,
+  isSubscriptionPage,
 }: {
   productId: subscriptionTierIdType;
   title: string;
@@ -67,6 +76,7 @@ function SubscriptionTier({
   active: boolean;
   // rebatePercent: number;
   user: UserType | undefined;
+  isSubscriptionPage?: boolean;
 }) {
   return (
     <Card withBorder radius="md" className={classes.card}>
@@ -84,7 +94,7 @@ function SubscriptionTier({
         <div style={{ display: 'flex' }}>
           <IconMailBolt size="1.05rem" className={classes.icon} stroke={1.5} />
           <Text fz="sm" c="dimmed" className={classes.label}>
-            {apiCalls} API calls per month
+            {apiCalls} API calls / month
           </Text>
         </div>
       </Card.Section>
@@ -99,17 +109,25 @@ function SubscriptionTier({
               per month
             </Text>
           </div>
-          <Link href={user ? mySubscriptionUrl : registerPath}>
-            {active ? (
-              <Button disabled radius="xl" style={{ flex: 1 }}>
-                Active
-              </Button>
-            ) : (
+          {active ? (
+            <Button disabled radius="xl" style={{ flex: 1 }}>
+              Active
+            </Button>
+          ) : (
+            <Link
+              href={
+                user
+                  ? isSubscriptionPage
+                    ? checkoutUrl + productId
+                    : mySubscriptionUrl
+                  : registerPath
+              }
+            >
               <Button radius="xl" style={{ flex: 1 }}>
                 {user ? 'Upgrade' : 'Sign up'}
               </Button>
-            )}
-          </Link>
+            </Link>
+          )}
         </Group>
       </Card.Section>
     </Card>

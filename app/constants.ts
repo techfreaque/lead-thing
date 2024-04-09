@@ -25,6 +25,8 @@ const myApiKeyPath = '/my-api-key';
 export const myApiKeyUrl = myAccountPath + myApiKeyPath;
 const mySubscriptionPath = '/my-subscription';
 export const mySubscriptionUrl = myAccountPath + mySubscriptionPath;
+export const invoiceUrl = myAccountPath + mySubscriptionPath + '/invoice/';
+export const checkoutUrl = myAccountPath + '/checkout/';
 
 export const getresponsePath = '/getresponse';
 export const sailthruPath = '/sailthru';
@@ -322,49 +324,55 @@ export const fieldsBySystem = {
   ],
 };
 
-export interface subscriptionTiersType {
-  [key: string]: {
-    title: string;
-    price: number;
-    apiCalls: number;
-    canBeSold: boolean;
-    billingPeriod: 'monthly';
-  };
+export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise';
+export interface subscriptionTierType {
+  productId: subscriptionTierIdType;
+  title: string;
+  price: number;
+  apiCalls: number;
+  canBeSold: boolean;
+  billingPeriod: 'yearly';
 }
 
-export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise';
+export interface subscriptionTiersType {
+  [key: string]: subscriptionTierType;
+}
 
 export const subscriptionTiers: subscriptionTiersType = {
   free: {
     title: 'Free',
     price: 0,
+    productId: 'free',
     // rebatePercent: 0,
     apiCalls: 100,
     canBeSold: true,
-    billingPeriod: 'monthly',
+    billingPeriod: 'yearly',
   },
   base: {
     title: 'Base',
     price: 10,
+    productId: 'base',
     // rebatePercent: 0,
     apiCalls: 750,
     canBeSold: true,
-    billingPeriod: 'monthly',
+    billingPeriod: 'yearly',
   },
   pro: {
     title: 'Pro',
     price: 20,
+    productId: 'pro',
     // rebatePercent: 25,
     apiCalls: 2000,
     canBeSold: true,
-    billingPeriod: 'monthly',
+    billingPeriod: 'yearly',
   },
   enterprise: {
     title: 'Enterprise',
     price: 40,
+    productId: 'enterprise',
     // rebatePercent: 25,
     apiCalls: 20000,
     canBeSold: true,
-    billingPeriod: 'monthly',
+    billingPeriod: 'yearly',
   },
 };

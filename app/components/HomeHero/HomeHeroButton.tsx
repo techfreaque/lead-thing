@@ -3,13 +3,13 @@ import { UserContext, UserContextType } from '@/app/lib/authentication';
 import { useContext } from 'react';
 import classes from './HomeHeroButton.module.css';
 import Link from 'next/link';
-import { apiDocsPath, registerPath } from '@/app/constants';
+import { mySubscriptionUrl, registerPath } from '@/app/constants';
 import { Button } from '@mantine/core';
 
 export default function HomeHeroButton() {
   const { user } = useContext(UserContext) as UserContextType;
   return (
-    <Link href={user ? apiDocsPath : registerPath}>
+    <Link href={user ? mySubscriptionUrl : registerPath}>
       <Button
         size="xl"
         className={classes.control}

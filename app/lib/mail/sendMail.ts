@@ -20,6 +20,7 @@ export async function sendEmail({
       user: serverRuntimeConfig.SEND_EMAIL_USERNAME,
       pass: serverRuntimeConfig.SEND_EMAIL_PASSWORD,
     },
+    tls: {rejectUnauthorized: false}, // TODO remove when mail server fixed
   });
   
   return await transporter.sendMail({

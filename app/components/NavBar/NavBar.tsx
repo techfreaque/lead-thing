@@ -6,7 +6,6 @@ import {
   Text,
   SimpleGrid,
   ThemeIcon,
-  Anchor,
   Divider,
   Center,
   Box,
@@ -18,18 +17,10 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-} from '@tabler/icons-react';
+import { IconChevronDown } from '@tabler/icons-react';
 import classes from './NavBar.module.css';
 import Link from 'next/link';
-import { apiDocsPath, registerPath, supportedSystems } from '@/app/constants';
+import { apiDocsPath, mySubscriptionUrl, registerPath, supportedSystems } from '@/app/constants';
 import Logo from '../Logo/Logo';
 import NavBarUserButtons from './NavBarUserButtons';
 import { useContext } from 'react';
@@ -60,9 +51,6 @@ export default function Navbar() {
             {item.label}
           </Text>
         </Link>
-        {/* <Text size="xs" c="dimmed">
-            {item.description}
-          </Text> */}
       </Group>
     </UnstyledButton>
   ));
@@ -94,11 +82,11 @@ export default function Navbar() {
               <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Supported Systems</Text>
-                  <Link href={apiDocsPath} style={{ textDecoration: 'none' }}>
+                  {/* <Link href={apiDocsPath} style={{ textDecoration: 'none' }}>
                     <Anchor fz="xs" component="button">
                       View all
                     </Anchor>
-                  </Link>
+                  </Link> */}
                 </Group>
 
                 <Divider my="sm" />
@@ -114,10 +102,10 @@ export default function Navbar() {
                         Get started
                       </Text>
                       <Text size="xs" c="dimmed">
-                        Their food sources have decreased, and their numbers
+                        Its free, easy and just takes two minutes!
                       </Text>
                     </div>
-                    <Link href={user ? apiDocsPath : registerPath}>
+                    <Link href={user ? mySubscriptionUrl : registerPath}>
                       <Button variant="default">Get started</Button>
                     </Link>
                   </Group>

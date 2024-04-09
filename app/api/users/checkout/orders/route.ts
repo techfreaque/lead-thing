@@ -2,20 +2,19 @@ import getConfig from 'next/config';
 import { NextRequest, NextResponse } from 'next/server';
 import { handleResponse } from '@/app/api/apiHelpers';
 import { generateAccessToken } from '@/app/lib/paypal';
+import { subscriptionTierType } from '@/app/constants';
+import { createOrder } from '@/app/lib/orders';
 
 const { serverRuntimeConfig } = getConfig();
 
-interface OrdersPostRequest {
-  cart: any;
-}
-
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const { cart }: OrdersPostRequest = await request.json();
+  const { subscription, email }: { subscription: subscriptionTierType; email: string } =
+    await request.json();
   try {
     // use the cart information passed from the front-end to calculate the order amount detals
-    console.log('fsdfsd', cart);
-    const { jsonResponse, httpStatusCode } = await createOrder({ cart });
-    console.log('fsdfsd', cart, jsonResponse, httpStatusCode);
+    console.log('fsdfsd', subscription);
+    const { jsonResponse, httpStatusCode } = await _createOrder(subscription, email);
+    console.log('fsdfsd2', subscription, jsonResponse, httpStatusCode);
     return new NextResponse(JSON.stringify(jsonResponse), {
       status: httpStatusCode,
     });
@@ -27,10 +26,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 }
 
-const createOrder = async ({ cart }: OrdersPostRequest) => {
+const _createOrder = async (subscription: subscriptionTierType, email: string) => {
   // use the cart information passed from the front-end to calculate the purchase unit details
-  console.log('shopping cart information passed from the frontend createOrder() callback:', cart);
-
+  console.log(
+    'shopping cart information passed from the frontend createOrder() callback:',
+    subscription
+  );
+  createOrder(email, subscription.productId, subscription.price * 12);
   const accessToken = await generateAccessToken();
   const url = `${serverRuntimeConfig.PAYPAL_API_URL}/v2/checkout/orders`;
   const payload = {
@@ -39,7 +41,7 @@ const createOrder = async ({ cart }: OrdersPostRequest) => {
       {
         amount: {
           currency_code: 'USD',
-          value: '100.00',
+          value: `${subscription.price * 12}`,
         },
       },
     ],

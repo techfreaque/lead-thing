@@ -29,6 +29,7 @@
     "@mantinex/mantine-logo": "^1.0.1",
     "@paypal/react-paypal-js": "^8.2.0",
     "@prisma/client": "^5.12.1",
+    "@react-pdf/renderer": "^3.4.2",
     "@tabler/icons-react": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.2.0",

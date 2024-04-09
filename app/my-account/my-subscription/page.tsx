@@ -16,7 +16,7 @@ export default function MyKeyPage() {
         <Title ta="center" order={1}>
           Your {APP_NAME} Subscription:
         </Title>
-        <SubscriptionTiers user={user} />
+        <SubscriptionTiers user={user} isSubscriptionPage={true} />
         <MyOrders user={user} />
       </Container>
     )

@@ -55,6 +55,13 @@ export async function getOrders(email: string): Promise<OrderType[]> {
   return orders as OrderType[];
 }
 
+export async function getOrder(email: string, orderId: string): Promise<OrderType> {
+  const order = await prisma.orders.findUnique({
+    where: { email, id: orderId },
+  });
+  return order as OrderType;
+}
+
 export async function getCurrentSubscription(email: string): Promise<OrderType> {
   // TODO improve and handle upgrade
   const orders = await prisma.orders.findMany({

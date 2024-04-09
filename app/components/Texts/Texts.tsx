@@ -1,9 +1,9 @@
-import { Text, Title } from '@mantine/core';
+import { MantineSpacing, StyleProp, Text, Title } from '@mantine/core';
 import classes from './Texts.module.css';
 
-export function Title2({ children }: { children: any }) {
+export function Title2({ children, mt="sm" }: { children: any; mt?: StyleProp<MantineSpacing> }) {
   return (
-    <Title order={2} className={classes.title2} ta="center" mt="sm">
+    <Title order={2} className={classes.title2} ta="center" mt={mt}>
       {children}
     </Title>
   );
