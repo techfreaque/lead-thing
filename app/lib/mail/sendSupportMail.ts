@@ -11,7 +11,10 @@ export default async function SendSupportMail(
   website: string | null,
   email: string,
   message: string
-): Promise<SMTPTransport.SentMessageInfo> {
+): Promise<{
+  customerMessageTransporter: SMTPTransport.SentMessageInfo;
+  supportMessageTransporter: SMTPTransport.SentMessageInfo;
+}> {
   const _subject = 'Support request - ' + subject;
   const mailWithData = getMailTemplate({
     name,
@@ -54,5 +57,5 @@ function getMailTemplate({
   const name = _name;
   const supportMessage = _supportMessage;
   const APP_NAME = _APP_NAME;
-  return eval('`' + supportMail.replace(/`/g, "\`") + '`');
+  return eval('`' + supportMail.replace(/`/g, '`') + '`');
 }

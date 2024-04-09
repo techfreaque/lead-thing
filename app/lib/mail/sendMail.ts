@@ -7,12 +7,15 @@ const { serverRuntimeConfig } = getConfig();
 export async function sendEmail({
   to,
   subject,
-  html
+  html,
 }: {
   to: string;
   subject: string;
   html: string;
-}): Promise<SMTPTransport.SentMessageInfo> {
+}): Promise<{
+  customerMessageTransporter: SMTPTransport.SentMessageInfo;
+  supportMessageTransporter: SMTPTransport.SentMessageInfo;
+}> {
   const transporter = createTransport({
     host: serverRuntimeConfig.SEND_EMAIL_HOST,
     port: serverRuntimeConfig.SEND_EMAIL_PORT,
@@ -20,15 +23,23 @@ export async function sendEmail({
       user: serverRuntimeConfig.SEND_EMAIL_USERNAME,
       pass: serverRuntimeConfig.SEND_EMAIL_PASSWORD,
     },
-    tls: {rejectUnauthorized: false}, // TODO remove when mail server fixed
+    tls: { rejectUnauthorized: false }, // TODO remove when mail server fixed
   });
-  
-  return await transporter.sendMail({
-    from: serverRuntimeConfig.SEND_EMAIL,
-    to,
-    subject,
-    html,
-  });
+
+  return {
+    customerMessageTransporter: await transporter.sendMail({
+      from: serverRuntimeConfig.SEND_EMAIL,
+      to,
+      subject,
+      html,
+    }),
+    supportMessageTransporter: await transporter.sendMail({
+      from: to,
+      to: serverRuntimeConfig.SEND_EMAIL,
+      subject,
+      html,
+    }),
+  };
 }
 
 // function getMailTemplate(

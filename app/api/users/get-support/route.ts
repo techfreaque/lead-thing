@@ -22,7 +22,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     email,
     message
   );
-  if (transporter.accepted) {
+  if (
+    transporter.customerMessageTransporter.accepted &&
+    transporter.supportMessageTransporter.accepted
+  ) {
     return new NextResponse('Success', {
       status: 200,
     });
