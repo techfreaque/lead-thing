@@ -13,4 +13,7 @@ docker rm leadthing
 docker run -d  --log-driver none --name leadthing --network caddy_internal -v /leadthing-data:/usr/src/app/prisma/db leadthing
 
 # dev
-# docker run -d --name leadthing -v ./leadthing-data:/usr/src/app/prisma/db leadthing
+# docker build --tag leadthing .
+# docker stop leadthing
+# docker rm leadthing
+# docker run -d --name leadthing -p 3001:3000 -v ./leadthing-data:/usr/src/app/prisma/db leadthing
