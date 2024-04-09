@@ -20,7 +20,7 @@ RUN cd /temp/prod && bun install --frozen-lockfile --production
 FROM base AS release
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
-VOLUME prisma/db
+VOLUME /usr/src/app/prisma/db
 
 # [optional] tests & build
 ENV NODE_ENV=production
