@@ -34,10 +34,11 @@ export async function sendEmail({
       html,
     }),
     supportMessageTransporter: await transporter.sendMail({
-      from: to,
+      from: serverRuntimeConfig.SEND_EMAIL,
       to: serverRuntimeConfig.SEND_EMAIL,
       subject,
       html,
+      replyTo: to,
     }),
   };
 }
