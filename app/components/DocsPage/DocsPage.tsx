@@ -1,19 +1,36 @@
 'use client';
-import { APP_NAME, RequestOptionsData, apiURL, fieldsBySystem, systemNamesByKey } from '@/app/constants';
-import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
-import { useState } from 'react';
-import { Container, Group, Paper, Radio, SimpleGrid, TextInput, Title } from '@mantine/core';
+
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import {
+  Button,
+  Container,
+  Group,
+  Paper,
+  Radio,
+  SimpleGrid,
+  TextInput,
+  Title,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
+import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
+import {
+  APP_NAME,
+  RequestOptionsData,
+  apiURL,
+  fieldsBySystem,
+  systemNamesByKey,
+} from '@/app/constants';
 import {
   type AllPossiblePostRequestParameters,
   type availableRequestProperties,
   type avialableSystemsType,
 } from '@/app/api/types';
+import { UserContext, UserContextType } from '@/app/lib/authentication';
 
 export default function DocsPage({ systemName }: { systemName: avialableSystemsType }) {
-  const [exampleKey, setExampleKey] = useState<string>(
-    'YOUR_' + APP_NAME.toUpperCase() + '_API_KEY'
-  );
+  const { user } = useContext(UserContext) as UserContextType;
+  const exampleKey = user?.apiKey || `YOUR_${APP_NAME.toUpperCase()}_API_KEY`;
+  const [response, setResponse] = useState<string | undefined>();
   const initialValues: any = getInitialValues(systemName);
   const form = useForm({
     initialValues,
@@ -27,15 +44,15 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
     <div>
       <Container>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <Title order={1}>{systemNamesByKey[systemName]} API Docs</Title>
+          <Title order={1}>{systemNamesByKey[systemName]} API Docs</Title>
           <TextInput
             label={`Your ${APP_NAME} API key`}
             required
             value={exampleKey}
             readOnly
-            mb={'md'}
+            mb="md"
           />
-          <SimpleGrid cols={{ base: 1, sm: 2 }} mb={'xl'}>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} mb="xl">
             {fieldsBySystem[systemName].map((propertyName) =>
               RequestOptionsData[propertyName as availableRequestProperties].valueType ===
               'string' ? (
@@ -66,9 +83,21 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
               )
             )}
           </SimpleGrid>
-          {/* <Button mb={20} fullWidth my="xl">
+          <Button
+            mb={20}
+            fullWidth
+            my="xl"
+            onClick={() =>
+              sendExampleRequest({
+                exampleKey,
+                systemName,
+                exampleData: form.values,
+                setResponse,
+              })
+            }
+          >
             Send Request to {systemNamesByKey[systemName]} API
-          </Button> */}
+          </Button>
           <DocsCodeHighlighter
             curlCode={getCurlCodeExample({
               systemName,
@@ -204,7 +233,7 @@ fetch('${apiURL}/${systemName}', {
         apiKey: '${exampleKey}',
         'content-type': 'application/json'
     },
-    body: JSON.stringify({${exampleData.firstname ? '\n        firstname: "' + exampleData.firstname + '",' : ''}${exampleData.lastname ? '\n        lastname: "' + exampleData.lastname + '",' : ''}${exampleData.email ? '\n        email: "' + exampleData.email + '",' : ''}${exampleData.ip ? '\n        ip: "' + exampleData.ip + '",' : ''}${exampleData.gender ? '\n        gender: "' + exampleData.gender + '",' : ''}${exampleData.countryCode ? '\n        countryCode: "' + exampleData.countryCode + '",' : ''}${exampleData.listId ? '\n        listId: "' + exampleData.listId + '",' : ''}${exampleData.subscriptionMode ? '\n        subscriptionMode: "' + exampleData.subscriptionMode + '",' : ''}${exampleData.listName ? '\n        listName: "' + exampleData.listName + '",' : ''}${exampleData.gender ? '\n        gender: "' + exampleData.gender + '",' : ''}${exampleData.listId ? '\n        listId: "' + exampleData.listId + '",' : ''}${exampleData.subscriptionMode ? '\n        subscriptionMode: "' + exampleData.subscriptionMode + '",' : ''}${exampleData.listName ? '\n        listName: "' + exampleData.listName + '",' : ''}${exampleData.getresponseApiKey ? '\n        getresponseApiKey: "' + exampleData.getresponseApiKey + '",' : ''}${exampleData.mappUsername ? '\n        mappUsername: "' + exampleData.mappUsername + '",' : ''}${exampleData.mappPassword ? '\n        mappPassword: "' + exampleData.mappPassword + '",' : ''}${exampleData.mappDomain ? '\n        mappDomain: "' + exampleData.mappDomain + '",' : ''}${exampleData.sailthruApiKey ? '\n        sailthruApiKey: "' + exampleData.sailthruApiKey + '",' : ''}${exampleData.sailthruSecret ? '\n        sailthruSecret: "' + exampleData.sailthruSecret + '",' : ''}${exampleData.SalesforceSubDomain ? '\n        SalesforceSubDomain: "' + exampleData.SalesforceSubDomain + '",' : ''}${exampleData.SalesforceClientId ? '\n        SalesforceClientId: "' + exampleData.SalesforceClientId + '",' : ''}${exampleData.SalesforceClientSecret ? '\n        SalesforceClientSecret: "' + exampleData.SalesforceClientSecret + '",' : ''}${exampleData.SalesforceAccountId ? '\n        SalesforceAccountId: "' + exampleData.SalesforceAccountId + '",' : ''}${exampleData.tag ? '\n        tag: "' + exampleData.tag + '",' : ''}${exampleData.salesManagoClientId ? '\n        salesManagoClientId: "' + exampleData.salesManagoClientId + '",' : ''}${exampleData.salesManagoApiKey ? '\n        salesManagoApiKey: "' + exampleData.salesManagoApiKey + '",' : ''}${exampleData.salesManagoSha ? '\n        salesManagoSha: "' + exampleData.salesManagoSha + '",' : ''}${exampleData.salesManagoSubDomain ? '\n        salesManagoSubDomain: "' + exampleData.salesManagoSubDomain + '",' : ''}${exampleData.salesManagoOwner ? '\n        salesManagoOwner: "' + exampleData.salesManagoOwner + '",' : ''}
+    body: JSON.stringify({${exampleData.firstname ? `\n        firstname: "${exampleData.firstname}",` : ''}${exampleData.lastname ? `\n        lastname: "${exampleData.lastname}",` : ''}${exampleData.email ? `\n        email: "${exampleData.email}",` : ''}${exampleData.ip ? `\n        ip: "${exampleData.ip}",` : ''}${exampleData.gender ? `\n        gender: "${exampleData.gender}",` : ''}${exampleData.countryCode ? `\n        countryCode: "${exampleData.countryCode}",` : ''}${exampleData.listId ? `\n        listId: "${exampleData.listId}",` : ''}${exampleData.subscriptionMode ? `\n        subscriptionMode: "${exampleData.subscriptionMode}",` : ''}${exampleData.listName ? `\n        listName: "${exampleData.listName}",` : ''}${exampleData.gender ? `\n        gender: "${exampleData.gender}",` : ''}${exampleData.listId ? `\n        listId: "${exampleData.listId}",` : ''}${exampleData.subscriptionMode ? `\n        subscriptionMode: "${exampleData.subscriptionMode}",` : ''}${exampleData.listName ? `\n        listName: "${exampleData.listName}",` : ''}${exampleData.getresponseApiKey ? `\n        getresponseApiKey: "${exampleData.getresponseApiKey}",` : ''}${exampleData.mappUsername ? `\n        mappUsername: "${exampleData.mappUsername}",` : ''}${exampleData.mappPassword ? `\n        mappPassword: "${exampleData.mappPassword}",` : ''}${exampleData.mappDomain ? `\n        mappDomain: "${exampleData.mappDomain}",` : ''}${exampleData.sailthruApiKey ? `\n        sailthruApiKey: "${exampleData.sailthruApiKey}",` : ''}${exampleData.sailthruSecret ? `\n        sailthruSecret: "${exampleData.sailthruSecret}",` : ''}${exampleData.SalesforceSubDomain ? `\n        SalesforceSubDomain: "${exampleData.SalesforceSubDomain}",` : ''}${exampleData.SalesforceClientId ? `\n        SalesforceClientId: "${exampleData.SalesforceClientId}",` : ''}${exampleData.SalesforceClientSecret ? `\n        SalesforceClientSecret: "${exampleData.SalesforceClientSecret}",` : ''}${exampleData.SalesforceAccountId ? `\n        SalesforceAccountId: "${exampleData.SalesforceAccountId}",` : ''}${exampleData.tag ? `\n        tag: "${exampleData.tag}",` : ''}${exampleData.salesManagoClientId ? `\n        salesManagoClientId: "${exampleData.salesManagoClientId}",` : ''}${exampleData.salesManagoApiKey ? `\n        salesManagoApiKey: "${exampleData.salesManagoApiKey}",` : ''}${exampleData.salesManagoSha ? `\n        salesManagoSha: "${exampleData.salesManagoSha}",` : ''}${exampleData.salesManagoSubDomain ? `\n        salesManagoSubDomain: "${exampleData.salesManagoSubDomain}",` : ''}${exampleData.salesManagoOwner ? `\n        salesManagoOwner: "${exampleData.salesManagoOwner}",` : ''}
     })
 })
 .then((response) => {
@@ -214,4 +243,31 @@ fetch('${apiURL}/${systemName}', {
     // something went wrong
 });
   `;
+}
+
+function sendExampleRequest({
+  exampleKey,
+  systemName,
+  exampleData,
+  setResponse,
+}: {
+  exampleKey: string;
+  systemName: string;
+  exampleData: AllPossiblePostRequestParameters;
+  setResponse: Dispatch<SetStateAction<string | undefined>>;
+}) {
+  fetch(`${apiURL}/${systemName}`, {
+    method: 'POST',
+    headers: {
+      apiKey: exampleKey,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(exampleData),
+  })
+    .then((response) => {
+      setResponse('Successfully created the lead');
+    })
+    .catch((e) => {
+      setResponse(`Failed to create the lead: Error: ${JSON.stringify(e)}`);
+    });
 }

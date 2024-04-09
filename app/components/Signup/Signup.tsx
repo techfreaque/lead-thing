@@ -1,4 +1,5 @@
 'use client';
+
 import { useForm } from '@mantine/form';
 import {
   TextInput,
@@ -17,13 +18,13 @@ import {
   Alert,
 } from '@mantine/core';
 import Link from 'next/link';
-import { APP_NAME, apiDocsPath, loginPath, registerPath, restPasswordPath } from '@/app/constants';
-import classes from './Signup.module.css';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
+import { RedirectType, redirect } from 'next/navigation';
+import { APP_NAME, apiDocsPath, loginPath, registerPath, restPasswordPath } from '@/app/constants';
+import classes from './Signup.module.css';
 import { LoginResponse } from '@/app/api/users/login/route';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
-import { RedirectType, redirect } from 'next/navigation';
 
 export default function Signup({ type }: { type: 'login' | 'register' }) {
   const [_type, setType] = useState<'login' | 'register'>(type);
@@ -108,8 +109,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
           message: 'An unknown error happened, please try again later and contact our support!',
         });
       }
-    } else {
-      if (response.status === 200) {
+    } else if (response.status === 200) {
         const responseData: LoginResponse = await response.json();
         login(responseData.user);
         setMessage({
@@ -130,12 +130,11 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
           message: 'An unknown error happened, please try again later and contact our support!',
         });
       }
-    }
   }
 
-  useEffect(()=>{
-    user && redirect(apiDocsPath, RedirectType.replace)
-  },[user])
+  useEffect(() => {
+    user && redirect(apiDocsPath, RedirectType.replace);
+  }, [user]);
 
   return (
     <Container size={_type === 'register' ? 700 : 480} my={40}>

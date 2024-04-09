@@ -1,12 +1,12 @@
-import { handleResponse } from '@/app/api/apiHelpers';
-import { generateAccessToken } from '@/app/lib/paypal';
 import getConfig from 'next/config';
 import { NextRequest, NextResponse } from 'next/server';
+import { handleResponse } from '@/app/api/apiHelpers';
+import { generateAccessToken } from '@/app/lib/paypal';
 
 const { serverRuntimeConfig } = getConfig();
 
 interface OrdersPostRequest {
-  cart;
+  cart: any;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

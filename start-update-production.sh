@@ -1,4 +1,7 @@
 cd /leadthing
+git stash
+git pull
+
 cp -n .env-example .env
 docker build --tag leadthing .
 mkdir /leadthing-data
