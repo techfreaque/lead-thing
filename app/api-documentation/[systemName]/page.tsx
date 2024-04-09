@@ -22,8 +22,8 @@ export default function Page({ params }: { params: { systemName: avialableSystem
       return <DocsPage systemName={params.systemName} />;
     case mappPath:
       return <DocsPage systemName={params.systemName} />;
-    case klaviyoPath:
-      return <DocsPage systemName={params.systemName} />;
+    // case klaviyoPath:
+    //   return <DocsPage systemName={params.systemName} />;
     default:
       return <NotFound />;
   }

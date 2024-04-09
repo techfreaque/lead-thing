@@ -1,4 +1,5 @@
 'use client';
+
 import { CSSProperties, ForwardRefExoticComponent, RefAttributes, useContext } from 'react';
 import {
   IconBellRinging,
@@ -8,11 +9,11 @@ import {
   IconProps,
   Icon,
 } from '@tabler/icons-react';
-import classes from './DocsSideBar.module.css';
-import { UserContext, UserContextType } from '@/app/lib/authentication';
-import { myApiKeyUrl, supportedSystems } from '@/app/constants';
 import Link from 'next/link';
 import { Divider, Title } from '@mantine/core';
+import classes from './DocsSideBar.module.css';
+import { UserContext, UserContextType } from '@/app/lib/authentication';
+import { myApiKeyUrl, mySubscriptionUrl, supportedSystems } from '@/app/constants';
 
 export default function DocsSideBar({
   children,
@@ -27,16 +28,9 @@ export default function DocsSideBar({
     label: string;
     icon: ForwardRefExoticComponent<Omit<IconProps, 'ref'> & RefAttributes<Icon>>;
     onClick?: () => void;
-  }[] = [
-    { link: '', label: 'Notifications', icon: IconBellRinging },
-    { link: '', label: 'Billing', icon: IconReceipt2 },
-    { link: myApiKeyUrl, label: 'My API Key', icon: IconKey },
-    // { link: '', label: 'Security', icon: IconFingerprint },
-    // { link: '', label: 'Databases', icon: IconDatabaseImport },
-    // { link: '', label: 'Authentication', icon: Icon2fa },
-    // { link: '', label: 'Other Settings', icon: IconSettings },
-  ];
+  }[] = [{ link: myApiKeyUrl, label: 'My API Key', icon: IconKey }];
   if (user) {
+    items.unshift({ link: mySubscriptionUrl, label: 'My Subscription', icon: IconReceipt2 });
     items.push({ link: '#', onClick: logout, label: 'Logout', icon: IconLogout });
   }
   return (

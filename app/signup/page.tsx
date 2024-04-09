@@ -1,8 +1,7 @@
-import Signup from "@/app/components/Signup/Signup";
+import Signup from '@/app/components/Signup/Signup';
 
 export default function SignupPage() {
     return (
-      <Signup type="register"/>
+      <Signup type="register" />
     );
   }
-  

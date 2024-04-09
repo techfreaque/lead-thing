@@ -10,7 +10,7 @@ export interface UserType {
   website: string | null;
   email: string;
   apiKeyValidUntil: Date | null;
-  apiKey: string | null;
+  apiKey: string;
 }
 export interface UserContextType {
   user: UserType | undefined;
@@ -21,7 +21,7 @@ export interface UserContextType {
 export const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: any }) {
-  const [user, setUser] = useState<UserType | undefined>(undefined);
+  const [_user, setUser] = useState<UserType | undefined>(undefined);
   function login(user: UserType) {
     saveUserToCookie(user);
     setUser(user);
@@ -36,14 +36,16 @@ export function UserProvider({ children }: { children: any }) {
     eraseUserCookie();
     setUser(undefined);
   }
-  return <UserContext.Provider value={{ user, login, logout }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user: _user, login, logout }}>{children}</UserContext.Provider>
+  );
 }
 
 function readUserToCookie(): UserType | undefined {
-  var nameEQ = 'user=';
-  var ca = document.cookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
+  const nameEQ = 'user=';
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
     while (c.charAt(0) == ' ') c = c.substring(1, c.length);
     if (c.indexOf(nameEQ) == 0) {
       return JSON.parse(c.substring(nameEQ.length, c.length)) as UserType;
@@ -58,8 +60,8 @@ function eraseUserCookie() {
 
 function saveUserToCookie(user: UserType) {
   const days = 1;
-  var date = new Date();
+  const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-  const expires = '; expires=' + date.toUTCString();
-  document.cookie = 'user=' + (JSON.stringify(user) || '') + expires + '; path=/; SameSite=Strict';
+  const expires = `; expires=${date.toUTCString()}`;
+  document.cookie = `user=${JSON.stringify(user) || ''}${expires}; path=/; SameSite=Strict`;
 }

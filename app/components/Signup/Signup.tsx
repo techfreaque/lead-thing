@@ -110,26 +110,26 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         });
       }
     } else if (response.status === 200) {
-        const responseData: LoginResponse = await response.json();
-        login(responseData.user);
-        setMessage({
-          status: 'info',
-          title: "You're in!",
-          message: 'Successfully signed in!',
-        });
-      } else if (response.status === 401) {
-        setMessage({
-          status: 'error',
-          title: 'Password or email is incorrect :(',
-          message: '',
-        });
-      } else {
-        setMessage({
-          status: 'error',
-          title: 'Something went wrong :(',
-          message: 'An unknown error happened, please try again later and contact our support!',
-        });
-      }
+      const responseData: LoginResponse = await response.json();
+      login(responseData.user);
+      setMessage({
+        status: 'info',
+        title: "You're in!",
+        message: 'Successfully signed in!',
+      });
+    } else if (response.status === 401) {
+      setMessage({
+        status: 'error',
+        title: 'Password or email is incorrect :(',
+        message: '',
+      });
+    } else {
+      setMessage({
+        status: 'error',
+        title: 'Something went wrong :(',
+        message: 'An unknown error happened, please try again later and contact our support!',
+      });
+    }
   }
 
   useEffect(() => {
@@ -277,7 +277,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
                 </Anchor>
               </Link>
             )}
-            <Button type="submit" radius="xl">
+            <Button type="submit" radius="xl" disabled={_type === 'register' && !form.values.terms}>
               {_type === 'register' ? 'Create account' : 'Login'}
             </Button>
           </Group>
