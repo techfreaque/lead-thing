@@ -2,6 +2,7 @@
 
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import {
+  Alert,
   Button,
   Container,
   Group,
@@ -12,6 +13,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { IconInfoCircle } from '@tabler/icons-react';
 import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
 import {
   APP_NAME,
@@ -29,8 +31,10 @@ import { UserContext, UserContextType } from '@/app/lib/authentication';
 
 export default function DocsPage({ systemName }: { systemName: avialableSystemsType }) {
   const { user } = useContext(UserContext) as UserContextType;
-  const exampleKey = user?.apiKey || `YOUR_${APP_NAME.toUpperCase()}_API_KEY`;
-  const [response, setResponse] = useState<string | undefined>();
+  const exampleKey = user?.apiKey || `Sign in  to get your ${APP_NAME.toUpperCase()} API key`;
+  const [response, setResponse] = useState<
+    { state: 'success' | 'error'; message: string } | undefined
+  >();
   const initialValues: any = getInitialValues(systemName);
   const form = useForm({
     initialValues,
@@ -83,9 +87,29 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
               )
             )}
           </SimpleGrid>
+          {!user && (
+            <Alert
+              variant="light"
+              color="blue"
+              title="Sign in to send a test request"
+              icon={<IconInfoCircle />}
+            >
+              To use the test request feature you need a valid {APP_NAME} API key, please sign in to
+              get one.
+            </Alert>
+          )}
+          {response && (
+            <Alert
+              variant="light"
+              color={response.state === 'success' ? 'green' : 'red'}
+              title={response.message}
+              icon={<IconInfoCircle />}
+            />
+          )}
           <Button
             mb={20}
             fullWidth
+            disabled={!user}
             my="xl"
             onClick={() =>
               sendExampleRequest({
@@ -245,7 +269,7 @@ fetch('${apiURL}/${systemName}', {
   `;
 }
 
-function sendExampleRequest({
+async function sendExampleRequest({
   exampleKey,
   systemName,
   exampleData,
@@ -254,20 +278,28 @@ function sendExampleRequest({
   exampleKey: string;
   systemName: string;
   exampleData: AllPossiblePostRequestParameters;
-  setResponse: Dispatch<SetStateAction<string | undefined>>;
+  setResponse: Dispatch<
+    SetStateAction<{ state: 'success' | 'error'; message: string } | undefined>
+  >;
 }) {
-  fetch(`${apiURL}/${systemName}`, {
-    method: 'POST',
-    headers: {
-      apiKey: exampleKey,
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify(exampleData),
-  })
-    .then((response) => {
-      setResponse('Successfully created the lead');
-    })
-    .catch((e) => {
-      setResponse(`Failed to create the lead: Error: ${JSON.stringify(e)}`);
+  try {
+    const response = await fetch(`${apiURL}/${systemName}`, {
+      method: 'POST',
+      headers: {
+        apiKey: exampleKey,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(exampleData),
     });
+    const message = await response.text();
+    setResponse({
+      state: 'success',
+      message: `Successfully created the lead${JSON.stringify(message)}`,
+    });
+  } catch (error) {
+    setResponse({
+      state: 'error',
+      message: `Failed to create the lead: Error: ${JSON.stringify(error)}`,
+    });
+  }
 }
