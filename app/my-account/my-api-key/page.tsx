@@ -12,8 +12,12 @@ export default function MyKeyPage() {
     <Container>
       {user ? (
         <>
-          <Title order={1}>Your {APP_NAME} API key:</Title>
-          <Title order={2}>{user?.apiKey}</Title>
+          <Title ta="center" order={1}>
+            Your {APP_NAME} API key:
+          </Title>
+          <Title ta="center" order={2}>
+            {user?.apiKey}
+          </Title>
         </>
       ) : (
         <>
