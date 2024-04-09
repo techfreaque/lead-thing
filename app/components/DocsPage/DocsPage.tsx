@@ -292,10 +292,17 @@ async function sendExampleRequest({
       body: JSON.stringify(exampleData),
     });
     const message = await response.text();
-    setResponse({
-      state: 'success',
-      message: `Successfully created the lead${JSON.stringify(message)}`,
-    });
+    if (response.status === 200) {
+      setResponse({
+        state: 'success',
+        message: 'Successfully created the lead',
+      });
+    } else {
+      setResponse({
+        state: 'error',
+        message,
+      });
+    }
   } catch (error) {
     setResponse({
       state: 'error',

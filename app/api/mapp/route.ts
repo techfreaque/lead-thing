@@ -3,7 +3,7 @@ import type { MappPostRequest } from '../types';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
 const apiContactsPath = '/api/rest/v19/contact/create';
-const apiSubscribePath = '/api/rest/v19/membership/subscribeByEmail';
+const apiSubscribePath = '/api/rest/v19/membership/subscribe';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
@@ -25,10 +25,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: 'Basic ' + btoa(mappUsername + ':' + mappPassword),
+      Authorization: `Basic ${btoa(`${mappUsername}:${mappPassword}`)}`,
     };
     try {
-      const response: Response = await fetch('https://' + mappDomain + apiContactsPath, {
+      const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
         method: 'post',
         headers,
         body: JSON.stringify({
@@ -42,37 +42,37 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       });
       const data = await response.json();
       if (response.ok) {
+        const subscribePayload = {
+          userId: parseInt(String(data.contactId)),
+          groupId: parseInt(String(listId)),
+          subscriptionMode:
+            subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode,
+        };
+        console.log(subscribePayload);
         const subscribeResponse: Response = await fetch(
-          'https://' + mappDomain + apiSubscribePath,
+          `https://${mappDomain}${apiSubscribePath}`,
           {
             method: 'post',
             headers,
-            body: JSON.stringify({
-              email,
-              groupId: parseInt(String(listId)),
-              subscriptionMode:
-                subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode,
-            }),
+            body: JSON.stringify(subscribePayload),
           }
         );
         if (subscribeResponse.ok) {
           return ApiResponse('Contact successfully added and subscribed!', 200);
-        } else {
-          return ApiResponse(
-            `The contact was added to mapp, but subscribing to the list was not successful via the mapp api. Error: ${JSON.stringify(
-              await subscribeResponse.json()
-            )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
-            500
-          );
         }
-      } else {
         return ApiResponse(
-          `Failed to add the contact via the mapp api. Error: ${JSON.stringify(
-            data
+          `The contact was added to mapp, but subscribing to the list was not successful via the mapp api. Error: ${JSON.stringify(
+            await subscribeResponse.json()
           )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
           500
         );
       }
+      return ApiResponse(
+        `Failed to add the contact via the mapp api. Error: ${JSON.stringify(
+          data
+        )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
+        500
+      );
     } catch (error) {
       return ApiResponse(
         `Failed to add the contact via the mapp api with an unknown error. Error: ${error} ${formatApiCallDetails(
@@ -82,5 +82,5 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
   }
-  return await executeIfAuthenticated(request, forwardToNewsletterSystem);
+  return executeIfAuthenticated(request, forwardToNewsletterSystem);
 }

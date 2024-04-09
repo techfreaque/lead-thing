@@ -10,4 +10,4 @@ mkdir /leadthing-data
 
 docker stop leadthing
 docker rm leadthing
-docker run -d --name leadthing --network caddy_internal -v /leadthing-data:/prisma/db docker logs -f leadthing
+docker run -d  --log-driver none --name leadthing --network caddy_internal -v /leadthing-data:/prisma/db leadthing
