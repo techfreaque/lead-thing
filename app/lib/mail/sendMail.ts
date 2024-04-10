@@ -2,6 +2,7 @@ import { APP_NAME } from '@/app/constants';
 import getConfig from 'next/config';
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+import fs from 'fs';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -9,14 +10,18 @@ export async function sendEmail({
   to,
   subject,
   html,
+  toUsAsWell = false,
 }: {
   to: string;
   subject: string;
   html: string;
+  toUsAsWell?: boolean;
 }): Promise<{
   customerMessageTransporter: SMTPTransport.SentMessageInfo;
-  supportMessageTransporter: SMTPTransport.SentMessageInfo;
+  supportMessageTransporter?: SMTPTransport.SentMessageInfo;
 }> {
+  'use server';
+
   const transporter = createTransport({
     host: serverRuntimeConfig.SEND_EMAIL_HOST,
     port: serverRuntimeConfig.SEND_EMAIL_PORT,
@@ -34,12 +39,20 @@ export async function sendEmail({
       subject,
       html,
     }),
-    supportMessageTransporter: await transporter.sendMail({
-      from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
-      to: serverRuntimeConfig.SEND_EMAIL,
-      subject,
-      html,
-      replyTo: to,
-    }),
+    ...(toUsAsWell
+      ? {
+          supportMessageTransporter: await transporter.sendMail({
+            from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
+            to: serverRuntimeConfig.SEND_EMAIL,
+            subject,
+            html,
+            replyTo: to,
+          }),
+        }
+      : {}),
   };
+}
+
+export function getMailTemplateFile(fileName: string): string {
+  return fs.readFileSync('app/lib/mail/mailTemplates/build/' + fileName + '.html', 'utf8');
 }

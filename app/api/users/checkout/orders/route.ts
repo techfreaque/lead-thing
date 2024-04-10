@@ -44,7 +44,7 @@ const _createOrder = async (
     purchase_units: [
       {
         amount: {
-          currency_code: 'USD',
+          currency_code: 'EUR',
           value: `${(subscription.price * 12).toFixed(2)}`,
         },
       },

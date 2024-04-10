@@ -232,8 +232,8 @@ function InvoiceTableRow({ items }: { items: invoiceItems[] }) {
     <View style={tRowStyles.row} key={item.sno.toString()}>
       <Text style={tRowStyles.description}>{item.desc}</Text>
       <Text style={tRowStyles.qty}>{item.qty}</Text>
-      <Text style={tRowStyles.rate}>$ {item.rate}</Text>
-      <Text style={tRowStyles.amount}>$ {(item.qty * item.rate).toFixed(2)}</Text>
+      <Text style={tRowStyles.rate}>€ {item.rate}</Text>
+      <Text style={tRowStyles.amount}>€ {(item.qty * item.rate).toFixed(2)}</Text>
     </View>
   ));
   return <>{rows}</>;
@@ -313,7 +313,7 @@ function InvoiceTableFooter({ items }: { items: invoiceItems[] }) {
   return (
     <View style={tFooterStyles.row}>
       <Text style={tFooterStyles.description}>TOTAL</Text>
-      <Text style={tFooterStyles.total}>$ {Number.parseFloat(`${total}`).toFixed(2)}</Text>
+      <Text style={tFooterStyles.total}>€ {Number.parseFloat(`${total}`).toFixed(2)}</Text>
     </View>
   );
 }

@@ -13,24 +13,24 @@ import {
   Anchor,
   Stack,
   Container,
-  Title,
   SimpleGrid,
   Alert,
 } from '@mantine/core';
 import Link from 'next/link';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
-import { RedirectType, redirect } from 'next/navigation';
+import { RedirectType, redirect, useSearchParams } from 'next/navigation';
 import {
   APP_NAME,
   loginPath,
   mySubscriptionUrl,
   registerPath,
-  restPasswordPath,
+  resetPasswordPath,
+  resetSuccessParam,
 } from '@/app/constants';
-import classes from './Signup.module.css';
 import { LoginResponse } from '@/app/api/users/login/route';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
+import { TitleUserForm } from '../Texts/Texts';
 
 export default function Signup({ type }: { type: 'login' | 'register' }) {
   const [_type, setType] = useState<'login' | 'register'>(type);
@@ -43,6 +43,16 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
     title: '',
     message: '',
   });
+  const searchParams = useSearchParams();
+  const isResetSuccess = Boolean(searchParams.get(resetSuccessParam));
+  useEffect(() => {
+    isResetSuccess &&
+      setMessage({
+        status: 'info',
+        title: 'Password successfully changed!',
+        message: 'Your password has been updated and you can login now!',
+      });
+  }, [isResetSuccess]);
   const { user, login } = useContext(UserContext) as UserContextType;
   const form = useForm({
     initialValues: {
@@ -59,7 +69,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
 
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
+      password: (val) => (val.length <= 8 ? 'Password should include at least 8 characters' : null),
     },
   });
   async function onSubmit() {
@@ -100,7 +110,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
           message: (
             <>
               A user with this email address already signed up! Sign in or{' '}
-              <Link href={restPasswordPath} style={{ textDecoration: 'none' }}>
+              <Link href={resetPasswordPath} style={{ textDecoration: 'none' }}>
                 <Anchor size="sm" component="button">
                   reset your password
                 </Anchor>
@@ -144,9 +154,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
 
   return (
     <Container size={_type === 'register' ? 700 : 480} my={40}>
-      <Title ta="center" className={classes.title}>
-        Welcome to {APP_NAME}
-      </Title>
+      <TitleUserForm>Welcome to {APP_NAME}</TitleUserForm>
 
       <Text c="dimmed" size="sm" ta="center" mt={5} mb={20}>
         {_type === 'register' ? (
@@ -190,7 +198,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
               <TextInput
                 required
                 label="Email"
-                placeholder="hello@lead-thing.com"
+                placeholder={process.env.NEXT_PUBLIC_SUPPORT_EMAIL}
                 value={form.values.email}
                 onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
                 error={form.errors.email && 'Invalid email'}
@@ -277,9 +285,9 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
                 </Anchor>
               </Link>
             ) : (
-              <Link href={registerPath} style={{ textDecoration: 'none' }}>
+              <Link href={resetPasswordPath} style={{ textDecoration: 'none' }}>
                 <Anchor component="button" type="button" c="dimmed" size="xs">
-                  Don't have an account? Create account
+                  Forgot your password? Reset password
                 </Anchor>
               </Link>
             )}

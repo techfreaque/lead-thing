@@ -9,6 +9,14 @@ export function Title2({ children, mt="sm" }: { children: any; mt?: StyleProp<Ma
   );
 }
 
+export function TitleUserForm({ children }: { children: any; }) {
+  return (
+    <Title ta="center" className={classes.title}>
+      {children}
+  </Title>
+  );
+}
+
 export function Title2SubText({ children }: { children: any }) {
   return (
     <Text c="dimmed" className={classes.title2description} ta="center" mt="md">

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Table, Title } from '@mantine/core';
+import { Button, Table, Text, Title } from '@mantine/core';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { invoiceUrl, subscriptionTiers } from '@/app/constants';
@@ -35,7 +35,7 @@ export default function MyOrders({ user }: { user: UserType }) {
               <Table.Td>{element.payedAt?.toDateString() || ''}</Table.Td>
               <Table.Td>{element.paymentStatus}</Table.Td>
               <Table.Td>{subscriptionTiers[element.productId].title}</Table.Td>
-              <Table.Td>{element.amount}$</Table.Td>
+              <Table.Td>€{element.amount}</Table.Td>
               {element.paymentStatus === 'paid' && (
                 <Table.Td>
                   <Link target="blank" href={invoiceUrl + element.id}>
@@ -49,8 +49,11 @@ export default function MyOrders({ user }: { user: UserType }) {
       </Table>
     </>
   ) : (
-    <Title ta="center" order={2}>
-      You don't have any orders yet :(
-    </Title>
+    <>
+      <Title ta="center" order={2} mt={'xl'} mb={"md"}>
+        You don't have any orders yet :(
+      </Title>
+      <Text ta="center">You can download your invoices here once you've completed a purchase</Text>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 
 export interface UserType {
-  token: string | null;
+  token?: string | null;
   name: string | null;
   company: string | null;
   address: string | null;
@@ -11,6 +11,8 @@ export interface UserType {
   email: string;
   apiKeyValidUntil: Date | null;
   apiKey: string;
+  resetPasswordToken: string | null;
+  resetPasswordTokenTime: Date | null;
 }
 export interface UserContextType {
   user: UserType | undefined;

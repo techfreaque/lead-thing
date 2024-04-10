@@ -1,8 +1,10 @@
-import Signup from "../components/Signup/Signup";
+import { Suspense } from 'react';
+import Signup from '../components/Signup/Signup';
 
 export default function LoginPage() {
-    return (
-      <Signup type="login"/>
-    );
-  }
-  
+  return (
+    <Suspense>
+      <Signup type="login" />
+    </Suspense>
+  );
+}

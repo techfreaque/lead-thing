@@ -1,11 +1,7 @@
+import { encryptPassword } from '@/app/lib/helpers';
 import { prisma } from '@/app/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import { freeTierApiCalls } from '@/app/constants';
 import { v4 as uuidv4 } from 'uuid';
-import getConfig from 'next/config';
-
-const { serverRuntimeConfig } = getConfig();
 
 interface RegisterPostRequest {
   name: string;
@@ -41,7 +37,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     name,
     email,
     company,
-    password: bcrypt.hashSync(password, 10),
+    password: encryptPassword(password),
     website,
     address,
     zipCode,

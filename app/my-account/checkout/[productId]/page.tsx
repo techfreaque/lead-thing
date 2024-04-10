@@ -1,7 +1,11 @@
 'use client';
 
 import { Alert, Container, List, Paper, ThemeIcon, Title, rem } from '@mantine/core';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  ReactPayPalScriptOptions,
+} from '@paypal/react-paypal-js';
 import type { OnApproveData, OnApproveActions } from '@paypal/paypal-js/types/components/buttons';
 import { IconCircleCheck, IconInfoCircle } from '@tabler/icons-react';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
@@ -15,11 +19,13 @@ import {
 } from '@/app/constants';
 import { captureRequestBody } from '@/app/api/users/checkout/captureOrder/[orderId]/route';
 
-const initialOptions = {
+const initialOptions: ReactPayPalScriptOptions = {
   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
   'enable-funding': 'venmo,card',
   'disable-funding': 'paylater',
   'data-sdk-integration-source': 'integrationbuilder_sc',
+  currency: 'EUR',
+
   // debug: true,
 };
 // TODO https://developer.paypal.com/integration-builder/
@@ -59,8 +65,8 @@ export default function Checkout({ params }: { params: { productId: subscription
               </List.Item>
               <List.Item>
                 <Title order={5}>
-                  Total amount due now: {(productToOrder.price * 12).toFixed(2)}$ ({productToOrder.price}$ /
-                  month)
+                  Total amount due now: {(productToOrder.price * 12).toFixed(2)}€ (
+                  {productToOrder.price}€ / month)
                 </Title>
               </List.Item>
             </List>
@@ -83,9 +89,9 @@ function Message({ message }: { message?: string | undefined }) {
         title="We're sorry but there was an issue with the payment"
         icon={<IconInfoCircle />}
         maw={500}
-        mr={"auto"}
-        ml={"auto"}
-        mb={"md"}
+        mr={'auto'}
+        ml={'auto'}
+        mb={'md'}
       >
         {message}
       </Alert>

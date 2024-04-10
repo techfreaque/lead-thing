@@ -10,13 +10,17 @@ import {
 
 export const APP_NAME = 'leadThing.dev';
 export const APP_COMPANY_COUNTRY = 'United Kingdom';
-const APP_DOMAIN = 'https://leadthing.dev';
+const APP_PRODUCTION_DOMAIN = 'https://leadthing.dev';
 const APP_DEV_DOMAIN = 'http://localhost:3000';
+export const APP_DOMAIN =
+  process.env.NODE_ENV === 'development' ? APP_DEV_DOMAIN : APP_PRODUCTION_DOMAIN;
 export const APP_GITHUB_URL = 'https://github.com/techfreaque/lead-thing';
 
 export const registerPath = '/signup';
 export const loginPath = '/login';
-export const restPasswordPath = '/reset-password';
+export const resetPasswordPath = '/reset-password';
+export const resetSuccessParam = 'resetSuccess';
+export const resetSuccessPath = loginPath + '?' + resetSuccessParam + '=true';
 export const contactPath = '/#contact';
 export const tosPath = '/terms-of-service';
 export const apiDocsPath = '/api-documentation';
@@ -37,7 +41,7 @@ export const salesmanagoPath = '/salesmanago';
 export const klaviyoPath = '/klaviyo';
 
 // API Endpoints
-export const apiURL = `${process.env.NODE_ENV === 'development' ? APP_DEV_DOMAIN : APP_DOMAIN}/api`;
+export const apiURL = `${APP_DOMAIN}/api`;
 export const getresponseApiURL = apiURL + getresponsePath;
 export const sailthruApiURL = apiURL + sailthruPath;
 export const mappApiURL = apiURL + mappPath;
