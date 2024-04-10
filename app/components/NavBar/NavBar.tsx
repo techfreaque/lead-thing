@@ -33,26 +33,27 @@ export default function Navbar() {
   const { user } = useContext(UserContext) as UserContextType;
 
   const links = supportedSystems.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.label}>
-      <Group wrap="nowrap" align="flex-start">
-        <ThemeIcon size={25} variant="transparent" radius="md">
-          <item.icon style={{ width: rem(22), height: rem(22) }} />
-        </ThemeIcon>
-        <Link
-          href={item.link}
-          style={{
-            marginTop: 'auto',
-            marginBottom: 'auto',
-            textDecoration: 'none',
-            color: 'unset',
-          }}
-        >
+    <Link
+      key={item.label}
+      href={item.link}
+      style={{
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        textDecoration: 'none',
+        color: 'unset',
+      }}
+    >
+      <UnstyledButton className={classes.subLink}>
+        <Group wrap="nowrap" align="flex-start">
+          <ThemeIcon size={25} variant="transparent" radius="md">
+            <item.icon style={{ width: rem(22), height: rem(22) }} />
+          </ThemeIcon>
           <Text size="sm" fw={500}>
             {item.label}
           </Text>
-        </Link>
-      </Group>
-    </UnstyledButton>
+        </Group>
+      </UnstyledButton>
+    </Link>
   ));
 
   return (
