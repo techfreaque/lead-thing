@@ -3,7 +3,7 @@ import type { MappPostRequest } from '../types';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
 const apiContactsPath = '/api/rest/v19/contact/create';
-const apiSubscribePath = '/api/rest/v19/membership/subscribe';
+const apiSubscribePath = '/api/rest/v19/membership/subscribeByEmail';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
@@ -28,6 +28,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       Authorization: `Basic ${btoa(`${mappUsername}:${mappPassword}`)}`,
     };
     try {
+      console.log('1', {
+        firstname,
+        lastname,
+        email,
+        // ip,
+        // gender,
+        countryCode,
+        // salutation,
+        // tag,
+        listId,
+        subscriptionMode,
+        mappUsername,
+        mappPassword,
+        mappDomain,
+      });
+
       const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
         method: 'post',
         headers,
@@ -40,10 +56,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ],
         }),
       });
+      console.log('2', JSON.stringify(response));
       const data = await response.json();
+      console.log('3', JSON.stringify(data));
       if (response.ok) {
         const subscribePayload = {
-          userId: parseInt(String(data.contactId)),
+          email,
           groupId: parseInt(String(listId)),
           subscriptionMode:
             subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode,

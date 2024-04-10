@@ -29,20 +29,33 @@ export async function createOrder(
   return order as OrderType;
 }
 
-export async function markOrderAsPaid(
+export async function updateToPaypalOrderId(
   email: string,
   orderId: string,
-  validUntil: Date
+  payPalOrderId: string
 ): Promise<OrderType> {
   const order = await prisma.orders.update({
     where: {
       email,
       id: orderId,
-      validUntil,
+    },
+    data: {
+      id: payPalOrderId,
+    },
+  });
+  return order as OrderType;
+}
+
+export async function markOrderAsPaid(email: string, orderId: string): Promise<OrderType> {
+  const order = await prisma.orders.update({
+    where: {
+      email,
+      id: orderId,
     },
     data: {
       paymentStatus: 'paid',
       payedAt: new Date(),
+      validUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
     },
   });
   return order as OrderType;
@@ -80,7 +93,8 @@ export async function getCurrentSubscription(email: string): Promise<OrderType> 
       new Date(order.validUntil.toDateString()) > new Date(new Date().toDateString())
   );
   return (
-    (currentSubscription && (currentSubscription as OrderType)) || {
+    (currentSubscription && (currentSubscription as OrderType)) ||
+    ({
       id: 'free',
       email,
       createdAt: new Date(), // TODO free tier started date
@@ -89,6 +103,6 @@ export async function getCurrentSubscription(email: string): Promise<OrderType> 
       paymentStatus: 'paid',
       productId: 'free',
       amount: 0,
-    }
+    } as OrderType)
   );
 }

@@ -21,7 +21,13 @@ import Link from 'next/link';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { RedirectType, redirect } from 'next/navigation';
-import { APP_NAME, apiDocsPath, loginPath, registerPath, restPasswordPath } from '@/app/constants';
+import {
+  APP_NAME,
+  loginPath,
+  mySubscriptionUrl,
+  registerPath,
+  restPasswordPath,
+} from '@/app/constants';
 import classes from './Signup.module.css';
 import { LoginResponse } from '@/app/api/users/login/route';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
@@ -133,7 +139,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
   }
 
   useEffect(() => {
-    user && redirect(apiDocsPath, RedirectType.replace);
+    user && redirect(mySubscriptionUrl, RedirectType.replace);
   }, [user]);
 
   return (

@@ -1,22 +1,36 @@
 'use client';
 
-import { Container, Title } from '@mantine/core';
+import { Alert, Container, Title } from '@mantine/core';
 import { useContext } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { IconInfoCircle } from '@tabler/icons-react';
 import { APP_NAME } from '@/app/constants';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
 import MyOrders from '@/app/components/MyOrders/MyOrders';
 import { SubscriptionTiers } from '@/app/components/SubscriptionTiers/SubscriptionTiers';
 
-export default function MyKeyPage() {
+export default function MySubsPage() {
   const { user } = useContext(UserContext) as UserContextType;
-
+  const searchParams = useSearchParams();
+  const isPaymentSuccess = Boolean(searchParams.get('payment'));
   return (
     user && (
       <Container my="xl">
         <Title ta="center" order={1}>
           Your {APP_NAME} Subscription:
         </Title>
-        <SubscriptionTiers user={user} isSubscriptionPage={true} />
+        {isPaymentSuccess && (
+          <Alert
+            variant="light"
+            mt="xl"
+            color="green"
+            title="Your payment was successful"
+            icon={<IconInfoCircle />}
+          >
+            You're invoice can be downloaded from the list below.
+          </Alert>
+        )}
+        <SubscriptionTiers user={user} isSubscriptionPage />
         <MyOrders user={user} />
       </Container>
     )

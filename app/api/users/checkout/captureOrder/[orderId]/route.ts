@@ -1,7 +1,8 @@
-import { handleResponse } from '@/app/api/apiHelpers';
-import { generateAccessToken } from '@/app/lib/paypal';
 import getConfig from 'next/config';
 import { NextRequest, NextResponse } from 'next/server';
+import { handleResponse } from '@/app/api/apiHelpers';
+import { generateAccessToken } from '@/app/lib/paypal';
+import { markOrderAsPaid } from '@/app/lib/orders';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -23,8 +24,8 @@ export async function POST(
   }
 }
 
-const captureOrder = async (orderId: string) => {
-    console.log(orderId)
+const captureOrder = async (orderId: string, email: string) => {
+  console.log(orderId);
   const accessToken = await generateAccessToken();
   const url = `${serverRuntimeConfig.PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`;
 
@@ -40,6 +41,6 @@ const captureOrder = async (orderId: string) => {
       // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
     },
   });
-
+  await markOrderAsPaid(email, orderId);
   return handleResponse(response);
 };

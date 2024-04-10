@@ -92,7 +92,7 @@ const numberStyles = StyleSheet.create({
 
 function InvoiceNo({ invoice }: { invoice: Invoice }) {
   return (
-    <Fragment>
+    <>
       <View style={numberStyles.invoiceNoContainer}>
         <Text style={numberStyles.label}>Invoice No:</Text>
         <Text style={numberStyles.invoiceDate}>{invoice.invoice_no}</Text>
@@ -101,7 +101,7 @@ function InvoiceNo({ invoice }: { invoice: Invoice }) {
         <Text style={numberStyles.label}>Date: </Text>
         <Text>{invoice.trans_date}</Text>
       </View>
-    </Fragment>
+    </>
   );
 }
 
@@ -232,11 +232,11 @@ function InvoiceTableRow({ items }: { items: invoiceItems[] }) {
     <View style={tRowStyles.row} key={item.sno.toString()}>
       <Text style={tRowStyles.description}>{item.desc}</Text>
       <Text style={tRowStyles.qty}>{item.qty}</Text>
-      <Text style={tRowStyles.rate}>{item.rate}</Text>
-      <Text style={tRowStyles.amount}>{(item.qty * item.rate).toFixed(2)}</Text>
+      <Text style={tRowStyles.rate}>$ {item.rate}</Text>
+      <Text style={tRowStyles.amount}>$ {(item.qty * item.rate).toFixed(2)}</Text>
     </View>
   ));
-  return <Fragment>{rows}</Fragment>;
+  return <>{rows}</>;
 }
 
 const tBlanStyles = StyleSheet.create({
@@ -279,7 +279,7 @@ function InvoiceTableBlankSpace({ rowsCount }: { rowsCount: number }) {
       <Text style={tBlanStyles.amount}>-</Text>
     </View>
   ));
-  return <Fragment>{rows}</Fragment>;
+  return <>{rows}</>;
 }
 
 const tFooterStyles = StyleSheet.create({
@@ -313,7 +313,7 @@ function InvoiceTableFooter({ items }: { items: invoiceItems[] }) {
   return (
     <View style={tFooterStyles.row}>
       <Text style={tFooterStyles.description}>TOTAL</Text>
-      <Text style={tFooterStyles.total}>{Number.parseFloat(`${total}`).toFixed(2)}</Text>
+      <Text style={tFooterStyles.total}>$ {Number.parseFloat(`${total}`).toFixed(2)}</Text>
     </View>
   );
 }

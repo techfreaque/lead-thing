@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { handleResponse } from '@/app/api/apiHelpers';
 import { generateAccessToken } from '@/app/lib/paypal';
 import { subscriptionTierType } from '@/app/constants';
-import { createOrder } from '@/app/lib/orders';
+import { createOrder, updateToPaypalOrderId } from '@/app/lib/orders';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -26,13 +26,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 }
 
-const _createOrder = async (subscription: subscriptionTierType, email: string) => {
+const _createOrder = async (
+  subscription: subscriptionTierType,
+  email: string
+): Promise<{
+  jsonResponse: any;
+  httpStatusCode: number;
+}> => {
   // use the cart information passed from the front-end to calculate the purchase unit details
   console.log(
     'shopping cart information passed from the frontend createOrder() callback:',
     subscription
   );
-  createOrder(email, subscription.productId, subscription.price * 12);
+  const order = await createOrder(email, subscription.productId, subscription.price * 12);
   const accessToken = await generateAccessToken();
   const url = `${serverRuntimeConfig.PAYPAL_API_URL}/v2/checkout/orders`;
   const payload = {
@@ -60,6 +66,7 @@ const _createOrder = async (subscription: subscriptionTierType, email: string) =
     method: 'POST',
     body: JSON.stringify(payload),
   });
-
-  return handleResponse(response);
+  const _response = await handleResponse(response);
+  await updateToPaypalOrderId(email, order.id, _response.jsonResponse.id);
+  return _response;
 };

@@ -1,11 +1,18 @@
 'use client';
-import { subscriptionTierIdType, subscriptionTierType, subscriptionTiers } from '@/app/constants';
-import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
+
 import { Container, List, Paper, ThemeIcon, Title, rem } from '@mantine/core';
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { PayPalButtons } from '@paypal/react-paypal-js';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+
 import { IconCircleCheck } from '@tabler/icons-react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { RedirectType, redirect } from 'next/navigation';
+import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
+import {
+  mySubscriptionUrl,
+  subscriptionTierIdType,
+  subscriptionTierType,
+  subscriptionTiers,
+} from '@/app/constants';
 
 const initialOptions = {
   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
@@ -24,14 +31,14 @@ export default function Checkout({ params }: { params: { productId: subscription
       <Container my="xl">
         <Paper withBorder shadow="md" p={30} radius="md" mt={10}>
           <PayPalScriptProvider options={initialOptions}>
-            <Title order={1} ta="center" my={'xl'}>
+            <Title order={1} ta="center" my="xl">
               Complete your Purchase now
             </Title>
             <List
               spacing="xs"
               size="sm"
               center
-              my={'xl'}
+              my="xl"
               style={{ maxWidth: '400px', margin: 'auto' }}
               icon={
                 <ThemeIcon color="teal" size={24} radius="xl">
@@ -75,7 +82,10 @@ function Paypal({
   user: UserType;
 }) {
   const [message, setMessage] = useState<string>('');
-
+  const [success, setSuccess] = useState<boolean>(false);
+  useEffect(() => {
+    success && redirect(`${mySubscriptionUrl}?payment=success`, RedirectType.replace);
+  }, [success]);
   return (
     <div style={{ colorScheme: 'none', margin: 'auto', maxWidth: '500px' }}>
       <PayPalButtons
@@ -100,14 +110,13 @@ function Paypal({
             const orderData = await response.json();
             if (orderData.id) {
               return orderData.id;
-            } else {
-              const errorDetail = orderData?.details?.[0];
-              const errorMessage = errorDetail
-                ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                : JSON.stringify(orderData);
-
-              throw new Error(errorMessage);
             }
+            const errorDetail = orderData?.details?.[0];
+            const errorMessage = errorDetail
+              ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+              : JSON.stringify(orderData);
+
+            throw new Error(errorMessage);
           } catch (error) {
             console.error(error);
             setMessage(`Could not initiate PayPal Checkout...${error}`);
@@ -115,13 +124,15 @@ function Paypal({
         }}
         onApprove={async (data, actions) => {
           try {
-            const response = await fetch(`/api/users/checkout/captureOrders/${data.orderID}`, {
+            console.log('data01');
+            const response = await fetch(`/api/users/checkout/captureOrder/${data.orderID}`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
             });
             const orderData = await response.json();
+            console.log('data123', orderData);
             // Three cases to handle:
             //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
             //   (2) Other non-recoverable errors -> Show a failure message
@@ -131,17 +142,15 @@ function Paypal({
               // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
               // recoverable state, per https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
               return actions.restart();
-            } else if (errorDetail) {
+            }
+            if (errorDetail) {
               // (2) Other non-recoverable errors -> Show a failure message
               throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
             } else {
               // (3) Successful transaction -> Show confirmation or thank you message
               // Or go to another URL:  actions.redirect('thank_you.html');
               const transaction = orderData.purchase_units[0].payments.captures[0];
-              setMessage(
-                `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`
-              );
-              console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+              setSuccess(true);
             }
           } catch (error) {
             console.error(error);

@@ -25,8 +25,8 @@ const myApiKeyPath = '/my-api-key';
 export const myApiKeyUrl = myAccountPath + myApiKeyPath;
 const mySubscriptionPath = '/my-subscription';
 export const mySubscriptionUrl = myAccountPath + mySubscriptionPath;
-export const invoiceUrl = myAccountPath + mySubscriptionPath + '/invoice/';
-export const checkoutUrl = myAccountPath + '/checkout/';
+export const invoiceUrl = `${myAccountPath + mySubscriptionPath}/invoice/`;
+export const checkoutUrl = `${myAccountPath}/checkout/`;
 
 export const getresponsePath = '/getresponse';
 export const sailthruPath = '/sailthru';

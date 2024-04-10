@@ -1,9 +1,11 @@
 'use client';
+
 import { Card, Text, Group, Button, SimpleGrid, Container } from '@mantine/core';
 import { IconMailBolt } from '@tabler/icons-react';
+import Link from 'next/link';
+import { useContext, useEffect, useState } from 'react';
 import classes from './SubscriptionTiers.module.css';
 import { Title2, Title2SubText } from '../Texts/Texts';
-import Link from 'next/link';
 import {
   checkoutUrl,
   mySubscriptionUrl,
@@ -11,7 +13,6 @@ import {
   subscriptionTierIdType,
   subscriptionTiers,
 } from '@/app/constants';
-import { useContext, useEffect, useState } from 'react';
 import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
 import { OrderType, getCurrentSubscription } from '@/app/lib/orders';
 
@@ -34,13 +35,13 @@ export function SubscriptionTiers({
   isSubscriptionPage?: boolean;
 }) {
   const [currentSubscription, setCurrentSubscription] = useState<OrderType | undefined>();
-  console.log(currentSubscription);
   useEffect(() => {
     user &&
       getCurrentSubscription(user.email).then((subscription) =>
         setCurrentSubscription(subscription)
       );
   }, [user]);
+  const canUpgrade = currentSubscription?.productId === 'free';
   return (
     <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} mt="xl">
       {Object.keys(subscriptionTiers).map((productId) => (
@@ -49,6 +50,7 @@ export function SubscriptionTiers({
           active={currentSubscription?.productId === productId}
           productId={productId as subscriptionTierIdType}
           user={user}
+          canUpgrade={canUpgrade}
           isSubscriptionPage={isSubscriptionPage}
           title={subscriptionTiers[productId as subscriptionTierIdType].title}
           price={subscriptionTiers[productId as subscriptionTierIdType].price}
@@ -65,6 +67,7 @@ function SubscriptionTier({
   productId,
   // rebatePercent,
   active,
+  canUpgrade,
   user,
   apiCalls,
   isSubscriptionPage,
@@ -74,6 +77,7 @@ function SubscriptionTier({
   price: number;
   apiCalls: number;
   active: boolean;
+  canUpgrade: boolean;
   // rebatePercent: number;
   user: UserType | undefined;
   isSubscriptionPage?: boolean;
@@ -123,7 +127,7 @@ function SubscriptionTier({
                   : registerPath
               }
             >
-              <Button radius="xl" style={{ flex: 1 }}>
+              <Button disabled={!canUpgrade} radius="xl" style={{ flex: 1 }}>
                 {user ? 'Upgrade' : 'Sign up'}
               </Button>
             </Link>
