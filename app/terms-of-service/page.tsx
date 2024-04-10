@@ -1,9 +1,10 @@
 import { Container, Text, Title } from '@mantine/core';
+import { APP_COMPANY_COUNTRY, APP_NAME } from '../constants';
 
 export default function TosPage() {
   return (
     <Container>
-      <Title order={1}>Terms and Conditions for SaaS Service</Title>
+      <Title order={1}>Terms and Conditions for {APP_NAME}</Title>
       <Title order={2}>
         1. Acceptance of Terms
         <Text size="lg">
@@ -66,7 +67,7 @@ export default function TosPage() {
       </Title>
       <Title order={2}>
         10. Governing Law
-        <Text size="lg">These terms are governed by the laws of [Your Jurisdiction].</Text>
+        <Text size="lg">These terms are governed by the laws of {APP_COMPANY_COUNTRY}.</Text>
       </Title>
     </Container>
   );

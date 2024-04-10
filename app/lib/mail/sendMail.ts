@@ -29,7 +29,6 @@ export async function sendEmail({
 
   return {
     customerMessageTransporter: await transporter.sendMail({
-
       from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
       to,
       subject,

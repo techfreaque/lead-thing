@@ -9,6 +9,7 @@ import {
 } from './components/Icons/Icons';
 
 export const APP_NAME = 'leadThing.dev';
+export const APP_COMPANY_COUNTRY = 'United Kingdom';
 const APP_DOMAIN = 'https://leadthing.dev';
 const APP_DEV_DOMAIN = 'http://localhost:3000';
 export const APP_GITHUB_URL = 'https://github.com/techfreaque/lead-thing';
