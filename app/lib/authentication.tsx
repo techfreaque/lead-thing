@@ -1,4 +1,6 @@
+import { RedirectType, redirect } from 'next/navigation';
 import React, { createContext, useEffect, useState } from 'react';
+import { loginPath } from '../constants';
 
 export interface UserType {
   token?: string | null;
@@ -24,6 +26,7 @@ export const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: any }) {
   const [_user, setUser] = useState<UserType | undefined>(undefined);
+  const [justLoggedOut, setJustLoggedout] = useState<boolean>(false);
   function login(user: UserType) {
     saveUserToCookie(user);
     setUser(user);
@@ -37,7 +40,12 @@ export function UserProvider({ children }: { children: any }) {
   function logout() {
     eraseUserCookie();
     setUser(undefined);
+    setJustLoggedout(true);
   }
+  useEffect(() => {
+    justLoggedOut && redirect(loginPath, RedirectType.push);
+    setJustLoggedout(false);
+  }, [justLoggedOut]);
   return (
     <UserContext.Provider value={{ user: _user, login, logout }}>{children}</UserContext.Provider>
   );
