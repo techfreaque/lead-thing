@@ -43,18 +43,3 @@ export async function sendEmail({
     }),
   };
 }
-
-// function getMailTemplate(
-//   name: string,
-//   title: string,
-//   message: string,
-//   additionalContent: string = ''
-// ): string {
-//   return mjml2html(
-//     // edit @ https://mjml.io/try-it-live
-//     `
-
-//   `,
-//     { minify: true, skeleton: undefined, mjmlConfigPath: undefined, useMjmlConfigOptions: false }
-//   ).html;
-// }

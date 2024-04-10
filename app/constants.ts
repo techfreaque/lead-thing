@@ -325,7 +325,7 @@ export const fieldsBySystem = {
   ],
 };
 
-export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise';
+export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise' | 'testing';
 export interface subscriptionTierType {
   productId: subscriptionTierIdType;
   title: string;
@@ -333,6 +333,7 @@ export interface subscriptionTierType {
   apiCalls: number;
   canBeSold: boolean;
   billingPeriod: 'yearly';
+  isTesting?: boolean;
 }
 
 export interface subscriptionTiersType {
@@ -375,5 +376,14 @@ export const subscriptionTiers: subscriptionTiersType = {
     apiCalls: 20000,
     canBeSold: true,
     billingPeriod: 'yearly',
+  },
+  testing: {
+    productId: 'testing',
+    title: 'Testing',
+    price: 0.1,
+    apiCalls: 120,
+    canBeSold: true,
+    billingPeriod: 'yearly',
+    isTesting: true,
   },
 };

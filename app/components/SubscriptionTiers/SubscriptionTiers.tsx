@@ -3,7 +3,7 @@
 import { Card, Text, Group, Button, SimpleGrid, Container } from '@mantine/core';
 import { IconMailBolt } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import classes from './SubscriptionTiers.module.css';
 import { Title2, Title2SubText } from '../Texts/Texts';
 import {
@@ -11,10 +11,12 @@ import {
   mySubscriptionUrl,
   registerPath,
   subscriptionTierIdType,
+  subscriptionTierType,
   subscriptionTiers,
 } from '@/app/constants';
 import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
 import { OrderType, getCurrentSubscription } from '@/app/lib/orders';
+import { useSearchParams } from 'next/navigation';
 
 export default function SubscriptionTiersSection() {
   const { user } = useContext(UserContext) as UserContextType;
@@ -44,20 +46,31 @@ export function SubscriptionTiers({
   const canUpgrade = currentSubscription?.productId === 'free';
   return (
     <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} mt="xl">
-      {Object.keys(subscriptionTiers).map((productId) => (
-        <SubscriptionTier
-          key={productId}
-          active={currentSubscription?.productId === productId}
-          productId={productId as subscriptionTierIdType}
+      {Object.keys(subscriptionTiers).map(
+        (productId) =>
+          !subscriptionTiers[productId as subscriptionTierIdType].isTesting && (
+            <SubscriptionTier
+              key={productId}
+              active={currentSubscription?.productId === productId}
+              productId={productId as subscriptionTierIdType}
+              user={user}
+              canUpgrade={canUpgrade}
+              isSubscriptionPage={isSubscriptionPage}
+              title={subscriptionTiers[productId as subscriptionTierIdType].title}
+              price={subscriptionTiers[productId as subscriptionTierIdType].price}
+              // rebatePercent={subscriptionTiers[productId as subscriptionTierIdType].rebatePercent}
+              apiCalls={subscriptionTiers[productId as subscriptionTierIdType].apiCalls}
+            />
+          )
+      )}
+      <Suspense>
+        <TestingProduct
+          currentSubscription={currentSubscription}
           user={user}
           canUpgrade={canUpgrade}
           isSubscriptionPage={isSubscriptionPage}
-          title={subscriptionTiers[productId as subscriptionTierIdType].title}
-          price={subscriptionTiers[productId as subscriptionTierIdType].price}
-          // rebatePercent={subscriptionTiers[productId as subscriptionTierIdType].rebatePercent}
-          apiCalls={subscriptionTiers[productId as subscriptionTierIdType].apiCalls}
         />
-      ))}
+      </Suspense>
     </SimpleGrid>
   );
 }
@@ -135,5 +148,37 @@ function SubscriptionTier({
         </Group>
       </Card.Section>
     </Card>
+  );
+}
+
+function TestingProduct({
+  currentSubscription,
+  user,
+  canUpgrade,
+  isSubscriptionPage,
+}: {
+  canUpgrade: boolean;
+  user: UserType | undefined;
+  isSubscriptionPage?: boolean;
+  currentSubscription: OrderType | undefined;
+}) {
+  const searchParams = useSearchParams();
+  const isTesting = Boolean(searchParams.get('testing'));
+  return (
+    isSubscriptionPage &&
+    isTesting && (
+      <SubscriptionTier
+        key={subscriptionTiers.testing.productId}
+        active={currentSubscription?.productId === subscriptionTiers.testing.productId}
+        productId={subscriptionTiers.testing.productId}
+        user={user}
+        canUpgrade={canUpgrade}
+        isSubscriptionPage={isSubscriptionPage}
+        title={subscriptionTiers.testing.title}
+        price={subscriptionTiers.testing.price}
+        // rebatePercent={subscriptionTiers[productId as subscriptionTierIdType].rebatePercent}
+        apiCalls={subscriptionTiers.testing.apiCalls}
+      />
+    )
   );
 }

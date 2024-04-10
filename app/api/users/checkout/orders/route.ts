@@ -12,9 +12,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     await request.json();
   try {
     // use the cart information passed from the front-end to calculate the order amount detals
-    console.log('fsdfsd', subscription);
     const { jsonResponse, httpStatusCode } = await _createOrder(subscription, email);
-    console.log('fsdfsd2', subscription, jsonResponse, httpStatusCode);
     return new NextResponse(JSON.stringify(jsonResponse), {
       status: httpStatusCode,
     });
@@ -34,11 +32,11 @@ const _createOrder = async (
   httpStatusCode: number;
 }> => {
   // use the cart information passed from the front-end to calculate the purchase unit details
-  console.log(
-    'shopping cart information passed from the frontend createOrder() callback:',
-    subscription
+  const order = await createOrder(
+    email,
+    subscription.productId,
+    Number((subscription.price * 12).toFixed(2))
   );
-  const order = await createOrder(email, subscription.productId, subscription.price * 12);
   const accessToken = await generateAccessToken();
   const url = `${serverRuntimeConfig.PAYPAL_API_URL}/v2/checkout/orders`;
   const payload = {
@@ -47,7 +45,7 @@ const _createOrder = async (
       {
         amount: {
           currency_code: 'USD',
-          value: `${subscription.price * 12}`,
+          value: `${(subscription.price * 12).toFixed(2)}`,
         },
       },
     ],

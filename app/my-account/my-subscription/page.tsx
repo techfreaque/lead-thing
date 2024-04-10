@@ -21,7 +21,6 @@ export default function MySubsPage() {
         <Suspense>
           <SuccessAlert />
         </Suspense>
-
         <SubscriptionTiers user={user} isSubscriptionPage />
         <MyOrders user={user} />
       </Container>

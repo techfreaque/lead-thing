@@ -59,7 +59,7 @@ export default function Checkout({ params }: { params: { productId: subscription
               </List.Item>
               <List.Item>
                 <Title order={5}>
-                  Total amount due now: {productToOrder.price * 12}$ ({productToOrder.price}$ /
+                  Total amount due now: {(productToOrder.price * 12).toFixed(2)}$ ({productToOrder.price}$ /
                   month)
                 </Title>
               </List.Item>
@@ -82,6 +82,10 @@ function Message({ message }: { message?: string | undefined }) {
         color="red"
         title="We're sorry but there was an issue with the payment"
         icon={<IconInfoCircle />}
+        maw={500}
+        mr={"auto"}
+        ml={"auto"}
+        mb={"md"}
       >
         {message}
       </Alert>
