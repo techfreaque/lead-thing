@@ -1,10 +1,10 @@
 'use client';
 
-import { Container, List, Paper, ThemeIcon, Title, rem } from '@mantine/core';
+import { Alert, Container, List, Paper, ThemeIcon, Title, rem } from '@mantine/core';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-
-import { IconCircleCheck } from '@tabler/icons-react';
-import { useContext, useEffect, useState } from 'react';
+import type { OnApproveData, OnApproveActions } from '@paypal/paypal-js/types/components/buttons';
+import { IconCircleCheck, IconInfoCircle } from '@tabler/icons-react';
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { RedirectType, redirect } from 'next/navigation';
 import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
 import {
@@ -13,6 +13,7 @@ import {
   subscriptionTierType,
   subscriptionTiers,
 } from '@/app/constants';
+import { captureRequestBody } from '@/app/api/users/checkout/captureOrder/[orderId]/route';
 
 const initialOptions = {
   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
@@ -25,6 +26,7 @@ const initialOptions = {
 export default function Checkout({ params }: { params: { productId: subscriptionTierIdType } }) {
   const productToOrder: subscriptionTierType = subscriptionTiers[params.productId];
   const { user } = useContext(UserContext) as UserContextType;
+  const [message, setMessage] = useState<string | undefined>();
 
   return (
     user && (
@@ -62,7 +64,8 @@ export default function Checkout({ params }: { params: { productId: subscription
                 </Title>
               </List.Item>
             </List>
-            <Paypal productToOrder={productToOrder} user={user} />
+            <Message message={message} />
+            <Paypal productToOrder={productToOrder} user={user} setMessage={setMessage} />
           </PayPalScriptProvider>
         </Paper>
       </Container>
@@ -70,95 +73,107 @@ export default function Checkout({ params }: { params: { productId: subscription
   );
 }
 
-function Message({ content }: { content: string }) {
-  return <p>{content}</p>;
+function Message({ message }: { message?: string | undefined }) {
+  return (
+    message && (
+      <Alert
+        variant="light"
+        mt="xl"
+        color="red"
+        title="We're sorry but there was an issue with the payment"
+        icon={<IconInfoCircle />}
+      >
+        {message}
+      </Alert>
+    )
+  );
 }
 
 function Paypal({
   productToOrder,
   user,
+  setMessage,
 }: {
   productToOrder: subscriptionTierType;
   user: UserType;
+  setMessage: Dispatch<SetStateAction<string | undefined>>;
 }) {
-  const [message, setMessage] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
   useEffect(() => {
     success && redirect(`${mySubscriptionUrl}?payment=success`, RedirectType.replace);
   }, [success]);
+  async function onCreateOrder(): Promise<string> {
+    try {
+      const response = await fetch('/api/users/checkout/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // use the "body" param to optionally pass additional order information
+        // like product ids and quantities
+        body: JSON.stringify({ subscription: productToOrder, email: user.email }),
+      });
+      const orderData = await response.json();
+      if (orderData.id) {
+        return orderData.id;
+      }
+      const errorDetail = orderData?.details?.[0];
+      const errorMessage = errorDetail
+        ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+        : JSON.stringify(orderData);
+
+      throw new Error(errorMessage);
+    } catch (error) {
+      console.error(error);
+      setMessage(`Could not initiate PayPal Checkout...${error}`);
+      throw new Error(`${error}`);
+    }
+  }
+  async function onApprove(data: OnApproveData, actions: OnApproveActions): Promise<void> {
+    try {
+      const response = await fetch(`/api/users/checkout/captureOrder/${data.orderID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: user.email } as captureRequestBody),
+      });
+      const orderData = await response.json();
+      // Three cases to handle:
+      //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+      //   (2) Other non-recoverable errors -> Show a failure message
+      //   (3) Successful transaction -> Show confirmation or thank you message
+      const errorDetail = orderData?.details?.[0];
+      if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
+        // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+        // recoverable state, per https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
+        return actions.restart();
+      }
+      if (errorDetail) {
+        // (2) Other non-recoverable errors -> Show a failure message
+        throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
+      } else {
+        // (3) Successful transaction -> Show confirmation or thank you message
+        // Or go to another URL:  actions.redirect('thank_you.html');
+        // const transaction = orderData.purchase_units[0].payments.captures[0];
+        setSuccess(true);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage(`Sorry, your transaction could not be processed...${error}`);
+    }
+    return undefined;
+  }
   return (
     <div style={{ colorScheme: 'none', margin: 'auto', maxWidth: '500px' }}>
       <PayPalButtons
         style={{
           shape: 'rect',
-          // layout: 'vertical',
-          // color: 'black',
           disableMaxWidth: false,
         }}
-        createOrder={async () => {
-          try {
-            console.log('dsdjkdsjfsdjk');
-            const response = await fetch('/api/users/checkout/orders', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              // use the "body" param to optionally pass additional order information
-              // like product ids and quantities
-              body: JSON.stringify({ subscription: productToOrder, email: user.email }),
-            });
-            const orderData = await response.json();
-            if (orderData.id) {
-              return orderData.id;
-            }
-            const errorDetail = orderData?.details?.[0];
-            const errorMessage = errorDetail
-              ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-              : JSON.stringify(orderData);
-
-            throw new Error(errorMessage);
-          } catch (error) {
-            console.error(error);
-            setMessage(`Could not initiate PayPal Checkout...${error}`);
-          }
-        }}
-        onApprove={async (data, actions) => {
-          try {
-            console.log('data01');
-            const response = await fetch(`/api/users/checkout/captureOrder/${data.orderID}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
-            const orderData = await response.json();
-            console.log('data123', orderData);
-            // Three cases to handle:
-            //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-            //   (2) Other non-recoverable errors -> Show a failure message
-            //   (3) Successful transaction -> Show confirmation or thank you message
-            const errorDetail = orderData?.details?.[0];
-            if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
-              // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-              // recoverable state, per https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
-              return actions.restart();
-            }
-            if (errorDetail) {
-              // (2) Other non-recoverable errors -> Show a failure message
-              throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
-            } else {
-              // (3) Successful transaction -> Show confirmation or thank you message
-              // Or go to another URL:  actions.redirect('thank_you.html');
-              const transaction = orderData.purchase_units[0].payments.captures[0];
-              setSuccess(true);
-            }
-          } catch (error) {
-            console.error(error);
-            setMessage(`Sorry, your transaction could not be processed...${error}`);
-          }
-        }}
+        createOrder={onCreateOrder}
+        onApprove={onApprove}
       />
-      <Message content={message} />
     </div>
   );
 }

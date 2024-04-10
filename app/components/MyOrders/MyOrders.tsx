@@ -1,22 +1,23 @@
 'use client';
-import { invoiceUrl, subscriptionTiers } from '@/app/constants';
-import { UserType } from '@/app/lib/authentication';
-import { OrderType, getOrders } from '@/app/lib/orders';
+
 import { Button, Table, Title } from '@mantine/core';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { invoiceUrl, subscriptionTiers } from '@/app/constants';
+import { UserType } from '@/app/lib/authentication';
+import { OrderType, getOrders } from '@/app/lib/orders';
 
 export default function MyOrders({ user }: { user: UserType }) {
   const [orders, setOrders] = useState<OrderType[]>();
   useEffect(() => {
     getOrders(user.email).then((_orders) => setOrders(_orders));
   }, [user]);
-  return Boolean(orders?.length) ? (
+  return orders?.length ? (
     <>
-      <Title ta="center" order={2} mt={'xl'}>
+      <Title ta="center" order={2} mt="xl">
         Your orders
       </Title>
-      <Table my={'xl'}>
+      <Table my="xl">
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Order Creation Date</Table.Th>
@@ -49,7 +50,7 @@ export default function MyOrders({ user }: { user: UserType }) {
     </>
   ) : (
     <Title ta="center" order={2}>
-      {"You don't have any orders yet :("}
+      You don't have any orders yet :(
     </Title>
   );
 }

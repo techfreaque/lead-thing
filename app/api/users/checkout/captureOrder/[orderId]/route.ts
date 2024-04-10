@@ -6,13 +6,18 @@ import { markOrderAsPaid } from '@/app/lib/orders';
 
 const { serverRuntimeConfig } = getConfig();
 
+export interface captureRequestBody {
+  email: string;
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { orderId: string } }
 ): Promise<NextResponse> {
   try {
     // use the cart information passed from the front-end to calculate the order amount detals
-    const { jsonResponse, httpStatusCode } = await captureOrder(params.orderId);
+    const { email }: captureRequestBody = await request.json();
+    const { jsonResponse, httpStatusCode } = await captureOrder(params.orderId, email);
     return new NextResponse(JSON.stringify(jsonResponse), {
       status: httpStatusCode,
     });
@@ -25,7 +30,6 @@ export async function POST(
 }
 
 const captureOrder = async (orderId: string, email: string) => {
-  console.log(orderId);
   const accessToken = await generateAccessToken();
   const url = `${serverRuntimeConfig.PAYPAL_API_URL}/v2/checkout/orders/${orderId}/capture`;
 
