@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import MD5 from 'crypto-js/md5';
-import type { SailthruPostRequest } from '../requestTypes';
+import sha1 from 'crypto-js/sha1';
+import type { FreshmailPostRequest } from '../requestTypes';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
-const apiContactsPath = 'https://api.sailthru.com/user';
+const apiUrl = '';
+const apiContactsPath = '/rest/subscriber/add';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
@@ -14,30 +15,30 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // gender,
     // countryCode,
     // salutation,
-    listName,
-    // subscriptionMode,
+    subscriptionMode,
     // tag,
-    sailthruApiKey,
-    sailthruSecret,
-  }: SailthruPostRequest = await request.json();
+    listHash,
+    freshmailApiKey,
+    freshmailApiSecret,
+  }: FreshmailPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
-    const headers = {};
     try {
       const requestPayload = JSON.stringify({
-        id: email,
-        lists: {
-          [listName]: 1,
-        },
-        vars: {
-          FirstName: firstname,
-          LastName: lastname,
-        },
+        email,
+        list: listHash,
+        state: subscriptionMode === 'FORCE_OPT_IN' ? 1 : 2,
       });
-      const requestMd5 = MD5(`${sailthruSecret + sailthruApiKey}json${requestPayload}`).toString();
+      const requestSha = sha1(
+        `${freshmailApiKey}${apiContactsPath}${requestPayload}${freshmailApiSecret}`
+      ).toString();
       const response: Response = await fetch(apiContactsPath, {
         method: 'post',
-        headers,
-        body: `api_key=${sailthruApiKey}&sig=${requestMd5}&format=json&json=${requestPayload}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Rest-ApiKey': freshmailApiKey,
+          'X-Rest-ApiSign': requestSha,
+        },
+        body: requestPayload,
       });
       const data = await response.json();
       if (response.ok) {
@@ -51,7 +52,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           firstname,
           lastname,
           email,
-          listName,
+          subscriptionMode,
+          listHash,
         })}`,
         500
       );
@@ -61,7 +63,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           firstname,
           lastname,
           email,
-          listName,
+          subscriptionMode,
+          listHash,
         })}`,
         500
       );

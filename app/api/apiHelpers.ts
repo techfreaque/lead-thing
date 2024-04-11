@@ -31,24 +31,21 @@ export default async function executeIfAuthenticated(
           });
         }
         return response;
-      } else {
-        return ApiResponse(
-          `Your ${APP_NAME} account doesnt have any api calls left for this period. Please upgade your account.`,
-          403
-        );
       }
-    } else {
       return ApiResponse(
-        `The ${APP_NAME} Api key is not valid. Please check the ${APP_NAME} documentation.`,
+        `Your ${APP_NAME} account doesnt have any api calls left for this period. Please upgade your account.`,
         403
       );
     }
-  } else {
     return ApiResponse(
-      `Please provide an ${APP_NAME} apiKey in the header. Please check the ${APP_NAME} documentation.`,
+      `The ${APP_NAME} Api key is not valid. Please check the ${APP_NAME} documentation.`,
       403
     );
   }
+  return ApiResponse(
+    `Please provide an ${APP_NAME} apiKey in the header. Please check the ${APP_NAME} documentation.`,
+    403
+  );
 }
 
 function isStillQuotaLeft({
@@ -59,8 +56,8 @@ function isStillQuotaLeft({
   apiCallsInThisPeriod: number;
 }): boolean {
   const _apiCallsPerMonth = apiCallsPerMonth || freeTierApiCalls;
-  const isStillQuotaLeft = _apiCallsPerMonth >= apiCallsInThisPeriod;
-  if (isStillQuotaLeft) {
+  const stillQuotaLeft = _apiCallsPerMonth >= apiCallsInThisPeriod;
+  if (stillQuotaLeft) {
     return true;
   }
   return false;
@@ -102,6 +99,7 @@ export function formatApiCallDetails({
   subscriptionMode,
   listId,
   listName,
+  listHash,
 }: {
   firstname?: string;
   lastname?: string;
@@ -115,8 +113,9 @@ export function formatApiCallDetails({
   subscriptionMode?: string;
   listName?: string;
   listId?: number | string;
+  listHash?: string;
 }): string {
-  return `- Contact:${firstname ? ' firstname: ' + firstname : ''}${lastname ? ' lastname: ' + lastname : ''}${email ? ' email: ' + email : ''}${ip ? ' ip: ' + ip : ''}${gender ? ' gender: ' + gender : ''}${countryCode ? ' countryCode: ' + countryCode : ''}${salutation ? ' salutation: ' + salutation : ''}${tag ? ' tag: ' + tag : ''}${tagId ? ' tagId: ' + tagId : ''}${subscriptionMode ? ' subscriptionMode: ' + subscriptionMode : ''}${listName ? ' listName: ' + listName : ''}${listId ? ' listId: ' + listId : ''}`;
+  return `- Contact:${firstname ? ` firstname: ${firstname}` : ''}${lastname ? ` lastname: ${lastname}` : ''}${email ? ` email: ${email}` : ''}${ip ? ` ip: ${ip}` : ''}${gender ? ` gender: ${gender}` : ''}${countryCode ? ` countryCode: ${countryCode}` : ''}${salutation ? ` salutation: ${salutation}` : ''}${tag ? ` tag: ${tag}` : ''}${tagId ? ` tagId: ${tagId}` : ''}${subscriptionMode ? ` subscriptionMode: ${subscriptionMode}` : ''}${listName ? ` listName: ${listName}` : ''}${listHash ? ` listHash: ${listHash}` : ''}${listId ? ` listId: ${listId}` : ''}`;
 }
 
 export async function handleResponse(response: Response): Promise<{

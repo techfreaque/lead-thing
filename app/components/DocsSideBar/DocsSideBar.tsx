@@ -1,19 +1,14 @@
 'use client';
 
 import { CSSProperties, ForwardRefExoticComponent, RefAttributes, useContext } from 'react';
-import {
-  IconBellRinging,
-  IconKey,
-  IconReceipt2,
-  IconLogout,
-  IconProps,
-  Icon,
-} from '@tabler/icons-react';
+import { IconKey, IconReceipt2, IconLogout, IconProps, Icon } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Divider, Title } from '@mantine/core';
 import classes from './DocsSideBar.module.css';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
-import { myApiKeyUrl, mySubscriptionUrl, supportedSystems } from '@/app/constants';
+import { myApiKeyUrl, mySubscriptionUrl } from '@/app/constants';
+import { NewsletterSystem, newsletterSystems } from '@/app/api/newsletterSystemConstants';
+import { getNewsletterSystemDocsUrl } from '@/app/lib/helpers';
 
 export default function DocsSideBar({
   children,
@@ -25,13 +20,13 @@ export default function DocsSideBar({
   const { user, logout } = useContext(UserContext) as UserContextType;
   const items: {
     link: string;
-    label: string;
+    name: string;
     icon: ForwardRefExoticComponent<Omit<IconProps, 'ref'> & RefAttributes<Icon>>;
     onClick?: () => void;
-  }[] = [{ link: myApiKeyUrl, label: 'My API Key', icon: IconKey }];
+  }[] = [{ link: myApiKeyUrl, name: 'My API Key', icon: IconKey }];
   if (user) {
-    items.unshift({ link: mySubscriptionUrl, label: 'My Subscription', icon: IconReceipt2 });
-    items.push({ link: '#', onClick: logout, label: 'Logout', icon: IconLogout });
+    items.unshift({ link: mySubscriptionUrl, name: 'My Subscription', icon: IconReceipt2 });
+    items.push({ link: '#', onClick: logout, name: 'Logout', icon: IconLogout });
   }
   return (
     <div style={{ display: 'flex' }}>
@@ -45,7 +40,7 @@ export default function DocsSideBar({
           <Title order={3} mt={10} mb={5}>
             API Docs
           </Title>
-          <SideBarItems active={currentPageName} items={supportedSystems} />
+          <SideBarItems active={currentPageName} items={Object.values(newsletterSystems)} />
         </div>
       </nav>
       <main className={classes.main}>{children}</main>
@@ -53,34 +48,30 @@ export default function DocsSideBar({
   );
 }
 
-function SideBarItems({
-  items,
-  active,
-}: {
-  items: {
-    icon: ({
-      style,
-      className,
-    }: {
-      style?: CSSProperties | undefined;
-      className?: string | undefined;
-    }) => JSX.Element | any;
-    label: string;
-    link: string;
-    onClick?: () => void;
-  }[];
-  active: string;
-}) {
+interface sideBarItem {
+  name: string;
+  link?: string;
+  onClick?: () => void;
+  icon: ({
+    style,
+    className,
+  }: {
+    style?: CSSProperties | undefined;
+    className?: string | undefined;
+  }) => JSX.Element | any;
+}
+
+function SideBarItems({ items, active }: { items: sideBarItem[]; active: string }) {
   return items.map((item) => (
     <Link
       className={classes.link}
-      data-active={item.label.toLowerCase().replace(/ /g, '-') === active || undefined}
-      href={item.link}
+      data-active={item.name.toLowerCase().replace(/ /g, '-') === active || undefined}
+      href={item.link ? item.link : getNewsletterSystemDocsUrl(item as NewsletterSystem)}
       onClick={item.onClick}
-      key={item.label}
+      key={item.name}
     >
       <item.icon className={classes.linkIcon} />
-      <span>{item.label}</span>
+      <span>{item.name}</span>
     </Link>
   ));
 }

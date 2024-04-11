@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import type { MappPostRequest } from '../types';
+import type { MappPostRequest } from '../requestTypes';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
 const apiContactsPath = '/api/rest/v19/contact/create';

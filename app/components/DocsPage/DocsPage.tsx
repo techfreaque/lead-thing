@@ -15,19 +15,14 @@ import {
 import { useForm } from '@mantine/form';
 import { IconInfoCircle } from '@tabler/icons-react';
 import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
-import {
-  APP_NAME,
-  RequestOptionsData,
-  apiURL,
-  fieldsBySystem,
-  systemNamesByKey,
-} from '@/app/constants';
-import {
-  type AllPossiblePostRequestParameters,
-  type availableRequestProperties,
-  type avialableSystemsType,
-} from '@/app/api/types';
+import { APP_NAME, apiURL } from '@/app/constants';
+import { type AllPossiblePostRequestParameters } from '@/app/api/requestTypes';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
+import {
+  RequestOptionsData,
+  avialableSystemsType,
+  newsletterSystems,
+} from '@/app/api/newsletterSystemConstants';
 
 export default function DocsPage({ systemName }: { systemName: avialableSystemsType }) {
   const { user } = useContext(UserContext) as UserContextType;
@@ -48,7 +43,7 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
     <div>
       <Container>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          <Title order={1}>{systemNamesByKey[systemName]} API Docs</Title>
+          <Title order={1}>{newsletterSystems[systemName].name} API Docs</Title>
           <TextInput
             label={`Your ${APP_NAME} API key`}
             required
@@ -57,31 +52,28 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
             mb="md"
           />
           <SimpleGrid cols={{ base: 1, sm: 2 }} mb="xl">
-            {fieldsBySystem[systemName].map((propertyName) =>
-              RequestOptionsData[propertyName as availableRequestProperties].valueType ===
-              'string' ? (
+            {newsletterSystems[systemName].apiFields.map((propertyName) =>
+              RequestOptionsData[propertyName].valueType === 'string' ? (
                 <TextInput
                   key={propertyName}
-                  label={RequestOptionsData[propertyName as availableRequestProperties].label}
-                  required={RequestOptionsData[propertyName as availableRequestProperties].required}
-                  value={form.values[propertyName as availableRequestProperties]}
+                  label={RequestOptionsData[propertyName].label}
+                  required={RequestOptionsData[propertyName].required}
+                  value={form.values[propertyName]}
                   onChange={(event) => form.setFieldValue(propertyName, event.currentTarget.value)}
                 />
               ) : (
                 <Radio.Group
                   key={propertyName}
-                  label={RequestOptionsData[propertyName as availableRequestProperties].label}
-                  value={form.values[propertyName as availableRequestProperties]}
-                  description={
-                    RequestOptionsData[propertyName as availableRequestProperties].description
-                  }
+                  label={RequestOptionsData[propertyName].label}
+                  value={form.values[propertyName]}
+                  description={RequestOptionsData[propertyName].description}
                   onChange={(value) => form.setFieldValue(propertyName, value)}
                   withAsterisk
                 >
                   <Group mt="xs">
-                    {RequestOptionsData[propertyName as availableRequestProperties].options?.map(
-                      (option) => <Radio key={option} value={option} label={option} />
-                    )}
+                    {RequestOptionsData[propertyName].options?.map((option) => (
+                      <Radio key={option} value={option} label={option} />
+                    ))}
                   </Group>
                 </Radio.Group>
               )
@@ -120,7 +112,7 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
               })
             }
           >
-            Send Request to {systemNamesByKey[systemName]} API
+            Send Request to {newsletterSystems[systemName].name} API
           </Button>
           <DocsCodeHighlighter
             curlCode={getCurlCodeExample({
@@ -142,8 +134,8 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
 
 function getInitialValues(systemName: avialableSystemsType) {
   const initialValues: { [key: string]: string } = {};
-  for (const property of fieldsBySystem[systemName]) {
-    initialValues[property] = RequestOptionsData[property as availableRequestProperties].value;
+  for (const property of newsletterSystems[systemName].apiFields) {
+    initialValues[property] = RequestOptionsData[property].value;
   }
   return initialValues;
 }

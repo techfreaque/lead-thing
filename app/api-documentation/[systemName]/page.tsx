@@ -1,30 +1,10 @@
-import { avialableSystemsType } from '@/app/api/types';
+import { avialableSystemsType, newsletterSystems } from '@/app/api/newsletterSystemConstants';
 import DocsPage from '@/app/components/DocsPage/DocsPage';
 import NotFound from '@/app/components/NotFound/NotFound';
-import {
-  getresponsePath,
-  klaviyoPath,
-  mappPath,
-  sailthruPath,
-  salesforcePath,
-  salesmanagoPath,
-} from '@/app/constants';
 
-export default function Page({ params }: { params: { systemName: avialableSystemsType } }) {
-  switch (`/${params.systemName}`) {
-    case getresponsePath:
-      return <DocsPage systemName={params.systemName} />;
-    case sailthruPath:
-      return <DocsPage systemName={params.systemName} />;
-    case salesforcePath:
-      return <DocsPage systemName={params.systemName} />;
-    case salesmanagoPath:
-      return <DocsPage systemName={params.systemName} />;
-    case mappPath:
-      return <DocsPage systemName={params.systemName} />;
-    // case klaviyoPath:
-    //   return <DocsPage systemName={params.systemName} />;
-    default:
-      return <NotFound />;
+export default function Page({ params }: { params: { systemName: string } }) {
+  if (params.systemName in newsletterSystems) {
+    return <DocsPage systemName={params.systemName as avialableSystemsType} />;
   }
+  return <NotFound />;
 }

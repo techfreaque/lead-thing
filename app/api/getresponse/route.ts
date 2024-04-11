@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import type { GetresponsePostRequest } from '../types';
+import type { GetresponsePostRequest } from '../requestTypes';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
 const apiContactsPath = 'https://api.getresponse.com/v3/contacts';

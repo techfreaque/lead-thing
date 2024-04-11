@@ -52,6 +52,22 @@ export interface SailthruPostRequest extends PostRequest {
   sailthruSecret: string;
 }
 
+export interface FreshmailPostRequest extends PostRequest {
+  // ip: string;
+  // gender: 'MALE' | 'FEMALE';
+  // countryCode: string;
+  // salutation: string;
+  // tag: string;
+  listHash: string;
+  subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
+  // DOUBLE_OPT_IN
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
+  freshmailApiKey: string;
+  freshmailApiSecret: string;
+}
+
 export interface SalesforcePostRequest extends PostRequest {
   // ip: string;
   // gender: 'MALE' | 'FEMALE';
@@ -97,37 +113,3 @@ export interface AllPossiblePostRequestParameters
     SalesmanagoPostRequest {
   gender: 'MALE' | 'FEMALE';
 }
-
-export type avialableSystemsType =
-  | 'getresponse'
-  | 'mapp'
-  | 'sailthru'
-  | 'salesforce'
-  | 'salesmanago';
-
-export type availableRequestProperties =
-  | 'firstname'
-  | 'lastname'
-  | 'email'
-  | 'ip'
-  | 'gender'
-  | 'countryCode'
-  | 'subscriptionMode'
-  | 'listId'
-  | 'listName'
-  | 'getresponseApiKey'
-  | 'mappUsername'
-  | 'mappPassword'
-  | 'mappDomain'
-  | 'sailthruApiKey'
-  | 'sailthruSecret'
-  | 'SalesforceSubDomain'
-  | 'SalesforceClientId'
-  | 'SalesforceClientSecret'
-  | 'SalesforceAccountId'
-  | 'tag'
-  | 'salesManagoClientId'
-  | 'salesManagoApiKey'
-  | 'salesManagoSha'
-  | 'salesManagoSubDomain'
-  | 'salesManagoOwner';

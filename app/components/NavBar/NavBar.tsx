@@ -18,13 +18,15 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown } from '@tabler/icons-react';
-import classes from './NavBar.module.css';
 import Link from 'next/link';
-import { apiDocsPath, mySubscriptionUrl, registerPath, supportedSystems } from '@/app/constants';
+import { useContext } from 'react';
+import classes from './NavBar.module.css';
+import { apiDocsPath, mySubscriptionUrl, registerPath } from '@/app/constants';
 import Logo from '../Logo/Logo';
 import NavBarUserButtons from './NavBarUserButtons';
-import { useContext } from 'react';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
+import { newsletterSystems } from '@/app/api/newsletterSystemConstants';
+import { getNewsletterSystemDocsUrl } from '@/app/lib/helpers';
 
 export default function Navbar() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
@@ -32,10 +34,10 @@ export default function Navbar() {
   const theme = useMantineTheme();
   const { user } = useContext(UserContext) as UserContextType;
 
-  const links = supportedSystems.map((item) => (
+  const links = Object.values(newsletterSystems).map((item) => (
     <Link
-      key={item.label}
-      href={item.link}
+      key={item.name}
+      href={getNewsletterSystemDocsUrl(item)}
       style={{
         marginTop: 'auto',
         marginBottom: 'auto',
@@ -49,7 +51,7 @@ export default function Navbar() {
             <item.icon style={{ width: rem(22), height: rem(22) }} />
           </ThemeIcon>
           <Text size="sm" fw={500}>
-            {item.label}
+            {item.name}
           </Text>
         </Group>
       </UnstyledButton>
@@ -62,7 +64,7 @@ export default function Navbar() {
         <Group justify="space-between" h="100%">
           <Logo />
           <Group h="100%" gap={0} visibleFrom="sm">
-            <Link href={'/'} className={classes.link}>
+            <Link href="/" className={classes.link}>
               Home
             </Link>
             <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
