@@ -20,7 +20,7 @@ export const registerPath = '/signup';
 export const loginPath = '/login';
 export const resetPasswordPath = '/reset-password';
 export const resetSuccessParam = 'resetSuccess';
-export const resetSuccessPath = loginPath + '?' + resetSuccessParam + '=true';
+export const resetSuccessPath = `${loginPath}?${resetSuccessParam}=true`;
 export const contactPath = '/#contact';
 export const tosPath = '/terms-of-service';
 export const apiDocsPath = '/api-documentation';
@@ -253,6 +253,13 @@ export const RequestOptionsData: {
     required: false,
     description: '',
   },
+  tagId: {
+    label: 'Tag Id',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: '',
+  },
   salesManagoClientId: {
     label: 'SalesManago Client Id',
     valueType: 'string',
@@ -291,7 +298,7 @@ export const RequestOptionsData: {
 };
 
 export const fieldsBySystem = {
-  getresponse: ['firstname', 'lastname', 'email', 'ip', 'listId', 'getresponseApiKey'],
+  getresponse: ['firstname', 'lastname', 'email', 'ip', 'listId', 'getresponseApiKey', 'tagId'],
   mapp: [
     'firstname',
     'lastname',
