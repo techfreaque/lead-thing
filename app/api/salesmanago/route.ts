@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import type { SalesmanagoPostRequest } from '../requestTypes';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
-const apiContactsPath = 'salesmanago.com/api/contact/upsert';
+const apiContactsPath = '.salesmanago.com/api/contact/upsert';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
