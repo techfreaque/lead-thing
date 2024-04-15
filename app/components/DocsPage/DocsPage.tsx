@@ -58,6 +58,7 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
                   key={propertyName}
                   label={RequestOptionsData[propertyName].label}
                   required={RequestOptionsData[propertyName].required}
+                  description={RequestOptionsData[propertyName].description}
                   value={form.values[propertyName]}
                   onChange={(event) => form.setFieldValue(propertyName, event.currentTarget.value)}
                 />

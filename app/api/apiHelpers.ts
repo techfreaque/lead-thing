@@ -100,6 +100,7 @@ export function formatApiCallDetails({
   listId,
   listName,
   listHash,
+  youLeadTag,
 }: {
   firstname?: string;
   lastname?: string;
@@ -114,8 +115,9 @@ export function formatApiCallDetails({
   listName?: string;
   listId?: number | string;
   listHash?: string;
+  youLeadTag?: string;
 }): string {
-  return `- Contact:${firstname ? ` firstname: ${firstname}` : ''}${lastname ? ` lastname: ${lastname}` : ''}${email ? ` email: ${email}` : ''}${ip ? ` ip: ${ip}` : ''}${gender ? ` gender: ${gender}` : ''}${countryCode ? ` countryCode: ${countryCode}` : ''}${salutation ? ` salutation: ${salutation}` : ''}${tag ? ` tag: ${tag}` : ''}${tagId ? ` tagId: ${tagId}` : ''}${subscriptionMode ? ` subscriptionMode: ${subscriptionMode}` : ''}${listName ? ` listName: ${listName}` : ''}${listHash ? ` listHash: ${listHash}` : ''}${listId ? ` listId: ${listId}` : ''}`;
+  return `- Contact:${firstname ? ` firstname: ${firstname}` : ''}${lastname ? ` lastname: ${lastname}` : ''}${email ? ` email: ${email}` : ''}${ip ? ` ip: ${ip}` : ''}${gender ? ` gender: ${gender}` : ''}${countryCode ? ` countryCode: ${countryCode}` : ''}${salutation ? ` salutation: ${salutation}` : ''}${tag ? ` tag: ${tag}` : ''}${tagId ? ` tagId: ${tagId}` : ''}${youLeadTag ? ` youLeadTag: ${youLeadTag}` : ''}${subscriptionMode ? ` subscriptionMode: ${subscriptionMode}` : ''}${listName ? ` listName: ${listName}` : ''}${listHash ? ` listHash: ${listHash}` : ''}${listId ? ` listId: ${listId}` : ''}`;
 }
 
 export async function handleResponse(response: Response): Promise<{

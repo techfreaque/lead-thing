@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import sha1 from 'crypto-js/sha1';
-import type { FreshmailPostRequest } from '../requestTypes';
+import type { YouleadPostRequest } from '../requestTypes';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
-const apiContactsUrl = 'https://api.freshmail.com/rest/subscriber/add';
+const apiContactsUrl = 'https://a-pd.youlead.pl/api/Command/Contact/UpsertsByEmail';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
@@ -15,29 +15,48 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // countryCode,
     // salutation,
     subscriptionMode,
-    // tag,
-    listHash,
-    freshmailApiKey,
-    freshmailApiSecret,
-  }: FreshmailPostRequest = await request.json();
+    youLeadTag,
+    youLeadAppId,
+    youLeadClientId,
+    youLeadAppSecretKey,
+  }: YouleadPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
     try {
-      const requestPayload = JSON.stringify({
-        email,
-        list: listHash,
-        state: subscriptionMode === 'FORCE_OPT_IN' ? 1 : 2,
-      });
+      const requestTimestamp = Math.round(Date.now() / 1000);
       const requestSha = sha1(
-        `${freshmailApiKey}${apiContactsUrl}${requestPayload}${freshmailApiSecret}`
+        `${youLeadClientId}${youLeadAppId}${youLeadAppSecretKey}${requestTimestamp}`
       ).toString();
       const response: Response = await fetch(apiContactsUrl, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
-          'X-Rest-ApiKey': freshmailApiKey,
-          'X-Rest-ApiSign': requestSha,
+          'YL-TimeStamp': String(requestTimestamp),
+          'YL-AppId': youLeadAppId,
+          'YL-ClientId': youLeadClientId,
+          'YL-Signature': requestSha,
         },
-        body: requestPayload,
+        body: JSON.stringify({
+          contacts: [
+            {
+              requestId: 1,
+              emailKey: email,
+              data: {
+                name: firstname,
+                lastName: lastname,
+                email,
+              },
+              statusEmail: subscriptionMode === 'FORCE_OPT_IN' ? 3 : 2,
+              ...(youLeadTag && {
+                tagsWithScoring: [
+                  {
+                    name: youLeadTag,
+                    score: 2,
+                  },
+                ],
+              }),
+            },
+          ],
+        }),
       });
       const data = await response.json();
       if (response.ok) {
@@ -52,7 +71,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           lastname,
           email,
           subscriptionMode,
-          listHash,
+          youLeadTag,
         })}`,
         500
       );
@@ -63,7 +82,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           lastname,
           email,
           subscriptionMode,
-          listHash,
+          youLeadTag,
         })}`,
         500
       );

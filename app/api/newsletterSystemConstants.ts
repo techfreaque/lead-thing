@@ -7,6 +7,7 @@ import {
   SailthruIcon,
   SalesforceIcon,
   SalesmanagoIcon,
+  YouleadIcon,
 } from '../components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -16,7 +17,8 @@ export type avialableSystemsType =
   | 'salesforce'
   | 'freshmail'
   // | 'klaviyo'
-  | 'salesmanago';
+  | 'salesmanago'
+  | 'youlead';
 
 export interface NewsletterSystem {
   path: string;
@@ -109,6 +111,21 @@ export const newsletterSystems: {
       'salesManagoOwner',
     ],
   },
+  youlead: {
+    path: '/youlead',
+    name: 'Youlead',
+    icon: YouleadIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'youLeadTag',
+      'subscriptionMode',
+      'youLeadAppId',
+      'youLeadClientId',
+      'youLeadAppSecretKey',
+    ],
+  },
   // klaviyo: {
   //   path: '/klaviyo',
   //   name: 'Klaviyo',
@@ -146,6 +163,10 @@ type RequestOptionsFieldName =
   | 'salesManagoSubDomain'
   | 'salesManagoOwner'
   | 'freshmailApiKey'
+  | 'youLeadAppId'
+  | 'youLeadClientId'
+  | 'youLeadAppSecretKey'
+  | 'youLeadTag'
   | 'freshmailApiSecret';
 
 export const RequestOptionsData: {
@@ -361,5 +382,33 @@ export const RequestOptionsData: {
     value: 'FRESHMAIL_API_SECRET',
     required: true,
     description: '',
+  },
+  youLeadAppId: {
+    label: 'Youlead App Id',
+    valueType: 'string',
+    value: 'YOULEAD_APP_ID',
+    required: true,
+    description: '',
+  },
+  youLeadClientId: {
+    label: 'Youlead Client Id',
+    valueType: 'string',
+    value: 'YOULEAD_CLIENT_ID',
+    required: true,
+    description: '',
+  },
+  youLeadAppSecretKey: {
+    label: 'Youlead App Secret Key',
+    valueType: 'string',
+    value: 'YOULEAD_APP_SECRET_KEY',
+    required: true,
+    description: '',
+  },
+  youLeadTag: {
+    label: 'Youlead tag',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'The tag must first be added in the youlead system Settings -> Tags',
   },
 };
