@@ -3,6 +3,7 @@ import type { MappPostRequest } from '../requestTypes';
 import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
 
 const apiContactsPath = '/api/rest/v19/contact/create';
+const apiContactsUpdatePath = '/api/rest/v19/contact/update';
 const apiSubscribePath = '/api/rest/v19/membership/subscribeByEmail';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -28,59 +29,60 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       Authorization: `Basic ${btoa(`${mappUsername}:${mappPassword}`)}`,
     };
     try {
-      console.log('1', {
-        firstname,
-        lastname,
-        email,
-        // ip,
-        // gender,
-        countryCode,
-        // salutation,
-        // tag,
-        listId,
-        subscriptionMode,
-        mappUsername,
-        mappPassword,
-        mappDomain,
-      });
-
+      const contactPayload = {
+        emailAddress: email,
+        attributes: [
+          { name: 'FirstName', value: firstname },
+          { name: 'LastName', value: lastname },
+          { name: 'user.ISOCountryCode', value: countryCode },
+        ],
+      };
       const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
         method: 'post',
         headers,
-        body: JSON.stringify({
-          emailAddress: email,
-          attributes: [
-            { name: 'FirstName', value: firstname },
-            { name: 'LastName', value: lastname },
-            { name: 'user.ISOCountryCode', value: countryCode },
-          ],
-        }),
+        body: JSON.stringify(contactPayload),
       });
-      console.log('2', JSON.stringify(response));
       const data = await response.json();
-      console.log('3', JSON.stringify(data));
       if (response.ok) {
-        const subscribePayload = {
-          email,
-          groupId: parseInt(String(listId)),
-          subscriptionMode:
-            subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode,
-        };
-        console.log(subscribePayload);
-        const subscribeResponse: Response = await fetch(
-          `https://${mappDomain}${apiSubscribePath}`,
+        const contactUpdateResponse: Response = await fetch(
+          `https://${mappDomain}${apiContactsUpdatePath}`,
           {
             method: 'post',
             headers,
-            body: JSON.stringify(subscribePayload),
+            body: JSON.stringify({ ...contactPayload, identifierType: 'EMAIL' }),
           }
         );
-        if (subscribeResponse.ok) {
-          return ApiResponse('Contact successfully added and subscribed!', 200);
+        console.log('contactUpdateResponse', contactUpdateResponse);
+        const ContactUpdateData = await contactUpdateResponse.json();
+        if (contactUpdateResponse.ok) {
+          const subscribePayload = {
+            email,
+            groupId: parseInt(String(listId)),
+            subscriptionMode:
+              subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode,
+          };
+          console.log(subscribePayload);
+          const subscribeResponse: Response = await fetch(
+            `https://${mappDomain}${apiSubscribePath}`,
+            {
+              method: 'post',
+              headers,
+              body: JSON.stringify(subscribePayload),
+            }
+          );
+          if (subscribeResponse.ok) {
+            return ApiResponse('Contact successfully added and subscribed!', 200);
+          }
+          return ApiResponse(
+            `The contact was added to mapp, but subscribing to the list was not successful via the mapp api. Error: ${JSON.stringify(
+              await subscribeResponse.json()
+            )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
+            500
+          );
         }
         return ApiResponse(
-          `The contact was added to mapp, but subscribing to the list was not successful via the mapp api. Error: ${JSON.stringify(
-            await subscribeResponse.json()
+          `Failed to update the contact via the mapp api. Error: ${JSON.stringify(
+            ContactUpdateData
           )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
           500
         );
