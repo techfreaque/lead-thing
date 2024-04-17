@@ -4,6 +4,7 @@ import { Card, Text, Group, Button, SimpleGrid, Container } from '@mantine/core'
 import { IconMailBolt } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Suspense, useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import classes from './SubscriptionTiers.module.css';
 import { Title2, Title2SubText } from '../Texts/Texts';
 import {
@@ -11,12 +12,10 @@ import {
   mySubscriptionUrl,
   registerPath,
   subscriptionTierIdType,
-  subscriptionTierType,
   subscriptionTiers,
 } from '@/app/constants';
 import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
 import { OrderType, getCurrentSubscription } from '@/app/lib/orders';
-import { useSearchParams } from 'next/navigation';
 
 export default function SubscriptionTiersSection() {
   const { user } = useContext(UserContext) as UserContextType;
@@ -45,7 +44,7 @@ export function SubscriptionTiers({
   }, [user]);
   const canUpgrade = currentSubscription?.productId === 'free';
   return (
-    <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} mt="xl">
+    <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} mt="xl">
       {Object.keys(subscriptionTiers).map(
         (productId) =>
           !subscriptionTiers[productId as subscriptionTierIdType].isTesting && (

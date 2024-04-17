@@ -85,7 +85,7 @@ export const newsletterSystems: {
   },
   mailup: {
     path: '/mailup',
-    name: 'mailup',
+    name: 'Mailup',
     icon: MailupIcon,
     apiFields: [
       'firstname',

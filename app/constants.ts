@@ -1,14 +1,3 @@
-import type { CSSProperties } from 'react';
-import {
-  FreshmailIcon,
-  GetresponseIcon,
-  KlaviyoIcon,
-  MappIcon,
-  SailthruIcon,
-  SalesforceIcon,
-  SalesmanagoIcon,
-} from './components/Icons/Icons';
-
 export const APP_NAME = 'leadThing.dev';
 export const APP_COMPANY_COUNTRY = 'United Kingdom';
 const APP_PRODUCTION_DOMAIN = 'https://leadthing.dev';
@@ -36,17 +25,8 @@ export const checkoutUrl = `${myAccountPath}/checkout/`;
 
 // API Endpoints
 export const apiURL = `${APP_DOMAIN}/api`;
-// export const getresponseApiURL = apiURL + getresponsePath;
-// export const sailthruApiURL = apiURL + sailthruPath;
-// export const mappApiURL = apiURL + mappPath;
-// export const salesforceApiURL = apiURL + salesforcePath;
-// export const salesmanagoApiURL = apiURL + salesmanagoPath;
-// export const klaviyoApiURL = apiURL + klaviyoPath;
-// export const freshmailApiURL = apiURL + freshmailPath;
 
-export const freeTierApiCalls = 100;
-
-export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise' | 'testing';
+export type subscriptionTierIdType = 'free' | 'base' | 'pro' | 'enterprise' | 'ultimate' | 'testing';
 export interface subscriptionTierType {
   productId: subscriptionTierIdType;
   title: string;
@@ -93,6 +73,15 @@ export const subscriptionTiers: subscriptionTiersType = {
     title: 'Enterprise',
     price: 40,
     productId: 'enterprise',
+    // rebatePercent: 25,
+    apiCalls: 8000,
+    canBeSold: true,
+    billingPeriod: 'yearly',
+  },
+  ultimate: {
+    title: 'Ultimate',
+    price: 80,
+    productId: 'ultimate',
     // rebatePercent: 25,
     apiCalls: 20000,
     canBeSold: true,

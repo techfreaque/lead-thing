@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
-import { APP_NAME, freeTierApiCalls } from '@/app/constants';
+import { APP_NAME, subscriptionTiers } from '@/app/constants';
 
 export default async function executeIfAuthenticated(
   request: NextRequest,
@@ -55,7 +55,7 @@ function isStillQuotaLeft({
   apiCallsPerMonth: number | null;
   apiCallsInThisPeriod: number;
 }): boolean {
-  const _apiCallsPerMonth = apiCallsPerMonth || freeTierApiCalls;
+  const _apiCallsPerMonth = apiCallsPerMonth || subscriptionTiers.free.apiCalls;
   const stillQuotaLeft = _apiCallsPerMonth >= apiCallsInThisPeriod;
   if (stillQuotaLeft) {
     return true;
