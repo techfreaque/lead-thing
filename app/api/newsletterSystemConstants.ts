@@ -9,6 +9,7 @@ import {
   SalesmanagoIcon,
   YouleadIcon,
   CleverreachIcon,
+  MailupIcon,
 } from '../components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -19,6 +20,7 @@ export type avialableSystemsType =
   | 'freshmail'
   // | 'klaviyo'
   | 'salesmanago'
+  | 'mailup'
   | 'cleverreach'
   | 'youlead';
 
@@ -80,6 +82,23 @@ export const newsletterSystems: {
     name: 'Sailthru',
     icon: SailthruIcon,
     apiFields: ['firstname', 'lastname', 'email', 'listName', 'sailthruApiKey', 'sailthruSecret'],
+  },
+  mailup: {
+    path: '/mailup',
+    name: 'mailup',
+    icon: MailupIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'subscriptionMode',
+      'mailupListId',
+      'mailupClientId',
+      'mailupClientSecret',
+      'mailupUsername',
+      'mailupPassword',
+    ],
   },
   mapp: {
     path: '/mapp',
@@ -190,6 +209,11 @@ export type RequestOptionsFieldName =
   | 'cleverreachSource'
   | 'cleverreachListId'
   | 'cleverreachClientSecret'
+  | 'mailupListId'
+  | 'mailupClientId'
+  | 'mailupClientSecret'
+  | 'mailupUsername'
+  | 'mailupPassword'
   | 'freshmailApiSecret';
 
 export const RequestOptionsData: {
@@ -447,7 +471,7 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: 'CLEVERREACH_LIST_ID',
     required: true,
-    description: 'Select the group id from CleverReach where the leads should be added to.',
+    description: 'Select the list id from CleverReach where the leads should be added to.',
   },
   cleverreachClientId: {
     label: 'CleverReach Client Id',
@@ -462,5 +486,40 @@ export const RequestOptionsData: {
     value: 'CLEVERREACH_CLIENT_SECRET',
     required: true,
     description: 'You can get the CleverReach client secret from your CleverReach backend.',
+  },
+  mailupListId: {
+    label: 'Mailup List Id',
+    valueType: 'string',
+    value: 'MAILUP_LIST_ID',
+    required: true,
+    description: 'Select the list id from Mailup where the leads should be added to.',
+  },
+  mailupClientId: {
+    label: 'Mailup Client Id',
+    valueType: 'string',
+    value: 'MAILUP_CLIENT_ID',
+    required: true,
+    description: 'You can get the Mailup client id from your Mailup backend.',
+  },
+  mailupClientSecret: {
+    label: 'Mailup Client Secret',
+    valueType: 'string',
+    value: 'MAILUP_CLIENT_SECRET',
+    required: true,
+    description: 'You can get the Mailup client secret from your Mailup backend.',
+  },
+  mailupUsername: {
+    label: 'Mailup Username',
+    valueType: 'string',
+    value: 'MAILUP_USERNAME',
+    required: true,
+    description: 'Your mailup account username.',
+  },
+  mailupPassword: {
+    label: 'Mailup Password',
+    valueType: 'string',
+    value: 'MAILUP_PASSWORD',
+    required: true,
+    description: 'Your mailup account password.',
   },
 };

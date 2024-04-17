@@ -9,6 +9,7 @@ import salesmanago from './salesmanago.png';
 import freshmail from './freshmail.png';
 import youlead from './youlead.png';
 import getresponse from './getresponse.png';
+import mailup from './mailup.png';
 
 export function CleverreachIcon({
   style,
@@ -68,6 +69,16 @@ export function YouleadIcon({
   className?: string | undefined;
 }) {
   return <Icon alt="Youlead Icon" iconFile={youlead} style={style} className={className} />;
+}
+
+export function MailupIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="Mailup Icon" iconFile={mailup} style={style} className={className} />;
 }
 
 export function SalesmanagoIcon({
