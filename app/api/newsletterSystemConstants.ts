@@ -8,6 +8,7 @@ import {
   SalesforceIcon,
   SalesmanagoIcon,
   YouleadIcon,
+  CleverreachIcon,
 } from '../components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -18,6 +19,7 @@ export type avialableSystemsType =
   | 'freshmail'
   // | 'klaviyo'
   | 'salesmanago'
+  | 'cleverreach'
   | 'youlead';
 
 export interface NewsletterSystem {
@@ -33,6 +35,8 @@ export interface NewsletterSystem {
   apiFields: RequestOptionsFieldName[];
 }
 
+export const notDefinedCheckboxValue = 'not defined';
+
 export const newsletterSystems: {
   [key in avialableSystemsType]: NewsletterSystem;
 } = {
@@ -41,6 +45,21 @@ export const newsletterSystems: {
     name: 'GetResponse',
     icon: GetresponseIcon,
     apiFields: ['firstname', 'lastname', 'email', 'ip', 'listId', 'getresponseApiKey', 'tagId'],
+  },
+  cleverreach: {
+    path: '/cleverreach',
+    name: 'CleverReach',
+    icon: CleverreachIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'cleverreachListId',
+      'cleverreachSource',
+      'cleverreachClientId',
+      'cleverreachClientSecret',
+    ],
   },
   freshmail: {
     path: '/freshmail',
@@ -167,6 +186,10 @@ export type RequestOptionsFieldName =
   | 'youLeadClientId'
   | 'youLeadAppSecretKey'
   | 'youLeadTag'
+  | 'cleverreachClientId'
+  | 'cleverreachSource'
+  | 'cleverreachListId'
+  | 'cleverreachClientSecret'
   | 'freshmailApiSecret';
 
 export const RequestOptionsData: {
@@ -209,8 +232,9 @@ export const RequestOptionsData: {
   },
   gender: {
     label: 'Gender',
-    valueType: 'string',
-    value: 'MALE',
+    valueType: 'options',
+    options: [notDefinedCheckboxValue, 'MALE', 'FEMALE'],
+    value: '',
     required: false,
     description: '',
   },
@@ -405,10 +429,38 @@ export const RequestOptionsData: {
     description: '',
   },
   youLeadTag: {
-    label: 'Youlead tag',
+    label: 'Tag',
     valueType: 'string',
     value: '',
     required: false,
     description: 'The tag must first be added in the youlead system Settings -> Tags',
+  },
+  cleverreachSource: {
+    label: 'Source Name',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'Define the source name from where the lead got added to.',
+  },
+  cleverreachListId: {
+    label: 'CleverReach List Id',
+    valueType: 'string',
+    value: 'CLEVERREACH_LIST_ID',
+    required: true,
+    description: 'Select the group id from CleverReach where the leads should be added to.',
+  },
+  cleverreachClientId: {
+    label: 'CleverReach Client Id',
+    valueType: 'string',
+    value: 'CLEVERREACH_CLIENT_ID',
+    required: true,
+    description: 'You can get the CleverReach client id from your CleverReach backend.',
+  },
+  cleverreachClientSecret: {
+    label: 'CleverReach Client Secret',
+    valueType: 'string',
+    value: 'CLEVERREACH_CLIENT_SECRET',
+    required: true,
+    description: 'You can get the CleverReach client secret from your CleverReach backend.',
   },
 };

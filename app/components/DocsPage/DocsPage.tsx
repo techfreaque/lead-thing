@@ -23,13 +23,14 @@ import {
   RequestOptionsFieldName,
   avialableSystemsType,
   newsletterSystems,
+  notDefinedCheckboxValue,
 } from '@/app/api/newsletterSystemConstants';
 
-export default function DocsPage({ systemName }: { systemName: avialableSystemsType }) {
+export default function DocsPage({ systemName }: { systemName: avialableSystemsType; }) {
   const { user } = useContext(UserContext) as UserContextType;
   const exampleKey = user?.apiKey || `Sign in  to get your ${APP_NAME.toUpperCase()} API key`;
   const [response, setResponse] = useState<
-    { state: 'success' | 'error'; message: string } | undefined
+    { state: 'success' | 'error'; message: string; } | undefined
   >();
   const initialValues: any = getInitialValues(systemName);
   const form = useForm({
@@ -69,8 +70,11 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
                   label={RequestOptionsData[propertyName].label}
                   value={form.values[propertyName]}
                   description={RequestOptionsData[propertyName].description}
-                  onChange={(value) => form.setFieldValue(propertyName, value)}
-                  withAsterisk
+                  onChange={(value) => (
+                    form.setFieldValue(
+                      propertyName, value === notDefinedCheckboxValue ? undefined : value
+                    ))}
+                  withAsterisk={RequestOptionsData[propertyName].required}
                 >
                   <Group mt="xs">
                     {RequestOptionsData[propertyName].options?.map((option) => (
@@ -135,7 +139,7 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
 }
 
 function getInitialValues(systemName: avialableSystemsType) {
-  const initialValues: { [key: string]: string } = {};
+  const initialValues: { [key: string]: string; } = {};
   for (const property of newsletterSystems[systemName].apiFields) {
     initialValues[property] = RequestOptionsData[property].value;
   }
@@ -285,7 +289,7 @@ async function sendExampleRequest({
   systemName: string;
   exampleData: AllPossiblePostRequestParameters;
   setResponse: Dispatch<
-    SetStateAction<{ state: 'success' | 'error'; message: string } | undefined>
+    SetStateAction<{ state: 'success' | 'error'; message: string; } | undefined>
   >;
 }) {
   try {

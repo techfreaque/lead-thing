@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import { StaticImageData } from 'next/image';
-import getresponse from './getresponse.png';
+import cleverreach from './cleverreach.png';
 import klaviyo from './klaviyo.png';
 import mapp from './mapp.png';
 import sailthru from './sailthru.png';
@@ -8,6 +8,17 @@ import salesforce from './salesforce.png';
 import salesmanago from './salesmanago.png';
 import freshmail from './freshmail.png';
 import youlead from './youlead.png';
+import getresponse from './getresponse.png';
+
+export function CleverreachIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="CleverReach Icon" iconFile={cleverreach} style={style} className={className} />;
+}
 
 export function GetresponseIcon({
   style,

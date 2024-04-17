@@ -13,6 +13,12 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'import/extensions': 'off',
-    "linebreak-style": ["error", "windows"]
+    // 'prettier/prettier': [
+    //   'error',
+    //   {
+    //     endOfLine: 'auto', /* this setting should be included */
+    //   },
+    // ],
+    // "linebreak-style": ["error", "windows"]
   },
 };

@@ -84,6 +84,23 @@ export interface YouleadPostRequest extends PostRequest {
   youLeadAppSecretKey: string;
 }
 
+export interface CleverreachPostRequest extends PostRequest {
+  // ip: string;
+  gender: 'MALE' | 'FEMALE';
+  // countryCode: string;
+  // salutation: string;
+  subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
+  // DOUBLE_OPT_IN
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
+
+  cleverreachListId: string;
+  cleverreachSource: string;
+  cleverreachClientId: string;
+  cleverreachClientSecret: string;
+}
+
 export interface SalesforcePostRequest extends PostRequest {
   // ip: string;
   // gender: 'MALE' | 'FEMALE';
@@ -123,11 +140,12 @@ export interface SalesmanagoPostRequest extends PostRequest {
 
 export interface AllPossiblePostRequestParameters
   extends GetresponsePostRequest,
-    MappPostRequest,
-    SailthruPostRequest,
-    SalesforcePostRequest,
-    YouleadPostRequest,
-    FreshmailPostRequest,
-    SalesmanagoPostRequest {
+  MappPostRequest,
+  SailthruPostRequest,
+  SalesforcePostRequest,
+  YouleadPostRequest,
+  CleverreachPostRequest,
+  FreshmailPostRequest,
+  SalesmanagoPostRequest {
   gender: 'MALE' | 'FEMALE';
 }

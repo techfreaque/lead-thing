@@ -86,38 +86,12 @@ export function ApiResponse(message: string, status: number = 200): NextResponse
   });
 }
 
-export function formatApiCallDetails({
-  firstname,
-  lastname,
-  email,
-  ip,
-  gender,
-  countryCode,
-  salutation,
-  tag,
-  tagId,
-  subscriptionMode,
-  listId,
-  listName,
-  listHash,
-  youLeadTag,
-}: {
-  firstname?: string;
-  lastname?: string;
-  email?: string;
-  ip?: string;
-  gender?: string;
-  countryCode?: string;
-  salutation?: string;
-  tag?: string;
-  tagId?: string;
-  subscriptionMode?: string;
-  listName?: string;
-  listId?: number | string;
-  listHash?: string;
-  youLeadTag?: string;
-}): string {
-  return `- Contact:${firstname ? ` firstname: ${firstname}` : ''}${lastname ? ` lastname: ${lastname}` : ''}${email ? ` email: ${email}` : ''}${ip ? ` ip: ${ip}` : ''}${gender ? ` gender: ${gender}` : ''}${countryCode ? ` countryCode: ${countryCode}` : ''}${salutation ? ` salutation: ${salutation}` : ''}${tag ? ` tag: ${tag}` : ''}${tagId ? ` tagId: ${tagId}` : ''}${youLeadTag ? ` youLeadTag: ${youLeadTag}` : ''}${subscriptionMode ? ` subscriptionMode: ${subscriptionMode}` : ''}${listName ? ` listName: ${listName}` : ''}${listHash ? ` listHash: ${listHash}` : ''}${listId ? ` listId: ${listId}` : ''}`;
+export function formatApiCallDetails(fields: { [key: string]: string; }): string {
+  const data = (Object.entries(fields) as [string, string][])
+    .filter(([, value]) => value).map(([name, value]) =>
+      ` ${name}: ${value}`
+    );
+  return `- Contact:${data}`;
 }
 
 export async function handleResponse(response: Response): Promise<{
