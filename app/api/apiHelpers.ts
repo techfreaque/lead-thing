@@ -86,7 +86,7 @@ export function ApiResponse(message: string, status: number = 200): NextResponse
   });
 }
 
-export function formatApiCallDetails(fields: { [key: string]: string; }): string {
+export function formatApiCallDetails(fields: { [key: string]: string | undefined; }): string {
   const data = (Object.entries(fields) as [string, string][])
     .filter(([, value]) => value).map(([name, value]) =>
       ` ${name}: ${value}`
