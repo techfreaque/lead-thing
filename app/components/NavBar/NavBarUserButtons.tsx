@@ -1,9 +1,10 @@
 'use client';
-import { loginPath, mySubscriptionUrl, registerPath } from '@/app/constants';
-import { UserContext, UserContextType } from '@/app/lib/authentication';
+
 import { Button } from '@mantine/core';
 import Link from 'next/link';
 import { useContext } from 'react';
+import { UserContext, UserContextType } from '@/app/lib/authentication';
+import { loginPath, mySubscriptionUrl, registerPath } from '@/app/constants';
 
 export default function NavBarUserButtons() {
   const { user, logout } = useContext(UserContext) as UserContextType;

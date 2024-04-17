@@ -6,7 +6,4 @@
     var(--mantine-font-family) !important;
   margin: auto !important;
   margin-left: 6px !important;
-  /* @media (max-width: $mantine-breakpoint-sm) {
-    font-size: rem(32px);
-  } */
 }

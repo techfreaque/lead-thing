@@ -29,7 +29,7 @@ const initialOptions: ReactPayPalScriptOptions = {
   // debug: true,
 };
 // TODO https://developer.paypal.com/integration-builder/
-export default function Checkout({ params }: { params: { productId: subscriptionTierIdType } }) {
+export default function Checkout({ params }: { params: { productId: subscriptionTierIdType; }; }) {
   const productToOrder: subscriptionTierType = subscriptionTiers[params.productId];
   const { user } = useContext(UserContext) as UserContextType;
   const [message, setMessage] = useState<string | undefined>();
@@ -79,7 +79,7 @@ export default function Checkout({ params }: { params: { productId: subscription
   );
 }
 
-function Message({ message }: { message?: string | undefined }) {
+function Message({ message }: { message?: string | undefined; }) {
   return (
     message && (
       <Alert
@@ -89,9 +89,9 @@ function Message({ message }: { message?: string | undefined }) {
         title="We're sorry but there was an issue with the payment"
         icon={<IconInfoCircle />}
         maw={500}
-        mr={'auto'}
-        ml={'auto'}
-        mb={'md'}
+        mr="auto"
+        ml="auto"
+        mb="md"
       >
         {message}
       </Alert>

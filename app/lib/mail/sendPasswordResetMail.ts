@@ -14,7 +14,7 @@ export default async function sendPasswordResetMail(
     name,
     resetPasswordToken,
   });
-  return await sendEmail({
+  return sendEmail({
     to: email,
     subject: _subject,
     html: mailWithData,
@@ -30,11 +30,17 @@ function getMailTemplate({
 }): string {
   const mailTemplate = getMailTemplateFile('reset-password-mail');
   // all vars required by eval
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const title = 'We received your request to reset your password';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const message =
     'If you did not request a password reset, please make sure nobody has access to your mail inbox. In doubt change your email account password.';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const name = _name;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const APP_NAME = _APP_NAME;
-  const passwordResetUrl = APP_DOMAIN + resetPasswordPath + '/' + resetPasswordToken;
-  return eval('`' + mailTemplate.replace(/`/g, '`') + '`');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const passwordResetUrl = `${APP_DOMAIN + resetPasswordPath}/${resetPasswordToken}`;
+  // eslint-disable-next-line no-eval
+  return eval(`\`${mailTemplate.replace(/`/g, '`')}\``);
 }

@@ -25,7 +25,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   async function forwardToNewsletterSystem() {
     let token: string = '';
     try {
-      const response: Response = await fetch('https://' + SalesforceSubDomain + authPath, {
+      const response: Response = await fetch(`https://${SalesforceSubDomain}${authPath}`, {
         method: 'post',
         headers: {
           Accept: 'application/json',
@@ -44,12 +44,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return ApiResponse(`Failed to get authetication token from salesforce. Error: ${error}`, 500);
     }
     try {
-      const response: Response = await fetch('https://' + SalesforceSubDomain + apiContactsPath, {
+      const response: Response = await fetch(`https://${SalesforceSubDomain}${apiContactsPath}`, {
         method: 'post',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           contactKey: email,
@@ -107,20 +107,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const data = await response.json();
       if (response.ok) {
         return ApiResponse(
-          'Contact successfully added and subscribed! Response: ' + JSON.stringify(data),
+          `Contact successfully added and subscribed! Response: ${JSON.stringify(data)}`,
           200
         );
-      } else {
-        return ApiResponse(
-          `Failed to add the contact. Error: ${JSON.stringify(data)} ${formatApiCallDetails({
-            firstname,
-            lastname,
-            email,
-            listId,
-          })}`,
-          500
-        );
       }
+      return ApiResponse(
+        `Failed to add the contact. Error: ${JSON.stringify(data)} ${formatApiCallDetails({
+          firstname,
+          lastname,
+          email,
+          listId,
+        })}`,
+        500
+      );
     } catch (error) {
       return ApiResponse(
         `Failed to add the contact with an unknown error. Error: ${error} ${formatApiCallDetails({
@@ -133,5 +132,5 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
   }
-  return await executeIfAuthenticated(request, forwardToNewsletterSystem);
+  return executeIfAuthenticated(request, forwardToNewsletterSystem);
 }

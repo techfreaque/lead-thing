@@ -1,5 +1,6 @@
 'use client';
-import { CodeHighlight, CodeHighlightTabs } from '@mantine/code-highlight';
+
+import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { IconBrandJavascript, IconHash } from '@tabler/icons-react';
 
 export default function DocsCodeHighlighter({

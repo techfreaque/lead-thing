@@ -1,7 +1,7 @@
 import { Image, Container, Title, Text, Button, SimpleGrid } from '@mantine/core';
+import Link from 'next/link';
 import image from './image.svg';
 import classes from './NotFound.module.css';
-import Link from 'next/link';
 
 export default function NotFound() {
   return (
@@ -14,7 +14,7 @@ export default function NotFound() {
             Page you are trying to open does not exist. You may have mistyped the address, or the
             page has been moved to another URL. If you think this is an error contact support.
           </Text>
-          <Link href={"/"}>
+          <Link href="/">
             <Button variant="outline" size="md" mt="xl" className={classes.control}>
               Get back to home page
             </Button>

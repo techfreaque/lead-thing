@@ -2,15 +2,15 @@
 
 import { Paper, Text, Button, Container, Group, Alert, PasswordInput } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
-import classes from '../../components/ResetPassword/ResetPassword.module.css';
 import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
+import { RedirectType, redirect } from 'next/navigation';
+import classes from '../../components/ResetPassword/ResetPassword.module.css';
 import { isTokenValid, setPassword } from '@/app/lib/resetPassword';
 import { TitleUserForm } from '@/app/components/Texts/Texts';
-import { RedirectType, redirect } from 'next/navigation';
 import { resetSuccessPath } from '@/app/constants';
 
-export default function ConfirmPasswordReset({ params }: { params: { resetToken: string } }) {
+export default function ConfirmPasswordReset({ params }: { params: { resetToken: string; }; }) {
   const [tokenIsValid, setTokenIsValid] = useState<boolean | undefined>(undefined);
   const [success, setSuccess] = useState<boolean>(false);
   const form = useForm({
@@ -26,15 +26,15 @@ export default function ConfirmPasswordReset({ params }: { params: { resetToken:
       isTokenValid(params.resetToken).then((isValid) => setTokenIsValid(isValid));
   }, [params.resetToken]);
   useEffect(() => {
-    success && redirect(resetSuccessPath, RedirectType.replace);
+    if (success) redirect(resetSuccessPath, RedirectType.replace);
   }, [success]);
 
   if (tokenIsValid === undefined) {
-    return;
+    return <></>;
   }
   async function onSubmit() {
-    const success = await setPassword(form.values.password, params.resetToken);
-    success && setSuccess(success);
+    const _success = await setPassword(form.values.password, params.resetToken);
+    if (_success) setSuccess(_success);
   }
   return tokenIsValid ? (
     <Container size={460} my={30}>
@@ -70,9 +70,9 @@ export default function ConfirmPasswordReset({ params }: { params: { resetToken:
     <Container size={460} my={30}>
       <Alert
         variant="light"
-        mt={'md'}
-        color={'red'}
-        title={'The password reset link is invalid!'}
+        mt="md"
+        color="red"
+        title="The password reset link is invalid!"
         icon={<IconInfoCircle />}
       >
         The link has been either used or is expired. Note that the link is only valid for 4 hours!

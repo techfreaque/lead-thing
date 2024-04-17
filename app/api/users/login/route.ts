@@ -1,8 +1,8 @@
-import { prisma } from '@/app/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import getConfig from 'next/config';
 import { sign } from 'jsonwebtoken';
+import { prisma } from '@/app/lib/prisma';
 import { UserType } from '@/app/lib/authentication';
 
 interface LoginPostRequest {

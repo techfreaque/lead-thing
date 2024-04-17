@@ -1,7 +1,7 @@
-import { encryptPassword } from '@/app/lib/helpers';
-import { prisma } from '@/app/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import { encryptPassword } from '@/app/lib/helpers';
+import { prisma } from '@/app/lib/prisma';
 
 interface RegisterPostRequest {
   name: string;

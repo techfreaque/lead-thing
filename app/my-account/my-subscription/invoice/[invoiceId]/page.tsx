@@ -1,12 +1,13 @@
 'use client';
+
+import { PDFViewer } from '@react-pdf/renderer';
+import { useContext, useEffect, useState } from 'react';
 import InvoiceGenerator, { Invoice } from '@/app/components/InvoiceGenerator/InvoiceGenerator';
 import { subscriptionTiers } from '@/app/constants';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
-import { OrderType, getOrder } from '@/app/lib/orders';
-import { PDFViewer } from '@react-pdf/renderer';
-import { useContext, useEffect, useState } from 'react';
+import { getOrder } from '@/app/lib/orders';
 
-export default function InvoicePage({ params }: { params: { invoiceId: string } }) {
+export default function InvoicePage({ params }: { params: { invoiceId: string; }; }) {
   const [invoice, setInvoice] = useState<Invoice | undefined>();
   const { user } = useContext(UserContext) as UserContextType;
 

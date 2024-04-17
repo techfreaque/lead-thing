@@ -40,6 +40,7 @@
   }
 
   &[data-active] {
+
     &,
     &:hover {
       background-color: var(--mantine-color-blue-light);

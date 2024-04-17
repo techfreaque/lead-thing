@@ -1,14 +1,14 @@
-import getConfig from "next/config";
+import getConfig from 'next/config';
 
 const { serverRuntimeConfig } = getConfig();
 
-export const generateAccessToken = async () => {
+export async function generateAccessToken() {
   try {
     if (!process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || !serverRuntimeConfig.PAYPAL_CLIENT_SECRET) {
       throw new Error('MISSING_API_CREDENTIALS');
     }
     const auth = Buffer.from(
-      process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID + ':' + serverRuntimeConfig.PAYPAL_CLIENT_SECRET
+      `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}:${serverRuntimeConfig.PAYPAL_CLIENT_SECRET}`
     ).toString('base64');
     const response = await fetch(`${serverRuntimeConfig.PAYPAL_API_URL}/v1/oauth2/token`, {
       method: 'POST',
@@ -23,4 +23,5 @@ export const generateAccessToken = async () => {
   } catch (error) {
     console.error('Failed to generate Access Token:', error);
   }
-};
+  return undefined;
+}

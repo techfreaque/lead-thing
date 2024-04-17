@@ -14,7 +14,7 @@ export default async function SendSupportMail(
   customerMessageTransporter: SMTPTransport.SentMessageInfo;
   supportMessageTransporter: SMTPTransport.SentMessageInfo;
 }> {
-  const _subject = 'Support request - ' + subject;
+  const _subject = `Support request - ${subject}`;
   const mailWithData = getMailTemplate({
     name,
     company,
@@ -47,13 +47,22 @@ function getMailTemplate({
 }): string {
   const supportMail = getMailTemplateFile('support-mail');
   // all vars required by eval
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const title = 'Thank you for your message!';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const message = 'We received your request and will get back to you shortly.';
-  const company = _company ? '<br/>Company: ' + _company : '';
-  const country = _country ? '<br/>Country: ' + _country : '';
-  const website = _website ? '<br/>Website: ' + _website : '';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const company = _company ? `<br/>Company: ${_company}` : '';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const country = _country ? `<br/>Country: ${_country}` : '';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const website = _website ? `<br/>Website: ${_website}` : '';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const name = _name;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const supportMessage = _supportMessage;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const APP_NAME = _APP_NAME;
-  return eval('`' + supportMail.replace(/`/g, '`') + '`');
+  // eslint-disable-next-line no-eval
+  return eval(`\`${supportMail.replace(/`/g, '`')}\``);
 }

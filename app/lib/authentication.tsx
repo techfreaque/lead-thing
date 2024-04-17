@@ -24,7 +24,7 @@ export interface UserContextType {
 
 export const UserContext = createContext<UserContextType | null>(null);
 
-export function UserProvider({ children }: { children: any }) {
+export function UserProvider({ children }: { children: any; }) {
   const [_user, setUser] = useState<UserType | undefined>(undefined);
   const [justLoggedOut, setJustLoggedout] = useState<boolean>(false);
   function login(user: UserType) {
@@ -56,8 +56,8 @@ function readUserToCookie(): UserType | undefined {
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) {
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) {
       return JSON.parse(c.substring(nameEQ.length, c.length)) as UserType;
     }
   }

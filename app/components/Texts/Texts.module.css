@@ -1,11 +1,11 @@
 .title2 {
-    font-size: rem(34px);
-    font-weight: 900;
-  
-    @media (max-width: $mantine-breakpoint-sm) {
-      font-size: rem(24px);
-    }
+  font-size: rem(34px);
+  font-weight: 900;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: rem(24px);
   }
+}
 
 .titleUserForm {
   font-family:

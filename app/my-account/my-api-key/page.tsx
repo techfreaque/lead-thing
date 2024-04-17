@@ -41,9 +41,7 @@ export default function MyKeyPage() {
           </Title>
         </>
       ) : (
-        <>
-          <Title order={1}>Sign in to see your {APP_NAME} API key</Title>
-        </>
+        <Title order={1}>Sign in to see your {APP_NAME} API key</Title>
       )}
     </Container>
   );

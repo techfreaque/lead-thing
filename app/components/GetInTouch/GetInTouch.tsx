@@ -1,4 +1,5 @@
 'use client';
+
 import {
   TextInput,
   Textarea,
@@ -10,10 +11,10 @@ import {
   Anchor,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { Title2, Title2SubText } from '../Texts/Texts';
 import { useContext, useState } from 'react';
-import { UserContext, UserContextType } from '@/app/lib/authentication';
 import { IconInfoCircle } from '@tabler/icons-react';
+import { Title2, Title2SubText } from '../Texts/Texts';
+import { UserContext, UserContextType } from '@/app/lib/authentication';
 
 export default function GetInTouch() {
   const { user } = useContext(UserContext) as UserContextType;
@@ -31,9 +32,9 @@ export default function GetInTouch() {
       ...(user
         ? {}
         : {
-            name: (value: string) => value.trim().length < 2,
-            email: (value: string) => !/^\S+@\S+$/.test(value),
-          }),
+          name: (value: string) => value.trim().length < 2,
+          email: (value: string) => !/^\S+@\S+$/.test(value),
+        }),
 
       subject: (value) => value.trim().length === 0,
       message: (value) => value.trim().length === 0,
@@ -42,38 +43,38 @@ export default function GetInTouch() {
   async function onSubmit() {
     const data = user
       ? {
-          name: user.name,
-          email: user.email,
-          website: user.website,
-          company: user.company,
-          subject: form.values.subject,
-          message: form.values.message,
-        }
+        name: user.name,
+        email: user.email,
+        website: user.website,
+        company: user.company,
+        subject: form.values.subject,
+        message: form.values.message,
+      }
       : {
-          name: form.values.name,
-          email: form.values.email,
-          website: form.values.website,
-          company: form.values.company,
-          subject: form.values.subject,
-          message: form.values.message,
-        };
-    const response = await fetch('/api/users/get-support', {
+        name: form.values.name,
+        email: form.values.email,
+        website: form.values.website,
+        company: form.values.company,
+        subject: form.values.subject,
+        message: form.values.message,
+      };
+    const _response = await fetch('/api/users/get-support', {
       method: 'post',
       body: JSON.stringify(data),
     });
-    if (response.status === 200) {
+    if (_response.status === 200) {
       setResponse(true);
     } else {
       setResponse(false);
     }
   }
   return (
-    <Container size="lg" id="contact" mb={60}>
+    <Container size="lg" id="contact" mb={60} mt={60}>
       {response ? (
         <Alert
           variant="light"
-          color={'blue'}
-          title={'Thank you for your message!'}
+          color="blue"
+          title="Thank you for your message!"
           icon={<IconInfoCircle />}
         >
           We recieved your support request and will get back to you shortly.
@@ -91,15 +92,15 @@ export default function GetInTouch() {
           {response === false && (
             <Alert
               variant="light"
-              color={'red'}
-              title={'Failed to send your message :('}
+              color="red"
+              title="Failed to send your message :("
               icon={<IconInfoCircle />}
               mt={10}
             >
               <>
                 We are sorry but there was an error while sending your request. Please try again or
                 send an email to{' '}
-                <Anchor href={'mailto:' + process.env.NEXT_PUBLIC_SUPPORT_EMAIL}>
+                <Anchor href={`mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`}>
                   {process.env.NEXT_PUBLIC_SUPPORT_EMAIL}
                 </Anchor>
               </>
@@ -145,7 +146,7 @@ export default function GetInTouch() {
               </SimpleGrid>
             </>
           )}
-         
+
           <TextInput
             label="Subject"
             placeholder="Subject"

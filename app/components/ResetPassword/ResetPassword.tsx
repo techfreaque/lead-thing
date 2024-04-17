@@ -14,11 +14,11 @@ import {
   Alert,
 } from '@mantine/core';
 import { IconArrowLeft, IconInfoCircle } from '@tabler/icons-react';
-import classes from './ResetPassword.module.css';
 import Link from 'next/link';
-import { loginPath } from '@/app/constants';
 import { useState } from 'react';
 import { useForm } from '@mantine/form';
+import { loginPath } from '@/app/constants';
+import classes from './ResetPassword.module.css';
 import { resetPassword } from '@/app/lib/resetPassword';
 import { TitleUserForm } from '../Texts/Texts';
 
@@ -34,16 +34,16 @@ export default function ResetPassword() {
     },
   });
   async function onSubmit() {
-    await resetPassword(form.values.email)
-    setFormSent(true)
+    await resetPassword(form.values.email);
+    setFormSent(true);
   }
   return formSent ? (
     <Container size={460} my={30}>
       <Alert
         variant="light"
-        mt={'md'}
-        color={'blue'}
-        title={'Your password reset link is on the way!'}
+        mt="md"
+        color="blue"
+        title="Your password reset link is on the way!"
         icon={<IconInfoCircle />}
       >
         If you're email is registered, you will receive a password reset link shortly. Just click on
@@ -80,7 +80,7 @@ export default function ResetPassword() {
                 </Center>
               </Anchor>
             </Link>
-            <Button type='submit'  className={classes.control}>Reset password</Button>
+            <Button type="submit" className={classes.control}>Reset password</Button>
           </Group>
         </form>
       </Paper>

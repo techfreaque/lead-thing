@@ -37,12 +37,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ipAddress: ip,
           ...(tagId
             ? {
-                tags: [
-                  {
-                    tagId,
-                  },
-                ],
-              }
+              tags: [
+                {
+                  tagId,
+                },
+              ],
+            }
             : {}),
         }),
       });
@@ -69,10 +69,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 description: string;
               }[]
             ).map((list) => ({
-                campaignId: list.campaignId,
-                name: list.name,
-                description: list.description,
-              }))
+              campaignId: list.campaignId,
+              name: list.name,
+              description: list.description,
+            }))
           )}`;
         } catch (e) { /* empty */ }
       }

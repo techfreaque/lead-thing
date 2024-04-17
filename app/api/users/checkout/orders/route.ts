@@ -8,7 +8,7 @@ import { createOrder, updateToPaypalOrderId } from '@/app/lib/orders';
 const { serverRuntimeConfig } = getConfig();
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const { subscription, email }: { subscription: subscriptionTierType; email: string } =
+  const { subscription, email }: { subscription: subscriptionTierType; email: string; } =
     await request.json();
   try {
     // use the cart information passed from the front-end to calculate the order amount detals

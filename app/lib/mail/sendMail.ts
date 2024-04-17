@@ -1,8 +1,8 @@
-import { APP_NAME } from '@/app/constants';
 import getConfig from 'next/config';
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import fs from 'fs';
+import { APP_NAME } from '@/app/constants';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -41,18 +41,18 @@ export async function sendEmail({
     }),
     ...(toUsAsWell
       ? {
-          supportMessageTransporter: await transporter.sendMail({
-            from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
-            to: serverRuntimeConfig.SEND_EMAIL,
-            subject,
-            html,
-            replyTo: to,
-          }),
-        }
+        supportMessageTransporter: await transporter.sendMail({
+          from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
+          to: serverRuntimeConfig.SEND_EMAIL,
+          subject,
+          html,
+          replyTo: to,
+        }),
+      }
       : {}),
   };
 }
 
 export function getMailTemplateFile(fileName: string): string {
-  return fs.readFileSync('app/lib/mail/mailTemplates/build/' + fileName + '.html', 'utf8');
+  return fs.readFileSync(`app/lib/mail/mailTemplates/build/${fileName}.html`, 'utf8');
 }

@@ -7,7 +7,7 @@ import { invoiceUrl, subscriptionTiers } from '@/app/constants';
 import { UserType } from '@/app/lib/authentication';
 import { OrderType, getOrders } from '@/app/lib/orders';
 
-export default function MyOrders({ user }: { user: UserType }) {
+export default function MyOrders({ user }: { user: UserType; }) {
   const [orders, setOrders] = useState<OrderType[]>();
   useEffect(() => {
     getOrders(user.email).then((_orders) => setOrders(_orders));
@@ -50,7 +50,7 @@ export default function MyOrders({ user }: { user: UserType }) {
     </>
   ) : (
     <>
-      <Title ta="center" order={2} mt={'xl'} mb={"md"}>
+      <Title ta="center" order={2} mt="xl" mb="md">
         You don't have any orders yet :(
       </Title>
       <Text ta="center">You can download your invoices here once you've completed a purchase</Text>

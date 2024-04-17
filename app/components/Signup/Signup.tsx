@@ -32,7 +32,7 @@ import { LoginResponse } from '@/app/api/users/login/route';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
 import { TitleUserForm } from '../Texts/Texts';
 
-export default function Signup({ type }: { type: 'login' | 'register' }) {
+export default function Signup({ type }: { type: 'login' | 'register'; }) {
   const [_type, setType] = useState<'login' | 'register'>(type);
   const [message, setMessage] = useState<{
     status: 'none' | 'error' | 'info';
@@ -83,13 +83,13 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
           password: form.values.password,
           ...(_type === 'register'
             ? {
-                company: form.values.company,
-                name: form.values.name,
-                website: form.values.website,
-                address: form.values.address,
-                zipCode: form.values.zipCode,
-                country: form.values.country,
-              }
+              company: form.values.company,
+              name: form.values.name,
+              website: form.values.website,
+              address: form.values.address,
+              zipCode: form.values.zipCode,
+              country: form.values.country,
+            }
             : {}),
         }),
       }
@@ -301,7 +301,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
   );
 }
 
-function GridOrNot({ type, children }: { type: 'register' | 'login'; children: any }) {
+function GridOrNot({ type, children }: { type: 'register' | 'login'; children: any; }) {
   return type === 'register' ? (
     <SimpleGrid cols={{ base: 1, sm: 2 }}>{children}</SimpleGrid>
   ) : (

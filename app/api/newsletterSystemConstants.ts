@@ -2,7 +2,6 @@ import { CSSProperties } from 'react';
 import {
   FreshmailIcon,
   GetresponseIcon,
-  KlaviyoIcon,
   MappIcon,
   SailthruIcon,
   SalesforceIcon,

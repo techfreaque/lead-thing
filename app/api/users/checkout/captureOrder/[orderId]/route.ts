@@ -12,7 +12,7 @@ export interface captureRequestBody {
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { orderId: string } }
+  { params }: { params: { orderId: string; }; }
 ): Promise<NextResponse> {
   try {
     // use the cart information passed from the front-end to calculate the order amount detals

@@ -1,11 +1,11 @@
 'use server';
 
-
+import { v4 as uuidv4 } from 'uuid';
 import { UserType } from './authentication';
 import { encryptPassword } from './helpers';
 import sendPasswordResetMail from './mail/sendPasswordResetMail';
 import { prisma } from './prisma';
-import { v4 as uuidv4 } from 'uuid';
+
 export async function resetPassword(email: string): Promise<boolean> {
   const resetPasswordToken = uuidv4();
   const user = await setResetPasswordToken(email, resetPasswordToken);
@@ -60,7 +60,6 @@ export async function setPassword(password: string, resetPasswordToken: string):
       },
     });
     return Boolean(user);
-  } catch (e) {}
+  } catch (e) { /* empty */ }
   return false;
 }
-

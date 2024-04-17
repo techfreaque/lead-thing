@@ -2,7 +2,6 @@ import '@mantine/core/styles.css';
 import React from 'react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../theme';
-import './globals.css';
 import { APP_NAME } from './constants';
 import MainLayout from './components/MainLayout/MainLayout';
 
@@ -12,7 +11,7 @@ export const metadata = {
     'Get a unified and simplified API interface to create leads on many newsletter systems.',
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: any; }) {
   return (
     <html lang="en">
       <head>

@@ -28,7 +28,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       'Content-Type': 'application/json',
     };
     try {
-      const response: Response = await fetch('https://' + salesManagoSubDomain + apiContactsPath, {
+      const response: Response = await fetch(`https://${salesManagoSubDomain}${apiContactsPath}`, {
         method: 'post',
         headers,
         body: JSON.stringify({
@@ -39,36 +39,35 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
           owner: salesManagoOwner,
           contact: {
-            email: email,
+            email,
             name: `${firstname} ${lastname}`,
             address: {
               country: countryCode,
             },
           },
 
-          forceOptIn: subscriptionMode === 'FORCE_OPT_IN' ? true : false,
+          forceOptIn: subscriptionMode === 'FORCE_OPT_IN',
           ...(tag ? { tags: [tag] } : {}),
         }),
       });
       const data = await response.json();
       if (response.ok) {
         return ApiResponse(
-          'Contact successfully added and subscribed! Response: ' + JSON.stringify(data),
+          `Contact successfully added and subscribed! Response: ${JSON.stringify(data)}`,
           200
         );
-      } else {
-        return ApiResponse(
-          `Failed to add the contact. Error: ${JSON.stringify(data)} ${formatApiCallDetails({
-            firstname,
-            lastname,
-            email,
-            countryCode,
-            subscriptionMode,
-            tag,
-          })}`,
-          500
-        );
       }
+      return ApiResponse(
+        `Failed to add the contact. Error: ${JSON.stringify(data)} ${formatApiCallDetails({
+          firstname,
+          lastname,
+          email,
+          countryCode,
+          subscriptionMode,
+          tag,
+        })}`,
+        500
+      );
     } catch (error) {
       return ApiResponse(
         `Failed to add the contact with an unknown error. Error: ${error} ${formatApiCallDetails({
@@ -83,5 +82,5 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
   }
-  return await executeIfAuthenticated(request, forwardToNewsletterSystem);
+  return executeIfAuthenticated(request, forwardToNewsletterSystem);
 }

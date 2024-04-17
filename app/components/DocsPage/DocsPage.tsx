@@ -35,11 +35,6 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
   const initialValues: any = getInitialValues(systemName);
   const form = useForm({
     initialValues,
-
-    // validate: {
-    //   email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-    //   password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
-    // },
   });
   return (
     <div>

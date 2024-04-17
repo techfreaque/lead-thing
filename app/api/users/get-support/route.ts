@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import SendSupportMail from '@/app/lib/mail/sendSupportMail';
+
 interface SupportRequest {
   name: string;
   company: string | null;

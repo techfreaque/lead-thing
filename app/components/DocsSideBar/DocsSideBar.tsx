@@ -61,7 +61,7 @@ interface sideBarItem {
   }) => JSX.Element | any;
 }
 
-function SideBarItems({ items, active }: { items: sideBarItem[]; active: string }) {
+function SideBarItems({ items, active }: { items: sideBarItem[]; active: string; }) {
   return items.map((item) => (
     <Link
       className={classes.link}

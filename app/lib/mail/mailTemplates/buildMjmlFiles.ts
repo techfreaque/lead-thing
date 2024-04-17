@@ -10,11 +10,12 @@ buildTemplate('reset-password-mail');
 
 function buildTemplate(targetFileName: string) {
   const template: string = fs.readFileSync(
-    'app/lib/mail/mailTemplates/' + targetFileName + '.mjml',
+    `app/lib/mail/mailTemplates/${targetFileName}.mjml`,
     'utf8'
   );
   fs.writeFile(
-    'app/lib/mail/mailTemplates/build/' + targetFileName + '.mjml',
+    `app/lib/mail/mailTemplates/build/${targetFileName}.mjml`,
+    // eslint-disable-next-line no-template-curly-in-string
     mailTemplate.replace('${additionalContent}', template),
     (err: NodeJS.ErrnoException | null) => {
       if (err) {

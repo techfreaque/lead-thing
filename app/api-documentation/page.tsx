@@ -4,7 +4,7 @@ import { Title2SubText } from '../components/Texts/Texts';
 
 export default function DocsPage() {
   return (
-    <Container my={'xl'}>
+    <Container my="xl">
       <Title order={1} ta="center">
         Welcome to the {APP_NAME} documentation
       </Title>
