@@ -134,7 +134,7 @@ export const newsletterSystems: {
   // },
 };
 
-type RequestOptionsFieldName =
+export type RequestOptionsFieldName =
   | 'firstname'
   | 'lastname'
   | 'email'

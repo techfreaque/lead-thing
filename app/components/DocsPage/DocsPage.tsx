@@ -20,6 +20,7 @@ import { type AllPossiblePostRequestParameters } from '@/app/api/requestTypes';
 import { UserContext, UserContextType } from '@/app/lib/authentication';
 import {
   RequestOptionsData,
+  RequestOptionsFieldName,
   avialableSystemsType,
   newsletterSystems,
 } from '@/app/api/newsletterSystemConstants';
@@ -250,7 +251,7 @@ fetch('${apiURL}/${systemName}', {
         apiKey: '${exampleKey}',
         'content-type': 'application/json'
     },
-    body: JSON.stringify({${exampleData.firstname ? `\n        firstname: "${exampleData.firstname}",` : ''}${exampleData.lastname ? `\n        lastname: "${exampleData.lastname}",` : ''}${exampleData.email ? `\n        email: "${exampleData.email}",` : ''}${exampleData.ip ? `\n        ip: "${exampleData.ip}",` : ''}${exampleData.gender ? `\n        gender: "${exampleData.gender}",` : ''}${exampleData.countryCode ? `\n        countryCode: "${exampleData.countryCode}",` : ''}${exampleData.listId ? `\n        listId: "${exampleData.listId}",` : ''}${exampleData.subscriptionMode ? `\n        subscriptionMode: "${exampleData.subscriptionMode}",` : ''}${exampleData.listName ? `\n        listName: "${exampleData.listName}",` : ''}${exampleData.gender ? `\n        gender: "${exampleData.gender}",` : ''}${exampleData.listId ? `\n        listId: "${exampleData.listId}",` : ''}${exampleData.listName ? `\n        listName: "${exampleData.listName}",` : ''}${exampleData.getresponseApiKey ? `\n        getresponseApiKey: "${exampleData.getresponseApiKey}",` : ''}${exampleData.mappUsername ? `\n        mappUsername: "${exampleData.mappUsername}",` : ''}${exampleData.mappPassword ? `\n        mappPassword: "${exampleData.mappPassword}",` : ''}${exampleData.mappDomain ? `\n        mappDomain: "${exampleData.mappDomain}",` : ''}${exampleData.sailthruApiKey ? `\n        sailthruApiKey: "${exampleData.sailthruApiKey}",` : ''}${exampleData.sailthruSecret ? `\n        sailthruSecret: "${exampleData.sailthruSecret}",` : ''}${exampleData.SalesforceSubDomain ? `\n        SalesforceSubDomain: "${exampleData.SalesforceSubDomain}",` : ''}${exampleData.SalesforceClientId ? `\n        SalesforceClientId: "${exampleData.SalesforceClientId}",` : ''}${exampleData.SalesforceClientSecret ? `\n        SalesforceClientSecret: "${exampleData.SalesforceClientSecret}",` : ''}${exampleData.SalesforceAccountId ? `\n        SalesforceAccountId: "${exampleData.SalesforceAccountId}",` : ''}${exampleData.tag ? `\n        tag: "${exampleData.tag}",` : ''}${exampleData.salesManagoClientId ? `\n        salesManagoClientId: "${exampleData.salesManagoClientId}",` : ''}${exampleData.salesManagoApiKey ? `\n        salesManagoApiKey: "${exampleData.salesManagoApiKey}",` : ''}${exampleData.salesManagoSha ? `\n        salesManagoSha: "${exampleData.salesManagoSha}",` : ''}${exampleData.salesManagoSubDomain ? `\n        salesManagoSubDomain: "${exampleData.salesManagoSubDomain}",` : ''}${exampleData.salesManagoOwner ? `\n        salesManagoOwner: "${exampleData.salesManagoOwner}",` : ''}
+    body: JSON.stringify({${getParameters(exampleData)}
     })
 })
 .then((response) => {
@@ -260,6 +261,18 @@ fetch('${apiURL}/${systemName}', {
     // something went wrong
 });
   `;
+}
+
+function getParameters(exampleData: AllPossiblePostRequestParameters) {
+  return (Object.keys(exampleData) as RequestOptionsFieldName[])
+    .filter((thisFieldName) => exampleData[thisFieldName])
+    .map((thisFieldName) => getParameter(exampleData, thisFieldName));
+}
+function getParameter(
+  exampleData: AllPossiblePostRequestParameters,
+  fieldName: RequestOptionsFieldName
+) {
+  return `${exampleData[fieldName] ? `\n        ${fieldName}: "${exampleData[fieldName]}"` : ''}`;
 }
 
 async function sendExampleRequest({

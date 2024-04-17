@@ -126,6 +126,8 @@ export interface AllPossiblePostRequestParameters
     MappPostRequest,
     SailthruPostRequest,
     SalesforcePostRequest,
+    YouleadPostRequest,
+    FreshmailPostRequest,
     SalesmanagoPostRequest {
   gender: 'MALE' | 'FEMALE';
 }
