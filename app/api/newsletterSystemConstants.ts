@@ -107,12 +107,13 @@ export const newsletterSystems: {
       'firstname',
       'lastname',
       'email',
-      'mappUsername',
-      'mappPassword',
-      'mappDomain',
       'countryCode',
       'listId',
       'subscriptionMode',
+      'mappCustomAttributes',
+      'mappUsername',
+      'mappPassword',
+      'mappDomain',
     ],
   },
   salesforce: {
@@ -183,6 +184,7 @@ export type RequestOptionsFieldName =
   | 'listName'
   | 'listHash'
   | 'getresponseApiKey'
+  | 'mappCustomAttributes'
   | 'mappUsername'
   | 'mappPassword'
   | 'mappDomain'
@@ -317,6 +319,13 @@ export const RequestOptionsData: {
     value: 'MAPP_PASSWORD',
     required: true,
     description: '',
+  },
+  mappCustomAttributes: {
+    label: 'Mapp Custom Attributes',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'Prvide a comma separated list of custom attributes e.g.: user.attributeName=attributeValue, user.anottherAttribute=anotherValue',
   },
   mappDomain: {
     label: 'Mapp Domain',

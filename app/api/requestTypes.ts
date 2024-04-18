@@ -34,6 +34,7 @@ export interface MappPostRequest extends PostRequest {
   mappUsername: string;
   mappPassword: string;
   mappDomain: string;
+  mappCustomAttributes: string;
 }
 
 export interface SailthruPostRequest extends PostRequest {
@@ -158,13 +159,13 @@ export interface SalesmanagoPostRequest extends PostRequest {
 
 export interface AllPossiblePostRequestParameters
   extends GetresponsePostRequest,
-  MappPostRequest,
-  SailthruPostRequest,
-  SalesforcePostRequest,
-  YouleadPostRequest,
-  CleverreachPostRequest,
-  MailupPostRequest,
-  FreshmailPostRequest,
-  SalesmanagoPostRequest {
+    MappPostRequest,
+    SailthruPostRequest,
+    SalesforcePostRequest,
+    YouleadPostRequest,
+    CleverreachPostRequest,
+    MailupPostRequest,
+    FreshmailPostRequest,
+    SalesmanagoPostRequest {
   gender: 'MALE' | 'FEMALE';
 }

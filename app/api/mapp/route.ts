@@ -20,6 +20,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     mappUsername,
     mappPassword,
     mappDomain,
+    mappCustomAttributes,
   }: MappPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
     const headers = {
@@ -28,12 +29,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       Authorization: `Basic ${btoa(`${mappUsername}:${mappPassword}`)}`,
     };
     try {
+      const rawAttributes =
+        mappCustomAttributes && mappCustomAttributes?.replace(/, /g, ',').split(',');
+      let attributes: { name: string; value: string }[] = [];
+      if (rawAttributes) {
+        attributes = rawAttributes.map((rawAttribute) => {
+          const [attributeName, attributeValue] = rawAttribute.split('=');
+          return { name: attributeName, value: attributeValue };
+        });
+      }
       const contactPayload = {
         emailAddress: email,
         attributes: [
           { name: 'FirstName', value: firstname },
           { name: 'LastName', value: lastname },
           { name: 'user.ISOCountryCode', value: countryCode },
+          ...attributes,
         ],
       };
       const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
