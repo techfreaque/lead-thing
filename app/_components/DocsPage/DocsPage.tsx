@@ -28,6 +28,7 @@ import {
 
 export default function DocsPage({ systemName }: { systemName: avialableSystemsType; }) {
   const { user } = useContext(UserContext) as UserContextType;
+  const [isSending, setIsSending] = useState<boolean>(false);
   const exampleKey = user?.apiKey || `Sign in  to get your ${APP_NAME.toUpperCase()} API key`;
   const [response, setResponse] = useState<
     { state: 'success' | 'error'; message: string; } | undefined
@@ -102,7 +103,7 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
           <Button
             mb={20}
             fullWidth
-            disabled={!user}
+            disabled={!user || isSending}
             my="xl"
             onClick={() =>
               sendExampleRequest({
@@ -110,6 +111,7 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
                 systemName,
                 exampleData: form.values,
                 setResponse,
+                setIsSending,
               })
             }
           >
@@ -122,6 +124,11 @@ export default function DocsPage({ systemName }: { systemName: avialableSystemsT
               exampleKey,
             })}
             jsCode={getJsCodeExample({
+              systemName,
+              exampleData: form.values,
+              exampleKey,
+            })}
+            jsonCode={getExampleDescription({
               systemName,
               exampleData: form.values,
               exampleKey,
@@ -146,85 +153,15 @@ function getCurlCodeExample({
   exampleKey,
 }: {
   systemName: string;
-  exampleData: AllPossiblePostRequestParameters; //  TODO
+  exampleData: AllPossiblePostRequestParameters;
   exampleKey: string;
 }): string {
   const _exampleData: any = {};
-  if (exampleData.firstname) {
-    _exampleData.firstname = exampleData.firstname;
-  }
-  if (exampleData.lastname) {
-    _exampleData.lastname = exampleData.lastname;
-  }
-  if (exampleData.email) {
-    _exampleData.email = exampleData.email;
-  }
-  if (exampleData.ip) {
-    _exampleData.ip = exampleData.ip;
-  }
-  if (exampleData.gender) {
-    _exampleData.gender = exampleData.gender;
-  }
-  if (exampleData.countryCode) {
-    _exampleData.countryCode = exampleData.countryCode;
-  }
-  if (exampleData.listId) {
-    _exampleData.listId = exampleData.listId;
-  }
-  if (exampleData.subscriptionMode) {
-    _exampleData.subscriptionMode = exampleData.subscriptionMode;
-  }
-  if (exampleData.listName) {
-    _exampleData.listName = exampleData.listName;
-  }
-  if (exampleData.getresponseApiKey) {
-    _exampleData.getresponseApiKey = exampleData.getresponseApiKey;
-  }
-  if (exampleData.mappUsername) {
-    _exampleData.mappUsername = exampleData.mappUsername;
-  }
-  if (exampleData.mappPassword) {
-    _exampleData.mappPassword = exampleData.mappPassword;
-  }
-  if (exampleData.mappDomain) {
-    _exampleData.mappDomain = exampleData.mappDomain;
-  }
-  if (exampleData.sailthruApiKey) {
-    _exampleData.sailthruApiKey = exampleData.sailthruApiKey;
-  }
-  if (exampleData.sailthruSecret) {
-    _exampleData.sailthruSecret = exampleData.sailthruSecret;
-  }
-  if (exampleData.SalesforceSubDomain) {
-    _exampleData.SalesforceSubDomain = exampleData.SalesforceSubDomain;
-  }
-  if (exampleData.SalesforceClientId) {
-    _exampleData.SalesforceClientId = exampleData.SalesforceClientId;
-  }
-  if (exampleData.SalesforceClientSecret) {
-    _exampleData.SalesforceClientSecret = exampleData.SalesforceClientSecret;
-  }
-  if (exampleData.SalesforceAccountId) {
-    _exampleData.SalesforceAccountId = exampleData.SalesforceAccountId;
-  }
-  if (exampleData.tag) {
-    _exampleData.tag = exampleData.tag;
-  }
-  if (exampleData.salesManagoClientId) {
-    _exampleData.salesManagoClientId = exampleData.salesManagoClientId;
-  }
-  if (exampleData.salesManagoApiKey) {
-    _exampleData.salesManagoApiKey = exampleData.salesManagoApiKey;
-  }
-  if (exampleData.salesManagoSha) {
-    _exampleData.salesManagoSha = exampleData.salesManagoSha;
-  }
-  if (exampleData.salesManagoSubDomain) {
-    _exampleData.salesManagoSubDomain = exampleData.salesManagoSubDomain;
-  }
-  if (exampleData.salesManagoOwner) {
-    _exampleData.salesManagoOwner = exampleData.salesManagoOwner;
-  }
+  Object.entries(exampleData).forEach(([key, value]) => {
+    if ((exampleData as any)[key]) {
+      _exampleData[key] = value;
+    }
+  });
   return `
 curl "${apiURL}/${systemName}" \\
     -X POST \\
@@ -262,6 +199,29 @@ fetch('${apiURL}/${systemName}', {
   `;
 }
 
+function getExampleDescription({
+  exampleKey,
+  systemName,
+  exampleData,
+}: {
+  exampleKey: string;
+  systemName: string;
+  exampleData: AllPossiblePostRequestParameters;
+}): string {
+  return `
+{
+    url: '${apiURL}/${systemName}',
+    method: 'POST',
+    headers: {
+        apiKey: '${exampleKey}',
+        'content-type': 'application/json'
+    },
+    body: {${getParameters(exampleData)}
+    }
+}
+  `;
+}
+
 function getParameters(exampleData: AllPossiblePostRequestParameters) {
   return (Object.keys(exampleData) as RequestOptionsFieldName[])
     .filter((thisFieldName) => exampleData[thisFieldName])
@@ -279,6 +239,7 @@ async function sendExampleRequest({
   systemName,
   exampleData,
   setResponse,
+  setIsSending,
 }: {
   exampleKey: string;
   systemName: string;
@@ -286,7 +247,9 @@ async function sendExampleRequest({
   setResponse: Dispatch<
     SetStateAction<{ state: 'success' | 'error'; message: string; } | undefined>
   >;
+  setIsSending: Dispatch<SetStateAction<boolean>>;
 }) {
+  setIsSending(true);
   try {
     const response = await fetch(`${apiURL}/${systemName}`, {
       method: 'POST',
@@ -314,4 +277,5 @@ async function sendExampleRequest({
       message: `Failed to create the lead: Error: ${JSON.stringify(error)}`,
     });
   }
+  setIsSending(false);
 }

@@ -19,6 +19,7 @@ import { SupportRequest, sendSupportRequest } from '@/app/_server/sendSupportReq
 
 export default function GetInTouch() {
   const { user } = useContext(UserContext) as UserContextType;
+  const [isSending, setIsSending] = useState<boolean>(false);
   const [response, setResponse] = useState<boolean | undefined>();
   const form = useForm({
     initialValues: {
@@ -42,6 +43,7 @@ export default function GetInTouch() {
     },
   });
   async function onSubmit() {
+    setIsSending(true);
     const data: SupportRequest = user
       ? {
         name: user.name,
@@ -63,6 +65,7 @@ export default function GetInTouch() {
       };
     const success = await sendSupportRequest(data);
     setResponse(success);
+    setIsSending(false);
   }
   return (
     <Container size="lg" id="contact" mb={60} mt={60}>
@@ -166,7 +169,7 @@ export default function GetInTouch() {
           />
 
           <Group justify="center" mt="xl">
-            <Button type="submit" size="md">
+            <Button type="submit" disabled={isSending} size="md">
               Send message
             </Button>
           </Group>

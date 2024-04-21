@@ -35,6 +35,7 @@ import { register } from '@/app/_server/register';
 
 export default function Signup({ type }: { type: 'login' | 'register'; }) {
   const [_type, setType] = useState<'login' | 'register'>(type);
+  const [isSending, setIsSending] = useState<boolean>(false);
   const [message, setMessage] = useState<{
     status: 'none' | 'error' | 'info';
     title: string;
@@ -75,6 +76,7 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
     },
   });
   async function onSubmit() {
+    setIsSending(true);
     if (_type === 'login') {
       const loginResponse = await getLogin({
         email: form.values.email,
@@ -130,6 +132,7 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
         });
       }
     }
+    setIsSending(false);
   }
 
   useEffect(() => {
@@ -153,7 +156,7 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
         ) : (
           <>
             Do not have an account yet?{' '}
-            <Link href={registerPath} style={{ textDecoration: 'none' }}>
+            <Link href={registerPath} onClick={() => setType('register')} style={{ textDecoration: 'none' }}>
               <Anchor size="sm" component="button">
                 Create account
               </Anchor>
@@ -275,13 +278,13 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
                 </Anchor>
               </Link>
             )}
-            <Button type="submit" radius="xl" disabled={_type === 'register' && !form.values.terms}>
+            <Button type="submit" radius="xl" disabled={(_type === 'register' && !form.values.terms) || isSending}>
               {_type === 'register' ? 'Create account' : 'Login'}
             </Button>
           </Group>
         </form>
       </Paper>
-    </Container>
+    </Container >
   );
 }
 
