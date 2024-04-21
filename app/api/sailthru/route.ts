@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import MD5 from 'crypto-js/md5';
 import type { SailthruPostRequest } from '../requestTypes';
-import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const apiContactsPath = 'https://api.sailthru.com/user';
 

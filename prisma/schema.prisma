@@ -24,20 +24,29 @@ model User {
   resetPasswordTokenTime DateTime?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
-  apiKeyValidUntil       DateTime?
   apiKey                 String    @unique
-  billingPeriodDay       Int
-  apiCallsPerMonth       Int?
-  apiCallsInThisPeriod   Int       @default(0)
 }
 
 model Orders {
-  id            String    @id @default(uuid())
-  email         String
-  createdAt     DateTime  @default(now())
-  payedAt       DateTime?
-  validUntil    DateTime?
-  paymentStatus String    @default("unpaid")
-  productId     String
-  amount        Float
+  transactionId  String    @id @default(uuid())
+  subscriptionId String?
+  email          String
+  createdAt      DateTime  @default(now())
+  payedAt        DateTime?
+  validUntil     DateTime?
+  paymentStatus  String    @default("unpaid")
+  productId      String
+  amount         Float
+}
+
+model ApiPeriods {
+  id                   String   @id @default(uuid())
+  orderId              String
+  email                String
+  createdAt            DateTime @default(now())
+  validFrom            DateTime
+  validUntil           DateTime
+  productId            String
+  apiCallsPerMonth     Int
+  apiCallsInThisPeriod Int      @default(0)
 }

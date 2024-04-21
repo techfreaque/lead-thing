@@ -9,7 +9,7 @@ import {
   YouleadIcon,
   CleverreachIcon,
   MailupIcon,
-} from '../components/Icons/Icons';
+} from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
   | 'getresponse'

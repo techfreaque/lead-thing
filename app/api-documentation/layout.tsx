@@ -1,5 +1,5 @@
 import React from 'react';
-import DocsSideBar from '../components/DocsSideBar/DocsSideBar';
+import DocsSideBar from '../_components/DocsSideBar/DocsSideBar';
 
 import '@mantine/code-highlight/styles.css';
 

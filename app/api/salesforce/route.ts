@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
+import executeIfAuthenticated from '../../_server/apiHelpers';
 import type { SalesforcePostRequest } from '../requestTypes';
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const authPath = '.rest.marketingcloudapis.com/v2/token';
 const apiContactsPath = '.rest.marketingcloudapis.com/contacts/v1/contacts';

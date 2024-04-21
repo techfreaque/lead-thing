@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { MappPostRequest } from '../requestTypes';
-import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const apiContactsPath = '/api/rest/v19/contact/create';
 const apiSubscribePath = '/api/rest/v19/membership/subscribeByEmail';
@@ -31,7 +32,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
       const rawAttributes =
         mappCustomAttributes && mappCustomAttributes?.replace(/, /g, ',').split(',');
-      let attributes: { name: string; value: string }[] = [];
+      let attributes: { name: string; value: string; }[] = [];
       if (rawAttributes) {
         attributes = rawAttributes.map((rawAttribute) => {
           const [attributeName, attributeValue] = rawAttribute.split('=');
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const data = await response.json();
       if (response.ok) {
         const subscribeResponse: Response = await fetch(
-          `https://${mappDomain}${apiSubscribePath}?email=${email}&groupId=${parseInt(String(listId))}&subscriptionMode=${subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode}`,
+          `https://${mappDomain}${apiSubscribePath}?email=${email}&groupId=${parseInt(String(listId), 10)}&subscriptionMode=${subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode}`,
           {
             method: 'post',
             headers,

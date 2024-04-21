@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import sha1 from 'crypto-js/sha1';
 import type { FreshmailPostRequest } from '../requestTypes';
-import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const apiContactsUrl = 'https://api.freshmail.com/rest/subscriber/add';
 

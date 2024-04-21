@@ -1,8 +1,7 @@
-import HomeHero from '@/app/components/HomeHero/HomeHero';
-import HomeFeatures from '@/app/components/HomeFeatures/HomeFeatures';
-import GetInTouch from '@/app/components/GetInTouch/GetInTouch';
-import Faq from '@/app/components/Faq/Faq';
-import SubscriptionTiersSection from './components/SubscriptionTiers/SubscriptionTiers';
+import HomeHero from '@/app/_components/HomeHero/HomeHero';
+import HomeFeatures from '@/app/_components/HomeFeatures/HomeFeatures';
+import GetInTouch from '@/app/_components/GetInTouch/GetInTouch';
+import SubscriptionTiersSection from './_components/SubscriptionTiers/SubscriptionTiers';
 
 export default function HomePage() {
   return (

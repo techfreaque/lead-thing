@@ -7,7 +7,8 @@ const withBundleAnalyzer = bundleAnalyzer({
 export default withBundleAnalyzer({
   reactStrictMode: false,
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
+    
   },
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
@@ -21,5 +22,5 @@ export default withBundleAnalyzer({
     SEND_EMAIL_PASSWORD: process.env.SEND_EMAIL_PASSWORD,
     PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET,
     PAYPAL_API_URL: process.env.PAYPAL_API_URL,
-},
+  },
 });

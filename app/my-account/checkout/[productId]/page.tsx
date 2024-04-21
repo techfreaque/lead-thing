@@ -6,34 +6,36 @@ import {
   PayPalButtons,
   ReactPayPalScriptOptions,
 } from '@paypal/react-paypal-js';
-import type { OnApproveData, OnApproveActions } from '@paypal/paypal-js/types/components/buttons';
+import type { OnApproveData } from '@paypal/paypal-js/types/components/buttons';
 import { IconCircleCheck, IconInfoCircle } from '@tabler/icons-react';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { RedirectType, redirect } from 'next/navigation';
-import { UserContext, UserContextType, UserType } from '@/app/lib/authentication';
+import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
 import {
   mySubscriptionUrl,
   subscriptionTierIdType,
   subscriptionTierType,
   subscriptionTiers,
-} from '@/app/constants';
-import { captureRequestBody } from '@/app/api/users/checkout/captureOrder/[orderId]/route';
+} from '@/app/_lib/constants';
+import { createSubscription } from '@/app/_server/paypal/subscription';
+import { getTotalPriceForSubscription } from '@/app/_lib/helpers';
+import { markOrderAsPaid } from '@/app/_server/orders';
 
 const initialOptions: ReactPayPalScriptOptions = {
-  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
-  'enable-funding': 'venmo,card',
-  'disable-funding': 'paylater',
+  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
+  'enable-funding': 'paylater,card',
+  'disable-funding': '',
   'data-sdk-integration-source': 'integrationbuilder_sc',
+  vault: 'true',
+  intent: 'subscription',
   currency: 'EUR',
-
   // debug: true,
 };
-// TODO https://developer.paypal.com/integration-builder/
 export default function Checkout({ params }: { params: { productId: subscriptionTierIdType; }; }) {
   const productToOrder: subscriptionTierType = subscriptionTiers[params.productId];
   const { user } = useContext(UserContext) as UserContextType;
   const [message, setMessage] = useState<string | undefined>();
-
+  const { isYearly, totalPrice } = getTotalPriceForSubscription(productToOrder);
   return (
     user && (
       <Container my="xl">
@@ -58,15 +60,14 @@ export default function Checkout({ params }: { params: { productId: subscription
                 <Title order={5}>Subscription Tier: {productToOrder.title}</Title>
               </List.Item>
               <List.Item>
-                <Title order={5}>Subscription Duration: 1 year</Title>
+                <Title order={5}>Subscription Duration: {isYearly ? '1 year' : '1 month'}</Title>
               </List.Item>
               <List.Item>
                 <Title order={5}>API Calls per Month: {productToOrder.apiCalls}</Title>
               </List.Item>
               <List.Item>
                 <Title order={5}>
-                  Total amount due now: {(productToOrder.price * 12).toFixed(2)}€ (
-                  {productToOrder.price}€ / month)
+                  Total amount due now: {totalPrice}€ {isYearly ? `(${productToOrder.price}€ / month)` : ''}
                 </Title>
               </List.Item>
             </List>
@@ -112,65 +113,50 @@ function Paypal({
   useEffect(() => {
     success && redirect(`${mySubscriptionUrl}?payment=success`, RedirectType.replace);
   }, [success]);
-  async function onCreateOrder(): Promise<string> {
+  async function onCreateSubscription() {
     try {
-      const response = await fetch('/api/users/checkout/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // use the "body" param to optionally pass additional order information
-        // like product ids and quantities
-        body: JSON.stringify({ subscription: productToOrder, email: user.email }),
-      });
-      const orderData = await response.json();
-      if (orderData.id) {
-        return orderData.id;
+      const data = await createSubscription(productToOrder, user.email);
+      if (data?.id) {
+        setMessage('Successful subscription...');
+        return data.id;
       }
-      const errorDetail = orderData?.details?.[0];
-      const errorMessage = errorDetail
-        ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-        : JSON.stringify(orderData);
-
-      throw new Error(errorMessage);
+      const errorDetail = data?.details?.[0];
+      setMessage(
+        `Could not initiate PayPal Subscription...<br><br>${errorDetail?.issue || ''
+        } ${errorDetail?.description || data?.message || ''} ${data?.debug_id ? `(${data.debug_id})` : ''}`,
+      );
     } catch (error) {
-      console.error(error);
-      setMessage(`Could not initiate PayPal Checkout...${error}`);
-      throw new Error(`${error}`);
+      setMessage(`Could not initiate PayPal Subscription...${error}`);
     }
+    return undefined;
   }
-  async function onApprove(data: OnApproveData, actions: OnApproveActions): Promise<void> {
-    try {
-      const response = await fetch(`/api/users/checkout/captureOrder/${data.orderID}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: user.email } as captureRequestBody),
-      });
-      const orderData = await response.json();
-      // Three cases to handle:
-      //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-      //   (2) Other non-recoverable errors -> Show a failure message
-      //   (3) Successful transaction -> Show confirmation or thank you message
-      const errorDetail = orderData?.details?.[0];
-      if (errorDetail?.issue === 'INSTRUMENT_DECLINED') {
-        // (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-        // recoverable state, per https://developer.paypal.com/docs/checkout/standard/customize/handle-funding-failures/
-        return actions.restart();
+  async function onApprove(data: OnApproveData) {
+    /*
+      No need to activate manually since SUBSCRIBE_NOW is being used.
+      Learn how to handle other user actions from our docs:
+      https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_create
+    */
+    if (data.subscriptionID) {
+      try {
+        await markOrderAsPaid({
+          email: user.email,
+          subscriptionId: data.subscriptionID,
+          transactionId: data.orderID,
+          productId: productToOrder.productId,
+        });
+      } catch (error) {
+        setMessage(
+          `Failed to mark the subscription as paid: ${data.subscriptionID}`,
+        );
       }
-      if (errorDetail) {
-        // (2) Other non-recoverable errors -> Show a failure message
-        throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
-      } else {
-        // (3) Successful transaction -> Show confirmation or thank you message
-        // Or go to another URL:  actions.redirect('thank_you.html');
-        // const transaction = orderData.purchase_units[0].payments.captures[0];
-        setSuccess(true);
-      }
-    } catch (error) {
-      console.error(error);
-      setMessage(`Sorry, your transaction could not be processed...${error}`);
+      setSuccess(true);
+      setMessage(
+        `You have successfully subscribed to the plan. Your subscription id is: ${data.subscriptionID}`,
+      );
+    } else {
+      setMessage(
+        `Failed to activate the subscription: ${data.subscriptionID}`,
+      );
     }
     return undefined;
   }
@@ -181,7 +167,7 @@ function Paypal({
           shape: 'rect',
           disableMaxWidth: false,
         }}
-        createOrder={onCreateOrder}
+        createSubscription={onCreateSubscription}
         onApprove={onApprove}
       />
     </div>

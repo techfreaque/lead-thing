@@ -5,10 +5,10 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { RedirectType, redirect } from 'next/navigation';
-import classes from '../../components/ResetPassword/ResetPassword.module.css';
-import { isTokenValid, setPassword } from '@/app/lib/resetPassword';
-import { TitleUserForm } from '@/app/components/Texts/Texts';
-import { resetSuccessPath } from '@/app/constants';
+import classes from '../../_components/ResetPassword/ResetPassword.module.css';
+import { isTokenValid, setPassword } from '@/app/_server/resetPassword';
+import { TitleUserForm } from '@/app/_components/Texts/Texts';
+import { resetSuccessPath } from '@/app/_lib/constants';
 
 export default function ConfirmPasswordReset({ params }: { params: { resetToken: string; }; }) {
   const [tokenIsValid, setTokenIsValid] = useState<boolean | undefined>(undefined);

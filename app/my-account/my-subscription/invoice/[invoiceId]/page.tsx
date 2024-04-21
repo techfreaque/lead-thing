@@ -2,10 +2,10 @@
 
 import { PDFViewer } from '@react-pdf/renderer';
 import { useContext, useEffect, useState } from 'react';
-import InvoiceGenerator, { Invoice } from '@/app/components/InvoiceGenerator/InvoiceGenerator';
-import { subscriptionTiers } from '@/app/constants';
-import { UserContext, UserContextType } from '@/app/lib/authentication';
-import { getOrder } from '@/app/lib/orders';
+import InvoiceGenerator, { Invoice } from '@/app/_components/InvoiceGenerator/InvoiceGenerator';
+import { subscriptionTiers } from '@/app/_lib/constants';
+import { UserContext, UserContextType } from '@/app/_context/authentication';
+import { getOrder } from '@/app/_server/orders';
 
 export default function InvoicePage({ params }: { params: { invoiceId: string; }; }) {
   const [invoice, setInvoice] = useState<Invoice | undefined>();
@@ -13,7 +13,7 @@ export default function InvoicePage({ params }: { params: { invoiceId: string; }
 
   useEffect(() => {
     user &&
-      getOrder(user.email, params.invoiceId).then((order) =>
+      getOrder({ email: user.email, transactionId: params.invoiceId }).then((order) =>
         setInvoice({
           invoice_no: params.invoiceId,
           trans_date: (order.payedAt || new Date()).toDateString(),
@@ -22,7 +22,7 @@ export default function InvoicePage({ params }: { params: { invoiceId: string; }
               qty: 1,
               rate: order.amount,
               sno: order.productId,
-              desc: `${subscriptionTiers[order.productId].title} Subscription - 12 Months`,
+              desc: `${subscriptionTiers[order.productId].title} Subscription`,
             },
           ],
           company: `${user.company}`,

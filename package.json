@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "build-mjml": "ts-node app/lib/mail/mailTemplates/buildMjmlFiles.ts && mjml app/lib/mail/mailTemplates/build/support-mail.mjml -o app/lib/mail/mailTemplates/build/support-mail.html && mjml app/lib/mail/mailTemplates/build/reset-password-mail.mjml -o app/lib/mail/mailTemplates/build/reset-password-mail.html",
+    "build-mjml": "ts-node app/_server/mail/mailTemplates/buildMjmlFiles.ts && mjml app/_server/mail/mailTemplates/mail-template.mjml -o app/_server/mail/mailTemplates/build/mail-template.html && mjml app/_server/mail/mailTemplates/build/support-mail.mjml -o app/_server/mail/mailTemplates/build/support-mail.html && mjml app/_server/mail/mailTemplates/build/reset-password-mail.mjml -o app/_server/mail/mailTemplates/build/reset-password-mail.html",
     "migrate-db": "prisma migrate dev",
     "seed-db": "prisma db seed",
     "reset-db": "prisma migrate reset",

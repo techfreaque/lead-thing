@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { CleverreachPostRequest } from '../requestTypes';
-import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const apiContactsUrl = 'https://rest.cleverreach.com/groups/{group_id}/receivers';
 const oAuthUrl = 'https://rest.cleverreach.com/oauth/token.php';

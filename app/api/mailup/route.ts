@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { MailupPostRequest } from '../requestTypes';
-import executeIfAuthenticated, { ApiResponse, formatApiCallDetails } from '../apiHelpers';
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const apiContactsUrl = 'https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/List/{list_id}/Recipient';
 const oAuthUrl = 'https://services.mailup.com/Authorization/OAuth/Token';
