@@ -33,7 +33,7 @@ export default function InvoicePage({ params }: { params: { invoiceId: string; }
   }, [user]);
   return (
     invoice && (
-      <PDFViewer width="1000" height="600" className="app">
+      <PDFViewer width="1000" height="1410" className="app">
         <InvoiceGenerator invoice={invoice} />
       </PDFViewer>
     )

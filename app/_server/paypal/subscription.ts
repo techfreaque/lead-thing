@@ -132,11 +132,11 @@ async function createSubscriptionBillingPlan(
                     {
                         frequency: {
                             interval_unit: isYearly ? 'YEAR' : 'MONTH',
-                            interval_count: 1,
+                            // interval_count: isYearly ? 10 : 99,
                         },
                         tenure_type: 'REGULAR',
                         sequence: 1,
-                        // total_cycles: 12,
+                        total_cycles: isYearly ? 10 : 99,
                         pricing_scheme: {
                             fixed_price: {
                                 value: totalPrice,
