@@ -37,6 +37,7 @@ export type subscriptionTierIdType =
   | 'monthly_pro'
   | 'monthly_enterprise'
   | 'monthly_ultimate'
+  | 'testingy'
   | 'testing';
 
 export type subscriptionDurationsType = 'yearly' | 'monthly';
@@ -148,12 +149,22 @@ export const subscriptionTiers: subscriptionTiersType = {
   },
   testing: {
     productId: 'testing',
-    title: 'Testing',
+    title: 'Testing Monthly',
     price: 1,
     rebatePercent: 0,
     apiCalls: 120,
     canBeSold: true,
     billingPeriod: ['monthly'],
+    isTesting: true,
+  },
+  testingy: {
+    productId: 'testingy',
+    title: 'Testing Yearly',
+    price: 0.1,
+    rebatePercent: 0,
+    apiCalls: 120,
+    canBeSold: true,
+    billingPeriod: ['yearly'],
     isTesting: true,
   },
 };
