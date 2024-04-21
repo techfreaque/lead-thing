@@ -21,7 +21,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             }
         );
     } catch (error) {
-        console.log("dfdf", JSON.stringify(error, Object.getOwnPropertyNames(error)));
         return new NextResponse(
             JSON.stringify(error, Object.getOwnPropertyNames(error)),
             {

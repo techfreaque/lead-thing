@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Page, Document, Image, StyleSheet, View, Text } from '@react-pdf/renderer';
 import logo from './leadThingLogo.png';
+import { APP_NAME } from '@/app/_lib/constants';
 
 const styles = StyleSheet.create({
   page: {
@@ -43,6 +44,7 @@ export default function InvoiceGenerator({ invoice }: { invoice: Invoice; }) {
         <BillTo invoice={invoice} />
         <InvoiceItemsTable invoice={invoice} />
         <InvoiceThankYouMsg />
+        <Footer />
       </Page>
     </Document>
   );
@@ -331,5 +333,37 @@ const thanksStyles = StyleSheet.create({
 const InvoiceThankYouMsg = () => (
   <View style={thanksStyles.titleContainer}>
     <Text style={thanksStyles.reportTitle}>Thank you for your purchase</Text>
+  </View>
+);
+
+const footerStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    // flexDirection: 'row',
+    alignItems: 'center',
+  },
+  row: {
+    width: '50%',
+  },
+});
+const Footer = () => (
+  <View style={footerStyles.container}>
+    <Text style={footerStyles.row}>{APP_NAME}<br /></Text>
+    <Text style={footerStyles.row}>
+      {process.env.NEXT_PUBLIC_SUPPORT_EMAIL}
+    </Text>
+    <Text style={footerStyles.row}>
+      HANOVIA HOUSE, 30 EASTMAN ROAD
+    </Text>
+    <Text style={footerStyles.row}>
+      LONDON, W3 7YG
+    </Text>
+    <Text style={footerStyles.row}>
+      VAT Number: GB 431616518
+    </Text>
   </View>
 );

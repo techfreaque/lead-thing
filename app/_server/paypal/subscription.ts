@@ -16,9 +16,9 @@ export async function createSubscription(product: subscriptionTierType, email: s
         if (success) {
             return jsonResponse;
         }
-        throw new Error(`"Failed to create order:${jsonResponse.replace(/"/g, "").replace(/{/g, '').replace(/}/g, '').replace(/:/g, ' ')})}"`);
+        throw new Error(`Failed to create order: ${jsonResponse}`);
     } catch (error) {
-        throw new Error(`"Failed to create order: ${String(error).replace(/"/g, "").replace(/{/g, '').replace(/}/g, '').replace(/:/g, ' ')})}"`);
+        throw new Error(`Failed to create order: ${error}`);
     }
 }
 
@@ -34,7 +34,6 @@ const _createSubscription = async (product: subscriptionTierType, email: string)
         Number(totalPrice)
     );
     const accessToken = await generateAccessToken();
-    console.log(accessToken);
     const { jsonResponse: createdPaypalProduct, success }
         = await createSubscriptionProduct(accessToken, product);
     if (success) {
