@@ -12,11 +12,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         product,
         email,
     }: startPaymentBody = await request.json();
-    const data = await createSubscription(product, email);
-    return new NextResponse(
-        JSON.stringify(data),
-        {
-            status: 200,
-        }
-    );
+    try {
+        const data = await createSubscription(product, email);
+        return new NextResponse(
+            JSON.stringify({ data }),
+            {
+                status: 200,
+            }
+        );
+    } catch (error) {
+        console.log("dfdf", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        return new NextResponse(
+            JSON.stringify(error, Object.getOwnPropertyNames(error)),
+            {
+                status: 500,
+            }
+        );
+    }
 }

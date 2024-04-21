@@ -16,9 +16,9 @@ export async function createSubscription(product: subscriptionTierType, email: s
         if (success) {
             return jsonResponse;
         }
-        throw new Error('Failed to create order:', jsonResponse);
+        throw new Error(`"Failed to create order:${jsonResponse.replace(/"/g, "").replace(/{/g, '').replace(/}/g, '').replace(/:/g, ' ')})}"`);
     } catch (error) {
-        throw new Error(`Failed to create order: ${error}`);
+        throw new Error(`"Failed to create order: ${String(error).replace(/"/g, "").replace(/{/g, '').replace(/}/g, '').replace(/:/g, ' ')})}"`);
     }
 }
 
@@ -34,6 +34,7 @@ const _createSubscription = async (product: subscriptionTierType, email: string)
         Number(totalPrice)
     );
     const accessToken = await generateAccessToken();
+    console.log(accessToken);
     const { jsonResponse: createdPaypalProduct, success }
         = await createSubscriptionProduct(accessToken, product);
     if (success) {
@@ -81,13 +82,13 @@ async function createActualSubscription(accessToken: string, createdPaypalBillin
         });
         return await handleResponse(response);
     } catch (error) {
-        throw new Error();
+        throw new Error(`Failed to create subscription: ${JSON.stringify(error)}`);
     }
 }
 
 async function createSubscriptionProduct(accessToken: string, product: subscriptionTierType) {
     try {
-        const response = await fetch('https://api-m.sandbox.paypal.com/v1/catalogs/products', {
+        const response = await fetch(`${serverRuntimeConfig.PAYPAL_API_URL}/v1/catalogs/products`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ async function createSubscriptionProduct(accessToken: string, product: subscript
         });
         return await handleResponse(response);
     } catch (error) {
-        throw new Error(`Failed to create the product: ${error}`);
+        throw new Error(`Failed to create the product: ${JSON.stringify(error)}`);
     }
 }
 
@@ -117,7 +118,7 @@ async function createSubscriptionBillingPlan(
     totalPrice: number
 ) {
     try {
-        const response = await fetch('https://api-m.sandbox.paypal.com/v1/billing/plans', {
+        const response = await fetch(`${serverRuntimeConfig.PAYPAL_API_URL}/v1/billing/plans`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,6 +163,6 @@ async function createSubscriptionBillingPlan(
         });
         return await handleResponse(response);
     } catch (error) {
-        throw new Error(`Failed to create the billing plan : ${error}`);
+        throw new Error(`Failed to create the billing plan : ${JSON.stringify(error)}`);
     }
 }

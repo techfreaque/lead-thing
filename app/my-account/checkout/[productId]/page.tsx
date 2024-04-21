@@ -124,14 +124,12 @@ function Paypal({
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      if (data?.id) {
+      if (data?.data?.id) {
         setMessage('Successful subscription...');
-        return data.id;
+        return data.data.id;
       }
-      const errorDetail = data?.details?.[0];
       setMessage(
-        `Could not initiate PayPal Subscription...<br><br>${errorDetail?.issue || ''
-        } ${errorDetail?.description || data?.message || ''} ${data?.debug_id ? `(${data.debug_id})` : ''}`,
+        `Could not initiate PayPal Subscription...${JSON.stringify(data)}`,
       );
     } catch (error) {
       setMessage(`Could not initiate PayPal Subscription...${error}`);
