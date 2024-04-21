@@ -100,6 +100,7 @@ export function SubscriptionTiers({
         )}
         <Suspense>
           <TestingProduct
+            subscriptionDuration={subscriptionDuration}
             currentSubscription={currentSubscription}
             user={user}
             canUpgrade={canUpgrade}
@@ -200,17 +201,18 @@ function TestingProduct({
   user,
   canUpgrade,
   isSubscriptionPage,
+  subscriptionDuration,
 }: {
   canUpgrade: boolean;
   user: UserType | undefined;
   isSubscriptionPage?: boolean;
   currentSubscription: apiPeriodType | undefined;
+  subscriptionDuration: subscriptionDurationsType;
 }) {
   const searchParams = useSearchParams();
   const isTesting = Boolean(searchParams.get('testing'));
-  return (
-    isSubscriptionPage &&
-    isTesting && (
+  return isSubscriptionPage && isTesting && (
+    subscriptionDuration === 'monthly' ? (
       <SubscriptionTier
         key={subscriptionTiers.testing.productId}
         active={currentSubscription?.productId === subscriptionTiers.testing.productId}
@@ -222,6 +224,19 @@ function TestingProduct({
         price={subscriptionTiers.testing.price}
         rebatePercent={subscriptionTiers.testing.rebatePercent}
         apiCalls={subscriptionTiers.testing.apiCalls}
+      />
+    ) : (
+      <SubscriptionTier
+        key={subscriptionTiers.testingy.productId}
+        active={currentSubscription?.productId === subscriptionTiers.testingy.productId}
+        productId={subscriptionTiers.testingy.productId}
+        user={user}
+        canUpgrade={canUpgrade}
+        isSubscriptionPage={isSubscriptionPage}
+        title={subscriptionTiers.testingy.title}
+        price={subscriptionTiers.testingy.price}
+        rebatePercent={subscriptionTiers.testingy.rebatePercent}
+        apiCalls={subscriptionTiers.testingy.apiCalls}
       />
     )
   );
