@@ -17,9 +17,9 @@ import {
   subscriptionTierType,
   subscriptionTiers,
 } from '@/app/_lib/constants';
-import { createSubscription } from '@/app/_server/paypal/subscription';
 import { getTotalPriceForSubscription } from '@/app/_lib/helpers';
-import { markOrderAsPaid } from '@/app/_server/orders';
+import { markAsPaidBody } from '@/app/_server/orders';
+import { startPaymentBody } from '@/app/api/user/payment/create/route';
 
 const initialOptions: ReactPayPalScriptOptions = {
   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
@@ -115,7 +115,15 @@ function Paypal({
   }, [success]);
   async function onCreateSubscription() {
     try {
-      const data = await createSubscription(productToOrder, user.email);
+      const payload: startPaymentBody = {
+        product: productToOrder,
+        email: user.email,
+      };
+      const response = await fetch('/api/user/payment/create', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
       if (data?.id) {
         setMessage('Successful subscription...');
         return data.id;
@@ -138,11 +146,15 @@ function Paypal({
     */
     if (data.subscriptionID) {
       try {
-        await markOrderAsPaid({
+        const payload: markAsPaidBody = {
           email: user.email,
           subscriptionId: data.subscriptionID,
           transactionId: data.orderID,
           productId: productToOrder.productId,
+        };
+        await fetch('/api/user/payment/confirm', {
+          method: 'POST',
+          body: JSON.stringify(payload),
         });
       } catch (error) {
         setMessage(

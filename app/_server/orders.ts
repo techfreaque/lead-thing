@@ -80,17 +80,19 @@ export async function updateToPaypalOrderId({
   return order as UnpaidOrderType;
 }
 
+export interface markAsPaidBody {
+  email: string,
+  transactionId: string;
+  subscriptionId: string,
+  productId: subscriptionTierIdType;
+}
+
 export async function markOrderAsPaid({
   email,
   transactionId,
   subscriptionId,
   productId,
-}: {
-  email: string,
-  transactionId: string;
-  subscriptionId: string,
-  productId: subscriptionTierIdType;
-}): Promise<PaidOrderType> {
+}: markAsPaidBody): Promise<PaidOrderType> {
   const subscriptionTier: subscriptionTierType = subscriptionTiers[productId];
   const order = await prisma.orders.update({
     where: {
