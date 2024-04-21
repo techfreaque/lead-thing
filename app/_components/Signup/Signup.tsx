@@ -75,7 +75,7 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
     },
   });
   async function onSubmit() {
-    if (_type === 'register') {
+    if (_type === 'login') {
       const loginResponse = await getLogin({
         email: form.values.email,
         password: form.values.password,

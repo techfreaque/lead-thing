@@ -72,7 +72,7 @@ export const subscriptionTiers: subscriptionTiersType = {
     rebatePercent: 0,
     apiCalls: 100,
     canBeSold: true,
-    billingPeriod: ['monthly', 'yearly'],
+    billingPeriod: ['yearly', 'monthly'],
   },
   base: {
     title: 'Base Yearly',
