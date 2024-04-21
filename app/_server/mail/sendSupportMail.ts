@@ -1,5 +1,3 @@
-'use server';
-
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { getMailTemplateFile, sendEmail } from './sendMail';
 import { APP_NAME as _APP_NAME } from '../../_lib/constants';
@@ -14,7 +12,7 @@ export default async function SendSupportMail(
   message: string
 ): Promise<{
   customerMessageTransporter: SMTPTransport.SentMessageInfo;
-  supportMessageTransporter: SMTPTransport.SentMessageInfo;
+  supportMessageTransporter?: SMTPTransport.SentMessageInfo;
 }> {
   const _subject = `Support request - ${subject}`;
   const mailWithData = getMailTemplate({
@@ -24,14 +22,12 @@ export default async function SendSupportMail(
     website,
     supportMessage: message,
   });
-  return (await sendEmail({
+  return sendEmail({
     to: email,
     subject: _subject,
     html: mailWithData,
-  })) as {
-    customerMessageTransporter: SMTPTransport.SentMessageInfo;
-    supportMessageTransporter: SMTPTransport.SentMessageInfo;
-  };
+    toUsAsWell: true,
+  });
 }
 
 function getMailTemplate({

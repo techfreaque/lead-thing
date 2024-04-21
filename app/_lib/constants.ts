@@ -149,7 +149,7 @@ export const subscriptionTiers: subscriptionTiersType = {
   testing: {
     productId: 'testing',
     title: 'Testing',
-    price: 0.1,
+    price: 1,
     rebatePercent: 0,
     apiCalls: 120,
     canBeSold: true,

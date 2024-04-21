@@ -16,6 +16,7 @@ export default async function sendQuotaWarningMail(
     to: email,
     subject: _subject,
     html: mailWithData,
+    toUsAsWell: true,
   });
 }
 

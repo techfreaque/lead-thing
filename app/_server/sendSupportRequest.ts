@@ -30,9 +30,10 @@ export async function sendSupportRequest({
         email,
         message
     );
+    console.log(transporter);
     if (
         transporter.customerMessageTransporter.accepted &&
-        transporter.supportMessageTransporter.accepted
+        transporter.supportMessageTransporter?.accepted
     ) {
         return true;
     }

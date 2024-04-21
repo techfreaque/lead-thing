@@ -1,5 +1,3 @@
-'use server';
-
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { getMailTemplateFile, sendEmail } from './sendMail';
 import { APP_DOMAIN, APP_NAME as _APP_NAME, resetPasswordPath } from '../../_lib/constants';

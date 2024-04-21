@@ -20,8 +20,6 @@ export async function sendEmail({
   customerMessageTransporter: SMTPTransport.SentMessageInfo;
   supportMessageTransporter?: SMTPTransport.SentMessageInfo;
 }> {
-  'use server';
-
   const transporter = createTransport({
     host: serverRuntimeConfig.SEND_EMAIL_HOST,
     port: serverRuntimeConfig.SEND_EMAIL_PORT,
