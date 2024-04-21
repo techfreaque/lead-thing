@@ -42,26 +42,10 @@ const _createSubscription = async (product: subscriptionTierType, email: string)
                 accessToken, product, createdPaypalProduct.id, isYearly, totalPrice
             );
         if (success2) {
-            const response = await fetch(`${serverRuntimeConfig.PAYPAL_API_URL}/v1/billing/subscriptions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${accessToken}`,
-                    Accept: 'application/json',
-                    Prefer: 'return=representation',
-                },
-                body: JSON.stringify({
-                    plan_id: createdPaypalBillingPlan.id,
-                    application_context: {
-                        user_action: 'SUBSCRIBE_NOW',
-                        shipping_preference: 'NO_SHIPPING',
-                    },
-                }),
-            });
             const {
                 jsonResponse: subscriptionResponse,
                 success: subSuccess,
-            } = await handleResponse(response);
+            } = await createActualSubscription(accessToken, createdPaypalBillingPlan.id);
             if (subSuccess) {
                 await updateToPaypalOrderId({
                     email,
@@ -70,31 +54,59 @@ const _createSubscription = async (product: subscriptionTierType, email: string)
                 });
                 return { jsonResponse: subscriptionResponse, success: subSuccess };
             }
-            throw new Error('Failed to create subscription', subscriptionResponse);
+            throw new Error(`Failed to create subscription :${JSON.stringify(subscriptionResponse)}`);
         }
-        throw new Error('Failed to create the billing plan', createdPaypalBillingPlan);
+        throw new Error(`Failed to create the billing plan :${JSON.stringify(createdPaypalBillingPlan)}`);
     }
-    throw new Error('Failed to create the product', createdPaypalProduct);
+    throw new Error(`Failed to create the product :${JSON.stringify(createdPaypalProduct)}`);
 };
 
+async function createActualSubscription(accessToken: string, createdPaypalBillingPlanId: string) {
+    try {
+        const response = await fetch(`${serverRuntimeConfig.PAYPAL_API_URL}/v1/billing/subscriptions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+                Accept: 'application/json',
+                Prefer: 'return=representation',
+            },
+            body: JSON.stringify({
+                plan_id: createdPaypalBillingPlanId,
+                application_context: {
+                    user_action: 'SUBSCRIBE_NOW',
+                    shipping_preference: 'NO_SHIPPING',
+                },
+            }),
+        });
+        return await handleResponse(response);
+    } catch (error) {
+        throw new Error();
+    }
+}
+
 async function createSubscriptionProduct(accessToken: string, product: subscriptionTierType) {
-    const response = await fetch('https://api-m.sandbox.paypal.com/v1/catalogs/products', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-            'PayPal-Request-Id': uuidv4(),
-        },
-        body: JSON.stringify({
-            name: `${APP_NAME} ${product.title}`,
-            description: `${APP_NAME} ${product.title}`,
-            type: 'SERVICE',
-            category: 'SOFTWARE',
-            // image_url: 'https://example.com/streaming.jpg',
-            home_url: APP_PRODUCTION_DOMAIN,
-        }),
-    });
-    return handleResponse(response);
+    try {
+        const response = await fetch('https://api-m.sandbox.paypal.com/v1/catalogs/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+                'PayPal-Request-Id': uuidv4(),
+            },
+            body: JSON.stringify({
+                name: `${APP_NAME} ${product.title}`,
+                description: `${APP_NAME} ${product.title}`,
+                type: 'SERVICE',
+                category: 'SOFTWARE',
+                // image_url: 'https://example.com/streaming.jpg',
+                home_url: APP_PRODUCTION_DOMAIN,
+            }),
+        });
+        return await handleResponse(response);
+    } catch (error) {
+        throw new Error(`Failed to create the product: ${error}`);
+    }
 }
 
 async function createSubscriptionBillingPlan(
@@ -104,48 +116,52 @@ async function createSubscriptionBillingPlan(
     isYearly: boolean,
     totalPrice: number
 ) {
-    const response = await fetch('https://api-m.sandbox.paypal.com/v1/billing/plans', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-            'PayPal-Request-Id': uuidv4(),
-        },
-        body: JSON.stringify({
-            product_id: paypalProductId,
-            name: `${APP_NAME} ${product.title}`,
-            description: `${APP_NAME} ${product.title}`,
-            billing_cycles: [
-                {
-                    frequency: {
-                        interval_unit: isYearly ? 'YEAR' : 'MONTH',
-                        interval_count: 1,
-                    },
-                    tenure_type: 'REGULAR',
-                    sequence: 1,
-                    // total_cycles: 12,
-                    pricing_scheme: {
-                        fixed_price: {
-                            value: totalPrice,
-                            currency_code: 'EUR',
+    try {
+        const response = await fetch('https://api-m.sandbox.paypal.com/v1/billing/plans', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+                'PayPal-Request-Id': uuidv4(),
+            },
+            body: JSON.stringify({
+                product_id: paypalProductId,
+                name: `${APP_NAME} ${product.title}`,
+                description: `${APP_NAME} ${product.title}`,
+                billing_cycles: [
+                    {
+                        frequency: {
+                            interval_unit: isYearly ? 'YEAR' : 'MONTH',
+                            interval_count: 1,
+                        },
+                        tenure_type: 'REGULAR',
+                        sequence: 1,
+                        // total_cycles: 12,
+                        pricing_scheme: {
+                            fixed_price: {
+                                value: totalPrice,
+                                currency_code: 'EUR',
+                            },
                         },
                     },
+                ],
+                payment_preferences: {
+                    auto_bill_outstanding: true,
+                    // setup_fee: {
+                    //     value: '10',
+                    //     currency_code: 'EUR',
+                    // },
+                    // setup_fee_failure_action: 'CONTINUE',
+                    payment_failure_threshold: 1,
                 },
-            ],
-            payment_preferences: {
-                auto_bill_outstanding: true,
-                // setup_fee: {
-                //     value: '10',
-                //     currency_code: 'EUR',
+                // taxes: {
+                //     percentage: '10',
+                //     inclusive: false,
                 // },
-                // setup_fee_failure_action: 'CONTINUE',
-                payment_failure_threshold: 1,
-            },
-            // taxes: {
-            //     percentage: '10',
-            //     inclusive: false,
-            // },
-        }),
-    });
-    return handleResponse(response);
+            }),
+        });
+        return await handleResponse(response);
+    } catch (error) {
+        throw new Error(`Failed to create the billing plan : ${error}`);
+    }
 }
