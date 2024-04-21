@@ -40,7 +40,7 @@ export default function MyOrders({ user }: { user: UserType; }) {
               <Table.Td>€{element.amount}</Table.Td>
               {element.paymentStatus === 'paid' && (
                 <Table.Td>
-                  <Link target="blank" href={invoiceUrl + element.transactionId}>
+                  <Link href={invoiceUrl + element.transactionId}>
                     <Button>Download</Button>
                   </Link>
                 </Table.Td>
