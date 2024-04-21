@@ -10,6 +10,17 @@ import freshmail from './freshmail.png';
 import youlead from './youlead.png';
 import getresponse from './getresponse.png';
 import mailup from './mailup.png';
+import expertsender from './expertsender.png';
+
+export function ExpertsenderIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="Expertsender Icon" iconFile={expertsender} style={style} className={className} />;
+}
 
 export function CleverreachIcon({
   style,

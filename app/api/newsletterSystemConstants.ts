@@ -9,6 +9,7 @@ import {
   YouleadIcon,
   CleverreachIcon,
   MailupIcon,
+  ExpertsenderIcon,
 } from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -21,6 +22,7 @@ export type avialableSystemsType =
   | 'salesmanago'
   | 'mailup'
   | 'cleverreach'
+  | 'expertsender'
   | 'youlead';
 
 export interface NewsletterSystem {
@@ -60,6 +62,20 @@ export const newsletterSystems: {
       'cleverreachSource',
       'cleverreachClientId',
       'cleverreachClientSecret',
+    ],
+  },
+  expertsender: {
+    path: '/expertsender',
+    name: 'Expertsender',
+    icon: ExpertsenderIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'listId',
+      'subscriptionMode',
+      'expertSenderApiKey',
     ],
   },
   freshmail: {
@@ -215,6 +231,7 @@ export type RequestOptionsFieldName =
   | 'mailupClientSecret'
   | 'mailupUsername'
   | 'mailupPassword'
+  | 'expertSenderApiKey'
   | 'freshmailApiSecret';
 
 export const RequestOptionsData: {
@@ -424,6 +441,13 @@ export const RequestOptionsData: {
     value: 'SALES_MANAGO_OWNER',
     required: true,
     description: '',
+  },
+  expertSenderApiKey: {
+    label: 'Expertsender API key',
+    valueType: 'string',
+    value: 'EXPERTSENDER_API_KEY',
+    required: true,
+    description: 'Your Expertsender API key, which you can find in Settings > API.',
   },
   freshmailApiKey: {
     label: 'Freshmail API key',
