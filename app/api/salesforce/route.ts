@@ -18,15 +18,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     listId,
     // subscriptionMode,
     // tag,
-    SalesforceSubDomain,
-    SalesforceClientId,
-    SalesforceClientSecret,
-    SalesforceAccountId,
+    salesforceSubDomain,
+    salesforceClientId,
+    salesforceClientSecret,
+    salesforceAccountId,
   }: SalesforcePostRequest = await request.json();
   async function forwardToNewsletterSystem() {
     let token: string = '';
     try {
-      const response: Response = await fetch(`https://${SalesforceSubDomain}${authPath}`, {
+      const response: Response = await fetch(`https://${salesforceSubDomain}${authPath}`, {
         method: 'post',
         headers: {
           Accept: 'application/json',
@@ -34,9 +34,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
         body: JSON.stringify({
           grant_type: 'client_credentials',
-          client_id: SalesforceClientId,
-          client_secret: SalesforceClientSecret,
-          account_id: SalesforceAccountId,
+          client_id: salesforceClientId,
+          client_secret: salesforceClientSecret,
+          account_id: salesforceAccountId,
         }),
       });
       const authData = await response.json();
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return ApiResponse(`Failed to get authetication token from salesforce. Error: ${error}`, 500);
     }
     try {
-      const response: Response = await fetch(`https://${SalesforceSubDomain}${apiContactsPath}`, {
+      const response: Response = await fetch(`https://${salesforceSubDomain}${apiContactsPath}`, {
         method: 'post',
         headers: {
           Accept: 'application/json',

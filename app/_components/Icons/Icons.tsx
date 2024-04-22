@@ -11,6 +11,7 @@ import youlead from './youlead.png';
 import getresponse from './getresponse.png';
 import mailup from './mailup.png';
 import expertsender from './expertsender.png';
+import adobecampaign from './adobecampaign.png';
 
 export function ExpertsenderIcon({
   style,
@@ -21,6 +22,18 @@ export function ExpertsenderIcon({
 }) {
   return (
     <Icon alt="Expertsender Icon" iconFile={expertsender} style={style} className={className} />
+  );
+}
+
+export function AdobeCampaignIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return (
+    <Icon alt="Adobe Campaign Icon" iconFile={adobecampaign} style={style} className={className} />
   );
 }
 

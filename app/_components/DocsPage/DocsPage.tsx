@@ -183,11 +183,11 @@ function getJsCodeExample({
   exampleData: AllPossiblePostRequestParameters;
 }): string {
   return `
-fetch('${apiURL}/${systemName}', {
-    method: 'POST',
+fetch("${apiURL}/${systemName}", {
+    method: "POST",
     headers: {
         apiKey: '${exampleKey}',
-        'content-type': 'application/json'
+        "content-type": "application/json",
     },
     body: JSON.stringify({${getParameters(exampleData)}
     })
@@ -212,13 +212,13 @@ function getExampleDescription({
 }): string {
   return `
 {
-    'url': '${apiURL}/${systemName}',
-    'method': 'POST',
-    'headers': {
-        apiKey: '${exampleKey}',
-        'content-type': 'application/json'
+    "url": "${apiURL}/${systemName}",
+    "method": "POST",
+    "headers": {
+        "apiKey": "${exampleKey}",
+        "content-type": "application/json"
     },
-    'body': {${getParameters(exampleData)}
+    "body": {${getParameters(exampleData)}
     }
 }
   `;

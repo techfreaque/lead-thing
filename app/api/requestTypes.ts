@@ -132,10 +132,28 @@ export interface SalesforcePostRequest extends PostRequest {
   //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
   // FORCE_OPT_IN
   //  New contacts are added to the group with a notification if the system supports it / its enabled.
-  SalesforceSubDomain: string;
-  SalesforceClientId: string;
-  SalesforceClientSecret: string;
-  SalesforceAccountId: string;
+  salesforceSubDomain: string;
+  salesforceClientId: string;
+  salesforceClientSecret: string;
+  salesforceAccountId: string;
+}
+
+export interface AdobeCampaignPostRequest extends PostRequest {
+  // ip: string;
+  // gender: 'MALE' | 'FEMALE';
+  // countryCode: string;
+  // salutation: string;
+  // tag: string;
+  // subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
+  // DOUBLE_OPT_IN
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
+  adobeCampaignClientId: string;
+  adobeCampaignClientSecret: string;
+  adobeCampaignOrganizationId: string;
+  adobeCampaignApiKey: string;
+  adobeCampaignListId: string;
 }
 
 export interface SalesmanagoPostRequest extends PostRequest {
@@ -181,6 +199,7 @@ export interface AllPossiblePostRequestParameters
     CleverreachPostRequest,
     MailupPostRequest,
     FreshmailPostRequest,
+    AdobeCampaignPostRequest,
     ExpertsenderPostRequest,
     SalesmanagoPostRequest {
   gender: 'MALE' | 'FEMALE';

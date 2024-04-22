@@ -10,6 +10,7 @@ import {
   CleverreachIcon,
   MailupIcon,
   ExpertsenderIcon,
+  AdobeCampaignIcon,
 } from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -20,6 +21,7 @@ export type avialableSystemsType =
   | 'freshmail'
   // | 'klaviyo'
   | 'salesmanago'
+  | 'adobecampaign'
   | 'mailup'
   | 'cleverreach'
   | 'expertsender'
@@ -43,6 +45,22 @@ export const notDefinedCheckboxValue = 'not defined';
 export const newsletterSystems: {
   [key in avialableSystemsType]: NewsletterSystem;
 } = {
+  adobecampaign: {
+    path: '/adobecampaign',
+    name: 'Adobe Campaign',
+    icon: AdobeCampaignIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'ip',
+      'listId',
+      'adobeCampaignClientId',
+      'adobeCampaignClientSecret',
+      'adobeCampaignOrganizationId',
+      'adobeCampaignApiKey',
+    ],
+  },
   getresponse: {
     path: '/getresponse',
     name: 'GetResponse',
@@ -141,10 +159,10 @@ export const newsletterSystems: {
       'lastname',
       'email',
       'listId',
-      'SalesforceSubDomain',
-      'SalesforceClientId',
-      'SalesforceClientSecret',
-      'SalesforceAccountId',
+      'salesforceSubDomain',
+      'salesforceClientId',
+      'salesforceClientSecret',
+      'salesforceAccountId',
     ],
   },
   salesmanago: {
@@ -206,10 +224,15 @@ export type RequestOptionsFieldName =
   | 'mappDomain'
   | 'sailthruApiKey'
   | 'sailthruSecret'
-  | 'SalesforceSubDomain'
-  | 'SalesforceClientId'
-  | 'SalesforceClientSecret'
-  | 'SalesforceAccountId'
+  | 'salesforceSubDomain'
+  | 'salesforceClientId'
+  | 'salesforceClientSecret'
+  | 'salesforceAccountId'
+  | 'adobeCampaignListId'
+  | 'adobeCampaignClientId'
+  | 'adobeCampaignClientSecret'
+  | 'adobeCampaignOrganizationId'
+  | 'adobeCampaignApiKey'
   | 'tag'
   | 'tagId'
   | 'salesManagoClientId'
@@ -366,28 +389,63 @@ export const RequestOptionsData: {
     required: true,
     description: '',
   },
-  SalesforceSubDomain: {
+  adobeCampaignListId: {
+    label: 'Adobe Campaign List Id / Service Id',
+    valueType: 'string',
+    value: 'ADOBE_CAMPAIGN_LIST_ID',
+    required: true,
+    description: '',
+  },
+  adobeCampaignOrganizationId: {
+    label: 'Adobe Campaign Organization Id',
+    valueType: 'string',
+    value: 'ADOBE_CAMPAIGN_ORGANIZATION_ID',
+    required: true,
+    description: '',
+  },
+  adobeCampaignClientId: {
+    label: 'Adobe Campaign Client Id',
+    valueType: 'string',
+    value: 'ADOBE_CAMPAIGN_CLIENT_ID',
+    required: true,
+    description: '',
+  },
+  adobeCampaignClientSecret: {
+    label: 'Adobe Campaign Client Secret',
+    valueType: 'string',
+    value: 'ADOBE_CAMPAIGN_CLIENT_SECRET',
+    required: true,
+    description: '',
+  },
+  adobeCampaignApiKey: {
+    label: 'Adobe Campaign API Key',
+    valueType: 'string',
+    value: 'ADOBE_CAMPAIGN_API_KEY',
+    required: true,
+    description: '',
+  },
+  salesforceSubDomain: {
     label: 'Salesforce Sub Domain',
     valueType: 'string',
     value: 'SALESFORCE_SUB_DOMAIN',
     required: true,
     description: '',
   },
-  SalesforceClientId: {
+  salesforceClientId: {
     label: 'Salesforce Client Id',
     valueType: 'string',
     value: 'SALESFORCE_CLIENT_ID',
     required: true,
     description: '',
   },
-  SalesforceClientSecret: {
+  salesforceClientSecret: {
     label: 'Salesforce Client Secret',
     valueType: 'string',
     value: 'SALESFORCE_CLIENT_SECRET',
     required: true,
     description: '',
   },
-  SalesforceAccountId: {
+  salesforceAccountId: {
     label: 'Salesforce Account Id',
     valueType: 'string',
     value: 'SALESFORCE_ACCOUNT_ID',
