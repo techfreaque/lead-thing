@@ -7,7 +7,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 export default withBundleAnalyzer({
   reactStrictMode: false,
   images: {
-    disableStaticImages: true,
+    formats: ['image/webp', 'image/avif']
   },
   eslint: {
     ignoreDuringBuilds: false,
