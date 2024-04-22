@@ -54,7 +54,7 @@ export const newsletterSystems: {
       'lastname',
       'email',
       'ip',
-      'listId',
+      'adobeCampaignListId',
       'adobeCampaignClientId',
       'adobeCampaignClientSecret',
       'adobeCampaignOrganizationId',
