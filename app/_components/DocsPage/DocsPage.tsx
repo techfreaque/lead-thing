@@ -212,13 +212,13 @@ function getExampleDescription({
 }): string {
   return `
 {
-    url: '${apiURL}/${systemName}',
-    method: 'POST',
-    headers: {
+    'url': '${apiURL}/${systemName}',
+    'method': 'POST',
+    'headers': {
         apiKey: '${exampleKey}',
         'content-type': 'application/json'
     },
-    body: {${getParameters(exampleData)}
+    'body': {${getParameters(exampleData)}
     }
 }
   `;
