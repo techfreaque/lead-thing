@@ -7,19 +7,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 export default withBundleAnalyzer({
   reactStrictMode: false,
   images: {
-    formats: ['image/webp'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-        port: '',
-        pathname: '**',
-      },
-    ],
+    disableStaticImages: true,
   },
   eslint: {
     ignoreDuringBuilds: false,
-
   },
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
