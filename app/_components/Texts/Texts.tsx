@@ -1,7 +1,7 @@
 import { MantineSpacing, StyleProp, Text, Title } from '@mantine/core';
 import classes from './Texts.module.css';
 
-export function Title2({ children, mt = 'sm' }: { children: any; mt?: StyleProp<MantineSpacing>; }) {
+export function Title2({ children, mt = 'sm' }: { children: any; mt?: StyleProp<MantineSpacing> }) {
   return (
     <Title order={2} className={classes.title2} ta="center" mt={mt}>
       {children}
@@ -9,7 +9,7 @@ export function Title2({ children, mt = 'sm' }: { children: any; mt?: StyleProp<
   );
 }
 
-export function TitleUserForm({ children }: { children: any; }) {
+export function TitleUserForm({ children }: { children: any }) {
   return (
     <Title ta="center" className={classes.title}>
       {children}
@@ -17,7 +17,7 @@ export function TitleUserForm({ children }: { children: any; }) {
   );
 }
 
-export function Title2SubText({ children }: { children: any; }) {
+export function Title2SubText({ children }: { children: any }) {
   return (
     <Text c="dimmed" className={classes.title2description} ta="center" mt="md">
       {children}

@@ -10,7 +10,7 @@ import { isTokenValid, setPassword } from '@/app/_server/resetPassword';
 import { TitleUserForm } from '@/app/_components/Texts/Texts';
 import { resetSuccessPath } from '@/app/_lib/constants';
 
-export default function ConfirmPasswordReset({ params }: { params: { resetToken: string; }; }) {
+export default function ConfirmPasswordReset({ params }: { params: { resetToken: string } }) {
   const [tokenIsValid, setTokenIsValid] = useState<boolean | undefined>(undefined);
   const [success, setSuccess] = useState<boolean>(false);
   const form = useForm({

@@ -3,7 +3,8 @@ import type { MailupPostRequest } from '../requestTypes';
 import executeIfAuthenticated from '../../_server/apiHelpers';
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
-const apiContactsUrl = 'https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/List/{list_id}/Recipient';
+const apiContactsUrl =
+  'https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/List/{list_id}/Recipient';
 const oAuthUrl = 'https://services.mailup.com/Authorization/OAuth/Token';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -38,24 +39,28 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         return await createLead(authData.access_token);
       }
       return ApiResponse(
-        `Failed to get authentication token. Error: ${JSON.stringify(authDataRaw)} ${formatApiCallDetails({
-          firstname,
-          lastname,
-          email,
-          subscriptionMode,
-          mailupListId,
-        })}`,
+        `Failed to get authentication token. Error: ${JSON.stringify(authDataRaw)} ${formatApiCallDetails(
+          {
+            firstname,
+            lastname,
+            email,
+            subscriptionMode,
+            mailupListId,
+          }
+        )}`,
         500
       );
     } catch (error) {
       return ApiResponse(
-        `Failed to get authentication token. Error: ${JSON.stringify(error)} ${formatApiCallDetails({
-          firstname,
-          lastname,
-          email,
-          subscriptionMode,
-          mailupListId,
-        })}`,
+        `Failed to get authentication token. Error: ${JSON.stringify(error)} ${formatApiCallDetails(
+          {
+            firstname,
+            lastname,
+            email,
+            subscriptionMode,
+            mailupListId,
+          }
+        )}`,
         500
       );
     }
@@ -84,14 +89,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 Id: 2,
                 Value: lastname,
               },
-              ...(gender && [{
-                Description: 'Gender',
-                Id: 10,
-                Value: gender,
-              }]),
+              ...(gender && [
+                {
+                  Description: 'Gender',
+                  Id: 10,
+                  Value: gender,
+                },
+              ]),
             ],
           }),
-        });
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         return ApiResponse(

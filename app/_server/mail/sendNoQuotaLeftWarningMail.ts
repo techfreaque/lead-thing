@@ -4,7 +4,7 @@ import { APP_NAME as _APP_NAME } from '../../_lib/constants';
 
 export default async function sendNoQuotaLeftWarningMail(
   name: string | null,
-  email: string,
+  email: string
 ): Promise<{
   customerMessageTransporter: SMTPTransport.SentMessageInfo;
 }> {
@@ -20,15 +20,12 @@ export default async function sendNoQuotaLeftWarningMail(
   });
 }
 
-function getMailTemplate({
-  name: _name,
-}: {
-  name: string | null;
-}): string {
+function getMailTemplate({ name: _name }: { name: string | null }): string {
   const mailTemplate = getMailTemplateFile('mail-template');
   // all vars required by eval
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const title = 'Your usage has reached the monthly quota limit. To continue using our service seamlessly, please consider upgrading your plan.';
+  const title =
+    'Your usage has reached the monthly quota limit. To continue using our service seamlessly, please consider upgrading your plan.';
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const message = '';
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

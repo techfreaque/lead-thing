@@ -15,11 +15,7 @@ const links = [
 export default function Footer() {
   const items = links.map((link) => (
     <Link href={link.link} style={{ textDecoration: 'none' }} key={link.label}>
-      <Anchor<'button'>
-        c="dimmed"
-        component="button"
-        size="sm"
-      >
+      <Anchor<'button'> c="dimmed" component="button" size="sm">
         {link.label}
       </Anchor>
     </Link>

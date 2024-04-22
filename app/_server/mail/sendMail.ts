@@ -39,14 +39,14 @@ export async function sendEmail({
     }),
     ...(toUsAsWell
       ? {
-        supportMessageTransporter: await transporter.sendMail({
-          from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
-          to: serverRuntimeConfig.SEND_EMAIL,
-          subject,
-          html,
-          replyTo: to,
-        }),
-      }
+          supportMessageTransporter: await transporter.sendMail({
+            from: `${APP_NAME} <${serverRuntimeConfig.SEND_EMAIL}>`,
+            to: serverRuntimeConfig.SEND_EMAIL,
+            subject,
+            html,
+            replyTo: to,
+          }),
+        }
       : {}),
   };
 }

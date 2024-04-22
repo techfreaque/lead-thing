@@ -23,7 +23,7 @@ export interface UserContextType {
 
 export const UserContext = createContext<UserContextType | null>(null);
 
-export function UserProvider({ children }: { children: any; }) {
+export function UserProvider({ children }: { children: any }) {
   const [_user, setUser] = useState<UserType | undefined>(undefined);
   const [justLoggedOut, setJustLoggedout] = useState<boolean>(false);
   function login(user: UserType) {

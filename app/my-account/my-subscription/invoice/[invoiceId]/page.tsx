@@ -7,7 +7,7 @@ import { subscriptionTiers } from '@/app/_lib/constants';
 import { UserContext, UserContextType } from '@/app/_context/authentication';
 import { getOrder } from '@/app/_server/orders';
 
-export default function InvoicePage({ params }: { params: { invoiceId: string; }; }) {
+export default function InvoicePage({ params }: { params: { invoiceId: string } }) {
   const [invoice, setInvoice] = useState<Invoice | undefined>();
   const { user } = useContext(UserContext) as UserContextType;
 

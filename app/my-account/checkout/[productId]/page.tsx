@@ -31,7 +31,7 @@ const initialOptions: ReactPayPalScriptOptions = {
   currency: 'EUR',
   // debug: true,
 };
-export default function Checkout({ params }: { params: { productId: subscriptionTierIdType; }; }) {
+export default function Checkout({ params }: { params: { productId: subscriptionTierIdType } }) {
   const productToOrder: subscriptionTierType = subscriptionTiers[params.productId];
   const { user } = useContext(UserContext) as UserContextType;
   const [message, setMessage] = useState<string | undefined>();
@@ -67,7 +67,8 @@ export default function Checkout({ params }: { params: { productId: subscription
               </List.Item>
               <List.Item>
                 <Title order={5}>
-                  Total amount due now: {totalPrice}€ {isYearly ? `(${productToOrder.price}€ / month)` : ''}
+                  Total amount due now: {totalPrice}€{' '}
+                  {isYearly ? `(${productToOrder.price}€ / month)` : ''}
                 </Title>
               </List.Item>
             </List>
@@ -80,7 +81,7 @@ export default function Checkout({ params }: { params: { productId: subscription
   );
 }
 
-function Message({ message }: { message?: string | undefined; }) {
+function Message({ message }: { message?: string | undefined }) {
   return (
     message && (
       <Alert
@@ -128,9 +129,7 @@ function Paypal({
         setMessage('Successful subscription...');
         return data.data.id;
       }
-      setMessage(
-        `Could not initiate PayPal Subscription...${JSON.stringify(data)}`,
-      );
+      setMessage(`Could not initiate PayPal Subscription...${JSON.stringify(data)}`);
     } catch (error) {
       setMessage(`Could not initiate PayPal Subscription...${error}`);
     }
@@ -155,18 +154,14 @@ function Paypal({
           body: JSON.stringify(payload),
         });
       } catch (error) {
-        setMessage(
-          `Failed to mark the subscription as paid: ${data.subscriptionID}`,
-        );
+        setMessage(`Failed to mark the subscription as paid: ${data.subscriptionID}`);
       }
       setSuccess(true);
       setMessage(
-        `You have successfully subscribed to the plan. Your subscription id is: ${data.subscriptionID}`,
+        `You have successfully subscribed to the plan. Your subscription id is: ${data.subscriptionID}`
       );
     } else {
-      setMessage(
-        `Failed to activate the subscription: ${data.subscriptionID}`,
-      );
+      setMessage(`Failed to activate the subscription: ${data.subscriptionID}`);
     }
     return undefined;
   }

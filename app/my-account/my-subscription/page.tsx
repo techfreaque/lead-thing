@@ -24,7 +24,8 @@ export default function MySubsPage() {
         <SubscriptionTiers
           user={user}
           isSubscriptionPage
-          subTitleText="Upgrade any time, just pick the plan that suits you now and upgrade later!" />
+          subTitleText="Upgrade any time, just pick the plan that suits you now and upgrade later!"
+        />
         <MyOrders user={user} />
       </Container>
     )

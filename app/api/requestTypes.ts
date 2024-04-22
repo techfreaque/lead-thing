@@ -174,14 +174,14 @@ export interface ExpertsenderPostRequest extends PostRequest {
 
 export interface AllPossiblePostRequestParameters
   extends GetresponsePostRequest,
-  MappPostRequest,
-  SailthruPostRequest,
-  SalesforcePostRequest,
-  YouleadPostRequest,
-  CleverreachPostRequest,
-  MailupPostRequest,
-  FreshmailPostRequest,
-  ExpertsenderPostRequest,
-  SalesmanagoPostRequest {
+    MappPostRequest,
+    SailthruPostRequest,
+    SalesforcePostRequest,
+    YouleadPostRequest,
+    CleverreachPostRequest,
+    MailupPostRequest,
+    FreshmailPostRequest,
+    ExpertsenderPostRequest,
+    SalesmanagoPostRequest {
   gender: 'MALE' | 'FEMALE';
 }

@@ -38,48 +38,55 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         return await createLead(authData.access_token);
       }
       return ApiResponse(
-        `Failed to get authentication token. Error: ${JSON.stringify(authData)} ${formatApiCallDetails({
-          firstname,
-          lastname,
-          email,
-          subscriptionMode,
-          cleverreachListId,
-          cleverreachSource,
-        })}`,
+        `Failed to get authentication token. Error: ${JSON.stringify(authData)} ${formatApiCallDetails(
+          {
+            firstname,
+            lastname,
+            email,
+            subscriptionMode,
+            cleverreachListId,
+            cleverreachSource,
+          }
+        )}`,
         500
       );
     } catch (error) {
       return ApiResponse(
-        `Failed to get authentication token. Error: ${JSON.stringify(error)} ${formatApiCallDetails({
-          firstname,
-          lastname,
-          email,
-          subscriptionMode,
-          cleverreachListId,
-          cleverreachSource,
-        })}`,
+        `Failed to get authentication token. Error: ${JSON.stringify(error)} ${formatApiCallDetails(
+          {
+            firstname,
+            lastname,
+            email,
+            subscriptionMode,
+            cleverreachListId,
+            cleverreachSource,
+          }
+        )}`,
         500
       );
     }
   }
   async function createLead(authToken: string): Promise<NextResponse> {
     try {
-      const response: Response = await fetch(apiContactsUrl.replace('{group_id}', cleverreachListId), {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          email,
-          ...(cleverreachSource && { source: cleverreachSource }),
-          global_attributes: {
-            firstname,
-            lastname,
-            ...(gender && { gender: gender.toLowerCase() }),
+      const response: Response = await fetch(
+        apiContactsUrl.replace('{group_id}', cleverreachListId),
+        {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
           },
-        }),
-      });
+          body: JSON.stringify({
+            email,
+            ...(cleverreachSource && { source: cleverreachSource }),
+            global_attributes: {
+              firstname,
+              lastname,
+              ...(gender && { gender: gender.toLowerCase() }),
+            },
+          }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         return ApiResponse(

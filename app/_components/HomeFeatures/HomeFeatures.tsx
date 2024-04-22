@@ -21,8 +21,8 @@ const mockdata = [
     title: 'Security by Design',
     description: (
       <>
-        Rest easy knowing your newsletter system&apos;s API keys are never stored and
-        all requests are encrypted. Still skeptical?{' '}
+        Rest easy knowing your newsletter system&apos;s API keys are never stored and all requests
+        are encrypted. Still skeptical?{' '}
         <Anchor fz="sm" href={APP_GITHUB_URL} target="blank">
           {APP_NAME} is open source
         </Anchor>

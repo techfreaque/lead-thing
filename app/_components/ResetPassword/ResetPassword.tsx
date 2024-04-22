@@ -46,15 +46,13 @@ export default function ResetPassword() {
         title="Your password reset link is on the way!"
         icon={<IconInfoCircle />}
       >
-        If you&apos;re email is registered, you will receive a password reset link shortly.
-        Just click on it to finish resetting your password.
+        If you&apos;re email is registered, you will receive a password reset link shortly. Just
+        click on it to finish resetting your password.
       </Alert>
     </Container>
   ) : (
     <Container size={460} my={30}>
-      <TitleUserForm>
-        Forgot your password?
-      </TitleUserForm>
+      <TitleUserForm>Forgot your password?</TitleUserForm>
       <Text c="dimmed" fz="sm" ta="center">
         Enter your email to get a reset link
       </Text>
@@ -80,7 +78,9 @@ export default function ResetPassword() {
                 </Center>
               </Anchor>
             </Link>
-            <Button type="submit" className={classes.control}>Reset password</Button>
+            <Button type="submit" className={classes.control}>
+              Reset password
+            </Button>
           </Group>
         </form>
       </Paper>

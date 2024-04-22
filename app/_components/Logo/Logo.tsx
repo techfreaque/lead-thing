@@ -10,7 +10,10 @@ export default function Logo() {
   const theme = useMantineTheme();
   return (
     <Link href="/" style={{ color: 'unset', textDecoration: 'none', display: 'flex' }}>
-      <IconMailBolt style={{ width: rem(26), height: rem(26), margin: 'auto' }} color={theme.colors.blue[6]} />{' '}
+      <IconMailBolt
+        style={{ width: rem(26), height: rem(26), margin: 'auto' }}
+        color={theme.colors.blue[6]}
+      />{' '}
       <Title className={classes.title}>{APP_NAME}</Title>
     </Link>
   );

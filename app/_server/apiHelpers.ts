@@ -24,7 +24,8 @@ export default async function executeIfAuthenticated(
 
     if (user) {
       const currentApiPeriod = await getApiPeriodIfStillQuotaLeft({
-        email: user.email, name: user.name,
+        email: user.email,
+        name: user.name,
       });
       if (currentApiPeriod) {
         const response = await functionToexecute();
@@ -61,8 +62,8 @@ async function getApiPeriodIfStillQuotaLeft({
     if (currentApiPeriod.apiCallsInThisPeriod === currentApiPeriod.apiCallsPerMonth - 1) {
       await sendNoQuotaLeftWarningMail(name, email);
     } else if (
-      currentApiPeriod.apiCallsInThisPeriod + 1
-      === Math.floor(currentApiPeriod.apiCallsPerMonth * 0.8)
+      currentApiPeriod.apiCallsInThisPeriod + 1 ===
+      Math.floor(currentApiPeriod.apiCallsPerMonth * 0.8)
     ) {
       await sendQuotaWarningMail(name, email);
     }
@@ -71,11 +72,7 @@ async function getApiPeriodIfStillQuotaLeft({
   return undefined;
 }
 
-async function bumpApiCallsInThisPeriod({
-  currentApiPeriod,
-}: {
-  currentApiPeriod: apiPeriodType;
-}) {
+async function bumpApiCallsInThisPeriod({ currentApiPeriod }: { currentApiPeriod: apiPeriodType }) {
   await prisma.apiPeriods.update({
     where: {
       id: currentApiPeriod.id,

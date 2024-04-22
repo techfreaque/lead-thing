@@ -33,7 +33,7 @@ import { TitleUserForm } from '../Texts/Texts';
 import { getLogin } from '@/app/_server/login';
 import { register } from '@/app/_server/register';
 
-export default function Signup({ type }: { type: 'login' | 'register'; }) {
+export default function Signup({ type }: { type: 'login' | 'register' }) {
   const [_type, setType] = useState<'login' | 'register'>(type);
   const [isSending, setIsSending] = useState<boolean>(false);
   const [message, setMessage] = useState<{
@@ -156,7 +156,11 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
         ) : (
           <>
             Do not have an account yet?{' '}
-            <Link href={registerPath} onClick={() => setType('register')} style={{ textDecoration: 'none' }}>
+            <Link
+              href={registerPath}
+              onClick={() => setType('register')}
+              style={{ textDecoration: 'none' }}
+            >
               <Anchor size="sm" component="button">
                 Create account
               </Anchor>
@@ -278,17 +282,21 @@ export default function Signup({ type }: { type: 'login' | 'register'; }) {
                 </Anchor>
               </Link>
             )}
-            <Button type="submit" radius="xl" disabled={(_type === 'register' && !form.values.terms) || isSending}>
+            <Button
+              type="submit"
+              radius="xl"
+              disabled={(_type === 'register' && !form.values.terms) || isSending}
+            >
               {_type === 'register' ? 'Create account' : 'Login'}
             </Button>
           </Group>
         </form>
       </Paper>
-    </Container >
+    </Container>
   );
 }
 
-function GridOrNot({ type, children }: { type: 'register' | 'login'; children: any; }) {
+function GridOrNot({ type, children }: { type: 'register' | 'login'; children: any }) {
   return type === 'register' ? (
     <SimpleGrid cols={{ base: 1, sm: 2 }}>{children}</SimpleGrid>
   ) : (

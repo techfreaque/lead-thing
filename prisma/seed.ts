@@ -36,7 +36,6 @@ async function main() {
   //     apiKey: '12345',
   //   },
   // });
-
   // console.log({ freeUser });
 }
 

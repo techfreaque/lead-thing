@@ -46,9 +46,9 @@ export const subscriptionDurations: {
   value: subscriptionDurationsType;
   label: string;
 }[] = [
-    { value: 'yearly', label: 'Yearly subscription' },
-    { value: 'monthly', label: 'Monthly subscription' },
-  ];
+  { value: 'yearly', label: 'Yearly subscription' },
+  { value: 'monthly', label: 'Monthly subscription' },
+];
 
 export interface subscriptionTierType {
   productId: subscriptionTierIdType;

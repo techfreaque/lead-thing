@@ -32,7 +32,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
       const rawAttributes =
         mappCustomAttributes && mappCustomAttributes?.replace(/, /g, ',').split(',');
-      let attributes: { name: string; value: string; }[] = [];
+      let attributes: { name: string; value: string }[] = [];
       if (rawAttributes) {
         attributes = rawAttributes.map((rawAttribute) => {
           const [attributeName, attributeValue] = rawAttribute.split('=');

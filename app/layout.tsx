@@ -11,7 +11,7 @@ export const metadata = {
     'Get a unified and simplified API interface to create leads on many newsletter systems.',
 };
 
-export default function RootLayout({ children }: { children: any; }) {
+export default function RootLayout({ children }: { children: any }) {
   return (
     <html lang="en">
       <head>

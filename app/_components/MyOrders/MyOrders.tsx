@@ -7,7 +7,7 @@ import { invoiceUrl, subscriptionTiers } from '@/app/_lib/constants';
 import { UserType } from '@/app/_context/authentication';
 import { PaidOrderType, getPaidOrders } from '@/app/_server/orders';
 
-export default function MyOrders({ user }: { user: UserType; }) {
+export default function MyOrders({ user }: { user: UserType }) {
   const [orders, setOrders] = useState<PaidOrderType[]>();
   useEffect(() => {
     getPaidOrders(user.email).then((_orders) => setOrders(_orders));
@@ -55,7 +55,9 @@ export default function MyOrders({ user }: { user: UserType; }) {
       <Title ta="center" order={2} mt="xl" mb="md">
         You don&apos;t have any orders yet :(
       </Title>
-      <Text ta="center">You can download your invoices here once you&apos;ve completed a purchase</Text>
+      <Text ta="center">
+        You can download your invoices here once you&apos;ve completed a purchase
+      </Text>
     </>
   );
 }

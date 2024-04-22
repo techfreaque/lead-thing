@@ -35,7 +35,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               email,
               firstName: firstname,
               lastName: lastname,
-              ...(['MALE', 'FEMALE'].includes(gender) && { gender: gender === 'MALE' ? 'Male' : 'Female' }),
+              ...(['MALE', 'FEMALE'].includes(gender) && {
+                gender: gender === 'MALE' ? 'Male' : 'Female',
+              }),
               consentsData: {
                 consents: [
                   {

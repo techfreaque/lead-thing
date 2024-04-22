@@ -4,7 +4,9 @@ import { APP_COMPANY_COUNTRY, APP_NAME } from '../_lib/constants';
 export default function TosPage() {
   return (
     <Container>
-      <Title order={1} mt="xl">Terms and Conditions for {APP_NAME}</Title>
+      <Title order={1} mt="xl">
+        Terms and Conditions for {APP_NAME}
+      </Title>
       <Title order={2} mt="xl">
         1. Acceptance of Terms
         <Text size="lg">

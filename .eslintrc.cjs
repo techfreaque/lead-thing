@@ -16,7 +16,7 @@ module.exports = {
     // 'prettier/prettier': [
     //   'error',
     //   {
-    //     endOfLine: 'auto', /* this setting should be included */
+    //     endOfLine: 'auto',
     //   },
     // ],
     // "linebreak-style": ["error", "windows"]

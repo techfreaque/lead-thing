@@ -1,19 +1,15 @@
 'use client';
 
-import {
-  ActionIcon,
-  Container,
-  CopyButton,
-  Table,
-  Title,
-  Tooltip,
-  rem,
-} from '@mantine/core';
+import { ActionIcon, Container, CopyButton, Table, Title, Tooltip, rem } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 import { APP_NAME, subscriptionTiers } from '@/app/_lib/constants';
 import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
-import { apiPeriodType, getAllSubscriptionPeriods, getCurrentSubscription } from '@/app/_server/orders';
+import {
+  apiPeriodType,
+  getAllSubscriptionPeriods,
+  getCurrentSubscription,
+} from '@/app/_server/orders';
 
 export default function MyKeyPage() {
   const { user } = useContext(UserContext) as UserContextType;
@@ -43,24 +39,28 @@ export default function MyKeyPage() {
           <Stats user={user} />
         </>
       ) : (
-        <Title ta="center" order={1}>Sign in to see your {APP_NAME} API key</Title>
+        <Title ta="center" order={1}>
+          Sign in to see your {APP_NAME} API key
+        </Title>
       )}
     </Container>
   );
 }
 
-function Stats({ user }: { user: UserType; }) {
+function Stats({ user }: { user: UserType }) {
   const [stats, setStats] = useState<apiPeriodType[]>();
   useEffect(() => {
     // get current one to update in case not used for months
     getCurrentSubscription({ email: user.email });
     getAllSubscriptionPeriods({
       email: user.email,
-    }).then(_stats => setStats(_stats));
+    }).then((_stats) => setStats(_stats));
   }, []);
   return (
     <>
-      <Title ta="center" mt="xl" order={2}>Your API calls stats</Title>
+      <Title ta="center" mt="xl" order={2}>
+        Your API calls stats
+      </Title>
       <Table my="xl">
         <Table.Thead>
           <Table.Tr>
@@ -84,6 +84,5 @@ function Stats({ user }: { user: UserType; }) {
         </Table.Tbody>
       </Table>
     </>
-
   );
 }

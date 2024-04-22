@@ -17,8 +17,8 @@ export default function HomeHero() {
 
         <Text className={classes.description} color="dimmed">
           Effortlessly create leads across multiple newsletter systems with {APP_NAME}&apos;s
-          intuitive API interface. Say goodbye to complexity and hello to streamlined
-          lead generation.
+          intuitive API interface. Say goodbye to complexity and hello to streamlined lead
+          generation.
         </Text>
 
         <Group className={classes.controls}>

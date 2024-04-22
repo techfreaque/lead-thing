@@ -34,7 +34,7 @@ export interface Invoice {
   address: string;
   email: string;
 }
-export default function InvoiceGenerator({ invoice }: { invoice: Invoice; }) {
+export default function InvoiceGenerator({ invoice }: { invoice: Invoice }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -64,7 +64,7 @@ const titleStyle = StyleSheet.create({
   },
 });
 
-function InvoiceTitle({ title }: { title: string; }) {
+function InvoiceTitle({ title }: { title: string }) {
   return (
     <View style={titleStyle.titleContainer}>
       <Text style={titleStyle.reportTitle}>{title}</Text>
@@ -91,7 +91,7 @@ const numberStyles = StyleSheet.create({
   },
 });
 
-function InvoiceNo({ invoice }: { invoice: Invoice; }) {
+function InvoiceNo({ invoice }: { invoice: Invoice }) {
   return (
     <>
       <View style={numberStyles.invoiceNoContainer}>
@@ -117,7 +117,7 @@ const clientStyles = StyleSheet.create({
   },
 });
 
-function BillTo({ invoice }: { invoice: Invoice; }) {
+function BillTo({ invoice }: { invoice: Invoice }) {
   return (
     <View style={clientStyles.headerContainer}>
       <Text style={clientStyles.billTo}>Bill To:</Text>
@@ -140,7 +140,7 @@ const tableStyles = StyleSheet.create({
   },
 });
 
-const InvoiceItemsTable = ({ invoice }: { invoice: Invoice; }) => (
+const InvoiceItemsTable = ({ invoice }: { invoice: Invoice }) => (
   <View style={tableStyles.tableContainer}>
     <InvoiceTableHeader />
     <InvoiceTableRow items={invoice.items} />
@@ -228,7 +228,7 @@ const tRowStyles = StyleSheet.create({
   },
 });
 
-function InvoiceTableRow({ items }: { items: invoiceItems[]; }) {
+function InvoiceTableRow({ items }: { items: invoiceItems[] }) {
   const rows = items.map((item) => (
     <View style={tRowStyles.row} key={item.sno.toString()}>
       <Text style={tRowStyles.description}>{item.desc}</Text>
@@ -270,7 +270,7 @@ const tBlanStyles = StyleSheet.create({
   },
 });
 
-function InvoiceTableBlankSpace({ rowsCount }: { rowsCount: number; }) {
+function InvoiceTableBlankSpace({ rowsCount }: { rowsCount: number }) {
   const blankRows = Array(rowsCount).fill(0);
   const rows = blankRows.map((x, i) => (
     <View style={tBlanStyles.row} key={`BR${i}`}>
@@ -307,7 +307,7 @@ const tFooterStyles = StyleSheet.create({
   },
 });
 
-function InvoiceTableFooter({ items }: { items: invoiceItems[]; }) {
+function InvoiceTableFooter({ items }: { items: invoiceItems[] }) {
   const total = items
     .map((item) => item.qty * item.rate)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -352,18 +352,13 @@ const footerStyles = StyleSheet.create({
 });
 const Footer = () => (
   <View style={footerStyles.container}>
-    <Text style={footerStyles.row}>{APP_NAME}<br /></Text>
     <Text style={footerStyles.row}>
-      {process.env.NEXT_PUBLIC_SUPPORT_EMAIL}
+      {APP_NAME}
+      <br />
     </Text>
-    <Text style={footerStyles.row}>
-      HANOVIA HOUSE, 30 EASTMAN ROAD
-    </Text>
-    <Text style={footerStyles.row}>
-      LONDON, W3 7YG
-    </Text>
-    <Text style={footerStyles.row}>
-      VAT Number: GB 431616518
-    </Text>
+    <Text style={footerStyles.row}>{process.env.NEXT_PUBLIC_SUPPORT_EMAIL}</Text>
+    <Text style={footerStyles.row}>HANOVIA HOUSE, 30 EASTMAN ROAD</Text>
+    <Text style={footerStyles.row}>LONDON, W3 7YG</Text>
+    <Text style={footerStyles.row}>VAT Number: GB 431616518</Text>
   </View>
 );

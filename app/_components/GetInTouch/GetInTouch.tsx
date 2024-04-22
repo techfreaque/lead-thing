@@ -34,9 +34,9 @@ export default function GetInTouch() {
       ...(user
         ? {}
         : {
-          name: (value: string) => value.trim().length < 2,
-          email: (value: string) => !/^\S+@\S+$/.test(value),
-        }),
+            name: (value: string) => value.trim().length < 2,
+            email: (value: string) => !/^\S+@\S+$/.test(value),
+          }),
 
       subject: (value) => value.trim().length === 0,
       message: (value) => value.trim().length === 0,
@@ -46,23 +46,23 @@ export default function GetInTouch() {
     setIsSending(true);
     const data: SupportRequest = user
       ? {
-        name: user.name,
-        email: user.email,
-        website: user.website,
-        company: user.company,
-        country: user.country,
-        subject: form.values.subject,
-        message: form.values.message,
-      }
+          name: user.name,
+          email: user.email,
+          website: user.website,
+          company: user.company,
+          country: user.country,
+          subject: form.values.subject,
+          message: form.values.message,
+        }
       : {
-        name: form.values.name,
-        email: form.values.email,
-        website: form.values.website,
-        company: form.values.company,
-        country: null,
-        subject: form.values.subject,
-        message: form.values.message,
-      };
+          name: form.values.name,
+          email: form.values.email,
+          website: form.values.website,
+          company: form.values.company,
+          country: null,
+          subject: form.values.subject,
+          message: form.values.message,
+        };
     const success = await sendSupportRequest(data);
     setResponse(success);
     setIsSending(false);

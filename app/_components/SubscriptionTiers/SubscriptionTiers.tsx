@@ -1,6 +1,15 @@
 'use client';
 
-import { Card, Text, Group, Button, SimpleGrid, Container, SegmentedControl, Badge } from '@mantine/core';
+import {
+  Card,
+  Text,
+  Group,
+  Button,
+  SimpleGrid,
+  Container,
+  SegmentedControl,
+  Badge,
+} from '@mantine/core';
 import { IconMailBolt } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Suspense, useContext, useEffect, useState } from 'react';
@@ -35,7 +44,8 @@ export default function SubscriptionTiersSection() {
             <br />
             Upgrade any time, just pick the plan that suits you now and upgrade later!
           </>
-        } />
+        }
+      />
     </Container>
   );
 }
@@ -50,7 +60,8 @@ export function SubscriptionTiers({
   subTitleText: JSX.Element | string;
 }) {
   const [currentSubscription, setCurrentSubscription] = useState<apiPeriodType | undefined>();
-  const [subscriptionDuration, setSubscriptionDuration] = useState<subscriptionDurationsType>('yearly');
+  const [subscriptionDuration, setSubscriptionDuration] =
+    useState<subscriptionDurationsType>('yearly');
 
   useEffect(() => {
     user &&
@@ -59,15 +70,12 @@ export function SubscriptionTiers({
           subscriptionTiers[subscription.productId].billingPeriod[0];
         setSubscriptionDuration(currentSubscriptionDuration);
         setCurrentSubscription(subscription);
-      }
-      );
+      });
   }, [user]);
   const canUpgrade = currentSubscription?.productId === 'free';
   return (
     <>
-      <Title2SubText>
-        {subTitleText}
-      </Title2SubText>
+      <Title2SubText>{subTitleText}</Title2SubText>
       <div style={{ display: 'flex' }}>
         <SegmentedControl
           ml="auto"
@@ -81,9 +89,8 @@ export function SubscriptionTiers({
       <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} mt="md">
         {(Object.keys(subscriptionTiers) as subscriptionTierIdType[]).map(
           (productId) =>
-            !subscriptionTiers[productId].isTesting
-            && subscriptionTiers[productId].billingPeriod.includes(subscriptionDuration)
-            && (
+            !subscriptionTiers[productId].isTesting &&
+            subscriptionTiers[productId].billingPeriod.includes(subscriptionDuration) && (
               <SubscriptionTier
                 key={productId}
                 active={currentSubscription?.productId === productId}
@@ -109,7 +116,6 @@ export function SubscriptionTiers({
         </Suspense>
       </SimpleGrid>
     </>
-
   );
 }
 function SubscriptionTier({
@@ -157,7 +163,6 @@ function SubscriptionTier({
         <Group gap={30}>
           <div style={{ width: '100%' }}>
             <Group justify="space-between" mt="md">
-
               <Text fz="xl" fw={700} style={{ lineHeight: 1 }}>
                 €{price}
               </Text>
@@ -211,8 +216,10 @@ function TestingProduct({
 }) {
   const searchParams = useSearchParams();
   const isTesting = Boolean(searchParams.get('testing'));
-  return isSubscriptionPage && isTesting && (
-    subscriptionDuration === 'monthly' ? (
+  return (
+    isSubscriptionPage &&
+    isTesting &&
+    (subscriptionDuration === 'monthly' ? (
       <SubscriptionTier
         key={subscriptionTiers.testing.productId}
         active={currentSubscription?.productId === subscriptionTiers.testing.productId}
@@ -238,6 +245,6 @@ function TestingProduct({
         rebatePercent={subscriptionTiers.testingy.rebatePercent}
         apiCalls={subscriptionTiers.testingy.apiCalls}
       />
-    )
+    ))
   );
 }

@@ -19,7 +19,9 @@ export function ExpertsenderIcon({
   style?: CSSProperties | undefined;
   className?: string | undefined;
 }) {
-  return <Icon alt="Expertsender Icon" iconFile={expertsender} style={style} className={className} />;
+  return (
+    <Icon alt="Expertsender Icon" iconFile={expertsender} style={style} className={className} />
+  );
 }
 
 export function CleverreachIcon({

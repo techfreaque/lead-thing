@@ -60,6 +60,8 @@ export async function setPassword(password: string, resetPasswordToken: string):
       },
     });
     return Boolean(user);
-  } catch (e) { /* empty */ }
+  } catch (e) {
+    /* empty */
+  }
   return false;
 }

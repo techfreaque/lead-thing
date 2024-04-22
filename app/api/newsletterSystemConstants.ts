@@ -342,7 +342,8 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: false,
-    description: 'Prvide a comma separated list of custom attributes e.g.: user.attributeName=attributeValue, user.anottherAttribute=anotherValue',
+    description:
+      'Prvide a comma separated list of custom attributes e.g.: user.attributeName=attributeValue, user.anottherAttribute=anotherValue',
   },
   mappDomain: {
     label: 'Mapp Domain',

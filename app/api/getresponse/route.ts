@@ -38,12 +38,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ipAddress: ip,
           ...(tagId
             ? {
-              tags: [
-                {
-                  tagId,
-                },
-              ],
-            }
+                tags: [
+                  {
+                    tagId,
+                  },
+                ],
+              }
             : {}),
         }),
       });
@@ -75,7 +75,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               description: list.description,
             }))
           )}`;
-        } catch (e) { /* empty */ }
+        } catch (e) {
+          /* empty */
+        }
       }
       return ApiResponse(
         `Failed to add the contact. Error: ${JSON.stringify(data)}${additionalInfo} ${formatApiCallDetails(
