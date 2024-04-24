@@ -178,7 +178,7 @@ export const newsletterSystems: {
       'salesManagoClientId',
       'salesManagoApiKey',
       'salesManagoSha',
-      'salesManagoSubDomain',
+      'salesManagoDomain',
       'salesManagoOwner',
     ],
   },
@@ -237,7 +237,7 @@ export type RequestOptionsFieldName =
   | 'salesManagoClientId'
   | 'salesManagoApiKey'
   | 'salesManagoSha'
-  | 'salesManagoSubDomain'
+  | 'salesManagoDomain'
   | 'salesManagoOwner'
   | 'freshmailApiKey'
   | 'youLeadAppId'
@@ -486,12 +486,12 @@ export const RequestOptionsData: {
     required: true,
     description: '',
   },
-  salesManagoSubDomain: {
-    label: 'SalesManago Sub Domain',
+  salesManagoDomain: {
+    label: 'SalesManago Domain',
     valueType: 'string',
-    value: 'SALES_MANAGO_SUB_DOMAIN',
+    value: '',
     required: true,
-    description: '',
+    description: 'The domain of your SalesManago instance e.g.: app2.salemanago.com',
   },
   salesManagoOwner: {
     label: 'SalesManago Owner',

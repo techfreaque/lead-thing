@@ -171,7 +171,7 @@ export interface SalesmanagoPostRequest extends PostRequest {
   salesManagoClientId: string;
   salesManagoApiKey: string;
   salesManagoSha: string;
-  salesManagoSubDomain: string;
+  salesManagoDomain: string;
   salesManagoOwner: string;
 }
 

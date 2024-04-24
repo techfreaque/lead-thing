@@ -3,7 +3,7 @@ import type { SalesmanagoPostRequest } from '../requestTypes';
 import executeIfAuthenticated from '../../_server/apiHelpers';
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
-const apiContactsPath = '.salesmanago.com/api/contact/upsert';
+const apiContactsUrl = 'https://{salesManagoDomain}/api/contact/upsert';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     salesManagoClientId,
     salesManagoApiKey,
     salesManagoSha,
-    salesManagoSubDomain,
+    salesManagoDomain,
     salesManagoOwner,
   }: SalesmanagoPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
@@ -29,28 +29,31 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       'Content-Type': 'application/json',
     };
     try {
-      const response: Response = await fetch(`https://${salesManagoSubDomain}${apiContactsPath}`, {
-        method: 'post',
-        headers,
-        body: JSON.stringify({
-          clientId: salesManagoClientId,
-          apiKey: salesManagoApiKey,
-          requestTime: Date.now(),
-          sha: salesManagoSha,
+      const response: Response = await fetch(
+        apiContactsUrl.replace('{salesManagoDomain}', salesManagoDomain),
+        {
+          method: 'post',
+          headers,
+          body: JSON.stringify({
+            clientId: salesManagoClientId,
+            apiKey: salesManagoApiKey,
+            requestTime: Date.now(),
+            sha: salesManagoSha,
 
-          owner: salesManagoOwner,
-          contact: {
-            email,
-            name: `${firstname} ${lastname}`,
-            address: {
-              country: countryCode,
+            owner: salesManagoOwner,
+            contact: {
+              email,
+              name: `${firstname} ${lastname}`,
+              address: {
+                country: countryCode,
+              },
             },
-          },
 
-          forceOptIn: subscriptionMode === 'FORCE_OPT_IN',
-          ...(tag ? { tags: [tag] } : {}),
-        }),
-      });
+            forceOptIn: subscriptionMode === 'FORCE_OPT_IN',
+            ...(tag ? { tags: [tag] } : {}),
+          }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         return ApiResponse(

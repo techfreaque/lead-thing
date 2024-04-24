@@ -11,11 +11,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     firstname,
     lastname,
     email,
-    // ip,
-    // gender,
     countryCode,
-    // salutation,
-    // tag,
     listId,
     subscriptionMode,
     mappUsername,
@@ -30,38 +26,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       Authorization: `Basic ${btoa(`${mappUsername}:${mappPassword}`)}`,
     };
     try {
-      const rawAttributes =
-        mappCustomAttributes && mappCustomAttributes?.replace(/, /g, ',').split(',');
-      let attributes: { name: string; value: string }[] = [];
-      if (rawAttributes) {
-        attributes = rawAttributes.map((rawAttribute) => {
-          const [attributeName, attributeValue] = rawAttribute.split('=');
-          return { name: attributeName, value: attributeValue };
-        });
-      }
-      const contactPayload = {
-        emailAddress: email,
-        attributes: [
-          { name: 'FirstName', value: firstname },
-          { name: 'LastName', value: lastname },
-          { name: 'user.ISOCountryCode', value: countryCode },
-          ...attributes,
-        ],
-      };
-      const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
-        method: 'post',
+      const response = await createMappContact({
+        mappCustomAttributes,
+        email,
+        firstname,
+        lastname,
+        countryCode,
+        mappDomain,
         headers,
-        body: JSON.stringify(contactPayload),
       });
-      const data = await response.json();
       if (response.ok) {
-        const subscribeResponse: Response = await fetch(
-          `https://${mappDomain}${apiSubscribePath}?email=${email}&groupId=${parseInt(String(listId), 10)}&subscriptionMode=${subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode}`,
-          {
-            method: 'post',
-            headers,
-          }
-        );
+        const subscribeResponse = await subscribeMappContact({
+          mappDomain,
+          email,
+          listId,
+          subscriptionMode,
+          headers,
+        });
         if (subscribeResponse.ok) {
           return ApiResponse('Contact successfully added and subscribed!', 200);
         }
@@ -74,7 +55,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
       return ApiResponse(
         `Failed to update the contact via the mapp api. Error: ${JSON.stringify(
-          data
+          await response.json()
         )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
         500
       );
@@ -88,4 +69,78 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
   }
   return executeIfAuthenticated(request, forwardToNewsletterSystem);
+}
+
+async function createMappContact({
+  mappCustomAttributes,
+  email,
+  firstname,
+  lastname,
+  countryCode,
+  mappDomain,
+  headers,
+}: {
+  mappCustomAttributes: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+  countryCode: string;
+  mappDomain: string;
+  headers: {
+    Accept: string;
+    'Content-Type': string;
+    Authorization: string;
+  };
+}): Promise<Response> {
+  const rawAttributes =
+    mappCustomAttributes && mappCustomAttributes?.replace(/, /g, ',').split(',');
+  let attributes: { name: string; value: string }[] = [];
+  if (rawAttributes) {
+    attributes = rawAttributes.map((rawAttribute) => {
+      const [attributeName, attributeValue] = rawAttribute.split('=');
+      return { name: attributeName, value: attributeValue };
+    });
+  }
+  const contactPayload = {
+    emailAddress: email,
+    attributes: [
+      { name: 'FirstName', value: firstname },
+      { name: 'LastName', value: lastname },
+      { name: 'user.ISOCountryCode', value: countryCode },
+      ...attributes,
+    ],
+  };
+  const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
+    method: 'post',
+    headers,
+    body: JSON.stringify(contactPayload),
+  });
+  return response;
+}
+
+async function subscribeMappContact({
+  mappDomain,
+  email,
+  listId,
+  subscriptionMode,
+  headers,
+}: {
+  mappDomain: string;
+  email: string;
+  listId: string;
+  subscriptionMode: string;
+  headers: {
+    Accept: string;
+    'Content-Type': string;
+    Authorization: string;
+  };
+}): Promise<Response> {
+  const subscribeResponse: Response = await fetch(
+    `https://${mappDomain}${apiSubscribePath}?email=${email}&groupId=${parseInt(String(listId), 10)}&subscriptionMode=${subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode}`,
+    {
+      method: 'post',
+      headers,
+    }
+  );
+  return subscribeResponse;
 }
