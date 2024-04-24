@@ -3,56 +3,63 @@ import type { ExpertsenderPostRequest } from '../requestTypes';
 import executeIfAuthenticated from '../../_server/apiHelpers';
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
-const apiContactsPath = 'https://api.ecdp.app/customers';
+const apiContactsUrl = 'https://{domain}/v2/Api/Subscribers/';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
     firstname,
     lastname,
     email,
-    // ip,
-    gender,
+    ip,
     // countryCode,
     // salutation,
     listId,
-    subscriptionMode,
+    expertSenderVendor,
+    expertSenderApiDomain,
     expertSenderApiKey,
   }: ExpertsenderPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
     try {
-      const response: Response = await fetch(apiContactsPath, {
-        method: 'post',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'x-api-key': expertSenderApiKey,
-        },
-        body: JSON.stringify({
-          mode: 'Add',
-          matchBy: 'Email',
-          data: [
-            {
-              email,
-              firstName: firstname,
-              lastName: lastname,
-              ...(['MALE', 'FEMALE'].includes(gender) && {
-                gender: gender === 'MALE' ? 'Male' : 'Female',
-              }),
-              consentsData: {
-                consents: [
-                  {
-                    id: parseInt(listId, 10),
-                    value: subscriptionMode === 'DOUBLE_OPT_IN' ? 'AwaitingConfirmation' : 'True',
-                  },
-                ],
-                // force: true,
-                // confirmationMessageId: 0,
-              },
-            },
-          ],
-        }),
-      });
-      const data = await response.json();
+      const response: Response = await fetch(
+        apiContactsUrl.replace('{domain}', expertSenderApiDomain),
+        {
+          method: 'post',
+          headers: {
+            'Accept-Encoding': 'gzip,deflate',
+            'Content-Type': 'text/xml',
+            'User-Agent': 'Jakarta Commons-HttpClient/3.1',
+          },
+          body: `<?xml version="1.0" encoding="UTF-8"?>
+        <ApiRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <ApiKey>${expertSenderApiKey}</ApiKey>
+            <Data xsi:type="Subscriber">
+               <Mode>AddAndUpdate</Mode>
+               <Force>true</Force>
+               <ListId>${listId}</ListId>
+               <Email>${email}</Email>
+               <Firstname>${firstname}</Firstname>
+               <Lastname>${lastname}</Lastname>
+               ${expertSenderVendor && `<Vendor>${expertSenderVendor}</Vendor>`}
+               ${expertSenderVendor && `<Ip>${ip}</Ip>`}
+            </Data>
+        </ApiRequest>
+        `,
+          // might TODO later:
+          // <Data xsi:type="Subscriber">
+          // <Properties>
+          //  <Property>
+          //    <Id>2</Id>
+          //      <Value xsi:type="xs:string">student</Value>
+          //  </Property>
+          //  <Property>
+          //    <Id>3</Id>
+          //      <Value xsi:type="xs:dateTime">1985-03-12</Value>
+          //  </Property>
+          // </Properties>
+          // <TrackingCode>123</TrackingCode>
+        }
+      );
+      const data = await response.text();
       if (response.ok) {
         return ApiResponse(
           `Contact successfully added and subscribed! Response: ${JSON.stringify(data)}`,
@@ -64,9 +71,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           firstname,
           lastname,
           email,
-          gender,
           listId,
-          subscriptionMode,
+          ip,
         })}`,
         500
       );
@@ -76,9 +82,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           firstname,
           lastname,
           email,
-          gender,
           listId,
-          subscriptionMode,
+          ip,
         })}`,
         500
       );

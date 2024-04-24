@@ -89,9 +89,10 @@ export const newsletterSystems: {
       'firstname',
       'lastname',
       'email',
-      'gender',
+      'ip',
       'listId',
-      'subscriptionMode',
+      'expertSenderVendor',
+      'expertSenderApiDomain',
       'expertSenderApiKey',
     ],
   },
@@ -253,6 +254,8 @@ export type RequestOptionsFieldName =
   | 'mailupClientSecret'
   | 'mailupUsername'
   | 'mailupPassword'
+  | 'expertSenderVendor'
+  | 'expertSenderApiDomain'
   | 'expertSenderApiKey'
   | 'freshmailApiSecret';
 
@@ -499,6 +502,20 @@ export const RequestOptionsData: {
     value: 'SALES_MANAGO_OWNER',
     required: true,
     description: '',
+  },
+  expertSenderVendor: {
+    label: 'Expertsender Vendor',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'Identifier/name of traffic vendor the subscriber came from.',
+  },
+  expertSenderApiDomain: {
+    label: 'Expertsender API Domain',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Your Expertsender API Domain, which you can find in Settings > API. E.g.: api.esv2.com',
   },
   expertSenderApiKey: {
     label: 'Expertsender API key',
