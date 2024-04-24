@@ -515,7 +515,8 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: true,
-    description: 'Your Expertsender API Domain, which you can find in Settings > API. E.g.: api.esv2.com',
+    description:
+      'Your Expertsender API Domain, which you can find in Settings > API. E.g.: api.esv2.com',
   },
   expertSenderApiKey: {
     label: 'Expertsender API key',

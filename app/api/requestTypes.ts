@@ -183,6 +183,7 @@ export interface ExpertsenderPostRequest extends PostRequest {
   // tag: string;
   listId: string;
   expertSenderVendor: string;
+  expertSenderApiDomain: string;
   expertSenderApiKey: string;
 }
 

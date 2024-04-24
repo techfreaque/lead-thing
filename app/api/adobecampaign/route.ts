@@ -168,7 +168,7 @@ async function createContact({
   lastname: string;
   email: string;
 }): Promise<{
-  data: { PKey: string; };
+  data: { PKey: string };
   success: boolean;
 }> {
   const response: Response = await fetch(
