@@ -199,5 +199,4 @@ export interface AllPossiblePostRequestParameters
     FreshmailPostRequest,
     AdobeCampaignPostRequest,
     ExpertsenderPostRequest,
-    SalesmanagoPostRequest {
-}
+    SalesmanagoPostRequest {}

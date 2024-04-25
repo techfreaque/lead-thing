@@ -78,11 +78,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           },
           body: JSON.stringify({
             email,
-            ...(cleverreachSource && { source: cleverreachSource }),
+            ...(cleverreachSource ? { source: cleverreachSource } : {}),
             global_attributes: {
               firstname,
               lastname,
-              ...(gender && { gender: gender.toLowerCase() }),
+              ...(gender ? { gender: gender.toLowerCase() } : {}),
             },
           }),
         }
