@@ -88,7 +88,7 @@ export interface YouleadPostRequest extends PostRequest {
 
 export interface CleverreachPostRequest extends PostRequest {
   // ip: string;
-  gender: 'MALE' | 'FEMALE';
+  gender?: 'MALE' | 'FEMALE';
   // countryCode: string;
   // salutation: string;
   subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
@@ -105,7 +105,7 @@ export interface CleverreachPostRequest extends PostRequest {
 
 export interface MailupPostRequest extends PostRequest {
   // ip: string;
-  gender: 'MALE' | 'FEMALE';
+  gender?: 'MALE' | 'FEMALE';
   // countryCode: string;
   // salutation: string;
   subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
@@ -160,7 +160,7 @@ export interface AdobeCampaignPostRequest extends PostRequest {
 export interface SalesmanagoPostRequest extends PostRequest {
   // ip: string;
   // gender: 'MALE' | 'FEMALE';
-  countryCode: string;
+  countryCode?: string;
   // salutation: string;
   tag: string;
   // listId: string | number;
@@ -178,8 +178,8 @@ export interface SalesmanagoPostRequest extends PostRequest {
 
 export interface ExpertsenderPostRequest extends PostRequest {
   ip: string;
-  gender: 'MALE' | 'FEMALE';
-  countryCode: string;
+  gender?: 'MALE' | 'FEMALE';
+  countryCode?: string;
   // salutation: string;
   // tag: string;
   listId: string;
@@ -200,5 +200,4 @@ export interface AllPossiblePostRequestParameters
     AdobeCampaignPostRequest,
     ExpertsenderPostRequest,
     SalesmanagoPostRequest {
-  gender: 'MALE' | 'FEMALE';
 }
