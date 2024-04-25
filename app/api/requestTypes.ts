@@ -21,11 +21,12 @@ export interface GetresponsePostRequest extends PostRequest {
 
 export interface MappPostRequest extends PostRequest {
   // ip: string;
-  // gender: 'MALE' | 'FEMALE';
-  countryCode: string;
+  gender?: 'MALE' | 'FEMALE';
+  countryCode?: string;
   // salutation: string;
   // tag: string;
   listId: string;
+  languageCode?: string;
   subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
   //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.

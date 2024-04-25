@@ -12,6 +12,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     lastname,
     email,
     countryCode,
+    gender,
+    languageCode,
     listId,
     subscriptionMode,
     mappUsername,
@@ -32,6 +34,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         firstname,
         lastname,
         countryCode,
+        gender,
+        languageCode,
         mappDomain,
         headers,
       });
@@ -49,20 +53,53 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         return ApiResponse(
           `The contact was added to mapp, but subscribing to the list was not successful via the mapp api. Error: ${JSON.stringify(
             await subscribeResponse.json()
-          )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
+          )} ${formatApiCallDetails({
+            email,
+            firstname,
+            lastname,
+            countryCode,
+            gender,
+            languageCode,
+            listId,
+            subscriptionMode,
+            mappCustomAttributes,
+            mappDomain,
+          })}`,
           500
         );
       }
       return ApiResponse(
         `Failed to update the contact via the mapp api. Error: ${JSON.stringify(
           await response.json()
-        )} ${formatApiCallDetails({ firstname, lastname, email, countryCode, listId })}`,
+        )} ${formatApiCallDetails({
+          email,
+          firstname,
+          lastname,
+          countryCode,
+          gender,
+          languageCode,
+          listId,
+          subscriptionMode,
+          mappCustomAttributes,
+          mappDomain,
+        })}`,
         500
       );
     } catch (error) {
       return ApiResponse(
         `Failed to add the contact via the mapp api with an unknown error. Error: ${error} ${formatApiCallDetails(
-          { firstname, lastname, email, countryCode, listId }
+          {
+            email,
+            firstname,
+            lastname,
+            countryCode,
+            gender,
+            languageCode,
+            listId,
+            subscriptionMode,
+            mappCustomAttributes,
+            mappDomain,
+          }
         )}`,
         500
       );
@@ -77,6 +114,8 @@ async function createMappContact({
   email,
   firstname,
   lastname,
+  gender,
+  languageCode,
   countryCode,
   mappDomain,
   headers,
@@ -85,7 +124,9 @@ async function createMappContact({
   email: string;
   firstname: string;
   lastname: string;
-  countryCode: string;
+  countryCode?: string;
+  gender?: string;
+  languageCode?: string;
   mappDomain: string;
   headers: {
     Accept: string;
@@ -108,6 +149,19 @@ async function createMappContact({
       { name: 'FirstName', value: firstname },
       { name: 'LastName', value: lastname },
       { name: 'user.ISOCountryCode', value: countryCode },
+      ...(languageCode ? [{ name: 'user.ISOLanguageCode', value: languageCode }] : []),
+      ...(gender && ['MALE', 'FEMALE'].includes(gender)
+        ? [
+            {
+              name: 'user.Title',
+              value: gender === 'MALE' ? 1 : 2,
+            },
+            {
+              name: 'user.Gender',
+              value: gender === 'MALE' ? 1 : 2,
+            },
+          ]
+        : []),
       ...attributes,
     ],
   };
@@ -145,3 +199,28 @@ async function subscribeMappContact({
   );
   return subscribeResponse;
 }
+
+// async function getMappContact({
+//   email,
+//   mappDomain,
+//   headers,
+// }: {
+//   email: string;
+//   mappDomain: string;
+//   headers: {
+//     Accept: string;
+//     'Content-Type': string;
+//     Authorization: string;
+//   };
+// }): Promise<undefined> {
+//   const response: Response = await fetch(`https://${mappDomain}/api/rest/v19/contact/get`, {
+//     method: 'POST',
+//     headers,
+//     body: JSON.stringify({
+//       type: 'EMAIL',
+//       value: email,
+//     }),
+//   });
+//   console.log(JSON.stringify(await response.json()));
+//   return undefined;
+// }

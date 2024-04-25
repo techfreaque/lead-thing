@@ -142,6 +142,8 @@ export const newsletterSystems: {
       'lastname',
       'email',
       'countryCode',
+      'languageCode',
+      'gender',
       'listId',
       'subscriptionMode',
       'mappCustomAttributes',
@@ -213,6 +215,8 @@ export type RequestOptionsFieldName =
   | 'ip'
   | 'gender'
   | 'countryCode'
+  | 'languageCode'
+  | 'source'
   | 'subscriptionMode'
   | 'listId'
   | 'listName'
@@ -308,9 +312,23 @@ export const RequestOptionsData: {
   countryCode: {
     label: 'Country Code',
     valueType: 'string',
-    value: 'GB',
+    value: '',
     required: false,
-    description: '',
+    description: 'Provide an ISO country code e.g.: GB, DE or US',
+  },
+  languageCode: {
+    label: 'Language Code',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'Provide an ISO language code e.g.: en or de',
+  },
+  source: {
+    label: 'Source',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'Provide an name as the source for the created leads e.g.: Some-App-Name',
   },
   subscriptionMode: {
     label: 'Subscription Mode',
