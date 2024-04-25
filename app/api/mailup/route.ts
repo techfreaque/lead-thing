@@ -89,13 +89,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 Id: 2,
                 Value: lastname,
               },
-              ...(gender && [
-                {
-                  Description: 'Gender',
-                  Id: 10,
-                  Value: gender,
-                },
-              ]),
+              ...(gender
+                ? [
+                    {
+                      Description: 'Gender',
+                      Id: 10,
+                      Value: gender,
+                    },
+                  ]
+                : []),
             ],
           }),
         }

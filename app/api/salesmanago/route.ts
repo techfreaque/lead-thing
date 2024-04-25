@@ -44,9 +44,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             contact: {
               email,
               name: `${firstname} ${lastname}`,
-              address: {
-                country: countryCode,
-              },
+              ...(countryCode
+                ? {
+                    address: {
+                      country: countryCode,
+                    },
+                  }
+                : {}),
             },
 
             forceOptIn: subscriptionMode === 'FORCE_OPT_IN',

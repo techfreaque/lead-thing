@@ -39,8 +39,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                <Email>${email}</Email>
                <Firstname>${firstname}</Firstname>
                <Lastname>${lastname}</Lastname>
-               ${expertSenderVendor && `<Vendor>${expertSenderVendor}</Vendor>`}
-               ${expertSenderVendor && `<Ip>${ip}</Ip>`}
+               ${expertSenderVendor ? `<Vendor>${expertSenderVendor}</Vendor>` : ''}
+               ${expertSenderVendor ? `<Ip>${ip}</Ip>` : ''}
             </Data>
         </ApiRequest>
         `,
