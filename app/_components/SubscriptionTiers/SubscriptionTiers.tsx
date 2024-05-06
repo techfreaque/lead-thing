@@ -72,7 +72,7 @@ export function SubscriptionTiers({
         setCurrentSubscription(subscription);
       });
   }, [user]);
-  const canUpgrade = currentSubscription?.productId === 'free';
+  const canUpgrade = currentSubscription?.productId === 'free' || !currentSubscription?.productId;
   return (
     <>
       <Title2SubText>{subTitleText}</Title2SubText>
