@@ -1,7 +1,7 @@
 'use client';
 
 import { CSSProperties, ForwardRefExoticComponent, RefAttributes, useContext } from 'react';
-import { IconKey, IconReceipt2, IconLogout, IconProps, Icon } from '@tabler/icons-react';
+import { IconKey, IconReceipt2, IconLogout, IconProps } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Divider, Title } from '@mantine/core';
 import classes from './DocsSideBar.module.css';
@@ -21,7 +21,7 @@ export default function DocsSideBar({
   const items: {
     link: string;
     name: string;
-    icon: ForwardRefExoticComponent<Omit<IconProps, 'ref'> & RefAttributes<Icon>>;
+    icon: ForwardRefExoticComponent<Omit<IconProps, 'ref'> & RefAttributes<SVGSVGElement>>;
     onClick?: () => void;
   }[] = [{ link: myApiKeyUrl, name: 'My API Key & Stats', icon: IconKey }];
   if (user) {
