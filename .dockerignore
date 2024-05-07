@@ -1,2 +1,9 @@
 prisma/db
 docker-entry-point.sh
+Dockerfile*
+.dockerignore
+.git
+.gitignore
+README.md
+LICENSE
+.vscode
