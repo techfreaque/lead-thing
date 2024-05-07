@@ -265,7 +265,7 @@ async function sendExampleRequest({
     if (response.status === 200) {
       setResponse({
         state: 'success',
-        message: 'Successfully created the lead',
+        message,
       });
     } else {
       setResponse({
