@@ -10,7 +10,9 @@ FROM base AS install
 RUN mkdir -p /temp/prod
 COPY package.json bun.lockb /temp/prod/
 
-RUN cd /temp/prod && bun install --production
+#tmp fix
+# RUN cd /temp/prod && bun install --production
+RUN cd /temp/prod && bun install
 
 # copy node_modules from temp directory
 # then copy all (non-ignored) project files into the image
