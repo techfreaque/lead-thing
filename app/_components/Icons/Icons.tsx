@@ -33,9 +33,7 @@ export function EmarsysIcon({
   style?: CSSProperties | undefined;
   className?: string | undefined;
 }) {
-  return (
-    <Icon alt="Emarsys Icon" iconFile={emarsys} style={style} className={className} />
-  );
+  return <Icon alt="Emarsys Icon" iconFile={emarsys} style={style} className={className} />;
 }
 
 export function AdobeCampaignIcon({

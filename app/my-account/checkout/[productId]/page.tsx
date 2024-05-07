@@ -18,7 +18,13 @@ import {
   subscriptionTiers,
 } from '@/app/_lib/constants';
 import { getTotalPriceForSubscription } from '@/app/_lib/helpers';
-import { markAsPaidBody } from '@/app/_server/orders';
+import {
+  PaidOrderType,
+  apiPeriodType,
+  getCurrentSubscription,
+  getOrderFromSubscription,
+  markAsPaidBody,
+} from '@/app/_server/orders';
 import { startPaymentBody } from '@/app/api/user/payment/create/route';
 
 const initialOptions: ReactPayPalScriptOptions = {
@@ -35,7 +41,26 @@ export default function Checkout({ params }: { params: { productId: subscription
   const productToOrder: subscriptionTierType = subscriptionTiers[params.productId];
   const { user } = useContext(UserContext) as UserContextType;
   const [message, setMessage] = useState<string | undefined>();
-  const { isYearly, totalPrice } = getTotalPriceForSubscription(productToOrder);
+  const [currentSubscriptionOrder, setCurrentSubscriptionOrder] = useState<PaidOrderType | null>(
+    null
+  );
+  const [currentSubscription, setCurrentSubscription] = useState<apiPeriodType | undefined>();
+  const { isYearly, totalPrice, rebateValuePreviousOrder } = getTotalPriceForSubscription(
+    productToOrder,
+    currentSubscription,
+    currentSubscriptionOrder
+  );
+
+  useEffect(() => {
+    user &&
+      getCurrentSubscription({ email: user.email }).then((subscription) => {
+        getOrderFromSubscription(subscription).then((order) => {
+          setCurrentSubscriptionOrder(order);
+          setCurrentSubscription(subscription);
+        });
+      });
+  }, [user]);
+
   return (
     user && (
       <Container my="xl">
@@ -65,12 +90,33 @@ export default function Checkout({ params }: { params: { productId: subscription
               <List.Item>
                 <Title order={5}>API Calls per Month: {productToOrder.apiCalls}</Title>
               </List.Item>
-              <List.Item>
-                <Title order={5}>
-                  Total amount due now: {totalPrice}€{' '}
-                  {isYearly ? `(${productToOrder.price}€ / month)` : ''}
-                </Title>
-              </List.Item>
+              {rebateValuePreviousOrder ? (
+                <>
+                  <List.Item>
+                    <Title order={5}>
+                      Subscription amount: {totalPrice}€{' '}
+                      {isYearly ? `(${productToOrder.price}€ / month)` : ''}
+                    </Title>
+                  </List.Item>
+                  <List.Item>
+                    <Title order={5}>
+                      Balance from previous order: {-rebateValuePreviousOrder}€
+                    </Title>
+                  </List.Item>
+                  <List.Item>
+                    <Title order={5}>
+                      Total amount due now: {totalPrice - rebateValuePreviousOrder}€
+                    </Title>
+                  </List.Item>
+                </>
+              ) : (
+                <List.Item>
+                  <Title order={5}>
+                    Total amount due now: {totalPrice}€{' '}
+                    {isYearly ? `(${productToOrder.price}€ / month)` : ''}
+                  </Title>
+                </List.Item>
+              )}
             </List>
             <Message message={message} />
             <Paypal productToOrder={productToOrder} user={user} setMessage={setMessage} />
