@@ -134,5 +134,17 @@ export function canUpgradeFromCurrentToTarget(
   ) {
     return true;
   }
+  if (
+    currentSubscription?.productId === 'testingy' &&
+    ['testing'].includes(targetSubscription.productId)
+  ) {
+    return true;
+  }
+  if (
+    currentSubscription?.productId === 'testing' &&
+    ['testingy'].includes(targetSubscription.productId)
+  ) {
+    return true;
+  }
   return false;
 }
