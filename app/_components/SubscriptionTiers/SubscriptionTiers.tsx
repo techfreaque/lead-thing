@@ -27,6 +27,7 @@ import {
 } from '@/app/_lib/constants';
 import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
 import { apiPeriodType, getCurrentSubscription } from '@/app/_server/orders';
+import { canUpgradeFromCurrentToTarget, objectEntries } from '@/app/_lib/helpers';
 
 export default function SubscriptionTiersSection() {
   const { user } = useContext(UserContext) as UserContextType;
@@ -72,7 +73,9 @@ export function SubscriptionTiers({
         setCurrentSubscription(subscription);
       });
   }, [user]);
-  const canUpgrade = currentSubscription?.productId === 'free' || !currentSubscription?.productId;
+  const canUpgrade = true;
+  // currentSubscription?.productId === 'free' || !currentSubscription?.productId;
+
   return (
     <>
       <Title2SubText>{subTitleText}</Title2SubText>
@@ -87,21 +90,21 @@ export function SubscriptionTiers({
         />
       </div>
       <SimpleGrid cols={{ base: 1, sm: 2, md: 5 }} mt="md">
-        {(Object.keys(subscriptionTiers) as subscriptionTierIdType[]).map(
-          (productId) =>
-            !subscriptionTiers[productId].isTesting &&
-            subscriptionTiers[productId].billingPeriod.includes(subscriptionDuration) && (
+        {objectEntries(subscriptionTiers).map(
+          ([productId, subscriptionTier]) =>
+            !subscriptionTier.isTesting &&
+            subscriptionTier.billingPeriod.includes(subscriptionDuration) && (
               <SubscriptionTier
                 key={productId}
                 active={currentSubscription?.productId === productId}
                 productId={productId}
                 user={user}
-                canUpgrade={canUpgrade}
+                canUpgrade={canUpgradeFromCurrentToTarget(currentSubscription, subscriptionTier)}
                 isSubscriptionPage={isSubscriptionPage}
-                title={subscriptionTiers[productId as subscriptionTierIdType].title}
-                price={subscriptionTiers[productId as subscriptionTierIdType].price}
-                rebatePercent={subscriptionTiers[productId as subscriptionTierIdType].rebatePercent}
-                apiCalls={subscriptionTiers[productId as subscriptionTierIdType].apiCalls}
+                title={subscriptionTier.title}
+                price={subscriptionTier.price}
+                rebatePercent={subscriptionTier.rebatePercent}
+                apiCalls={subscriptionTier.apiCalls}
               />
             )
         )}

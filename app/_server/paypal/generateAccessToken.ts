@@ -1,5 +1,3 @@
-'use server';
-
 import getConfig from 'next/config';
 
 const { serverRuntimeConfig } = getConfig();
@@ -26,4 +24,21 @@ export async function generateAccessToken() {
     throw new Error(`Failed to generate Access Token: ${error}`);
   }
   return undefined;
+}
+
+export function getAuthAssertionValue() {
+  const header = {
+    alg: 'none',
+  };
+  const encodedHeader = base64url(header);
+  const payload = {
+    iss: `${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}`,
+    payer_id: `${process.env.PAYPAL_SELLER_PAYER_ID}`,
+  };
+  const encodedPayload = base64url(payload);
+  return `${encodedHeader}.${encodedPayload}.`;
+}
+
+function base64url(json: { [key: string]: string }) {
+  return btoa(JSON.stringify(json)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
 }

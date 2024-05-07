@@ -664,7 +664,8 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: true,
-    description: 'The sub domain of your Emarsys instance e.g. api if your instance domain is https://api.emarsys.net',
+    description:
+      'The sub domain of your Emarsys instance e.g. api if your instance domain is https://api.emarsys.net',
   },
   emarsysUserName: {
     label: 'Emarsys Username',

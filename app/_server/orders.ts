@@ -2,7 +2,7 @@
 
 import getConfig from 'next/config';
 import { subscriptionTierIdType, subscriptionTierType, subscriptionTiers } from '../_lib/constants';
-import { generateAccessToken } from './paypal/generateAccessToken';
+import { generateAccessToken, getAuthAssertionValue } from './paypal/generateAccessToken';
 import { prisma } from './prisma';
 
 const { serverRuntimeConfig } = getConfig();
@@ -93,6 +93,7 @@ export async function markOrderAsPaid({
   subscriptionId,
   productId,
 }: markAsPaidBody): Promise<PaidOrderType> {
+  await cancelPreviousSubscription(email);
   const subscriptionTier: subscriptionTierType = subscriptionTiers[productId];
   const order = await prisma.orders.update({
     where: {
@@ -181,7 +182,9 @@ export async function getCurrentSubscription({ email }: { email: string }): Prom
   if (currentApiPeriod.validUntil < new Date()) {
     // current api period expired, create new one
     if (currentApiPeriod.productId === subscriptionTiers.free.productId) {
-      return createNextFreeTierApiPeriod({ lastApiPeriod: currentApiPeriod as apiPeriodType });
+      return createNextFreeTierApiPeriod({
+        lastApiPeriod: currentApiPeriod as apiPeriodType,
+      });
     }
     const newCurrentApiPeriod: apiPeriodType = await createApiPeriodFromOrder({
       email,
@@ -195,6 +198,20 @@ export async function getCurrentSubscription({ email }: { email: string }): Prom
   }
   // current one is still valid
   return currentApiPeriod as apiPeriodType;
+}
+
+export async function getOrderFromSubscription(
+  currentApiPeriod: apiPeriodType
+): Promise<PaidOrderType | null> {
+  if (currentApiPeriod.orderId !== 'free') {
+    const order = await prisma.orders.findUnique({
+      where: {
+        transactionId: currentApiPeriod.orderId,
+      },
+    });
+    return order as PaidOrderType;
+  }
+  return null;
 }
 
 async function getLastApiPeriod(email: string) {
@@ -508,7 +525,9 @@ const mockYearlyPaypalTransaction: PaypalTransaction[] = [
 async function getPaypalTransactionsFromSubscription(subscriptionId: string) {
   const accessToken = await generateAccessToken();
   const transactionsForSubscriptionResponse: Response = await fetch(
-    `${serverRuntimeConfig.PAYPAL_API_URL}/v1/billing/subscriptions/${subscriptionId}/transactions?start_time=2024-01-01T07:50:20.940Z&end_time=${new Date().toISOString()}`,
+    `${
+      serverRuntimeConfig.PAYPAL_API_URL
+    }/v1/billing/subscriptions/${subscriptionId}/transactions?start_time=2024-01-01T07:50:20.940Z&end_time=${new Date().toISOString()}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -517,8 +536,9 @@ async function getPaypalTransactionsFromSubscription(subscriptionId: string) {
       },
     }
   );
-  const paypalTransactions: { transactions: PaypalTransaction[] } =
-    await transactionsForSubscriptionResponse.json();
+  const paypalTransactions: {
+    transactions: PaypalTransaction[];
+  } = await transactionsForSubscriptionResponse.json();
   return paypalTransactions.transactions;
 }
 
@@ -585,4 +605,29 @@ async function createFirstPaidApiPeriod({
       apiCallsPerMonth,
     },
   })) as apiPeriodType;
+}
+
+async function cancelPreviousSubscription(email: string) {
+  const currentSubscription = await getCurrentSubscription({
+    email,
+  });
+  const previousOrder = await getOrderFromSubscription(currentSubscription);
+  if (previousOrder) {
+    const accessToken = await generateAccessToken();
+    await fetch(
+      `${serverRuntimeConfig.PAYPAL_API_URL}/v1/billing/subscriptions/${previousOrder.subscriptionId}/suspend`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          'PayPal-Auth-Assertion': getAuthAssertionValue(),
+        },
+        body: JSON.stringify({
+          reason: 'Customer upgrade to another subscription',
+        }),
+      }
+    );
+  }
+  return undefined;
 }

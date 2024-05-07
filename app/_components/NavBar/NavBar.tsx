@@ -50,7 +50,7 @@ export default function Navbar() {
           <ThemeIcon size={25} variant="transparent" radius="md">
             <item.icon style={{ width: rem(22), height: rem(22) }} />
           </ThemeIcon>
-          <Text size="sm" fw={500}>
+          <Text size="sm" fw={500} mt="auto" mb="auto">
             {item.name}
           </Text>
         </Group>
