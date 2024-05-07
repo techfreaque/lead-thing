@@ -12,6 +12,7 @@ import getresponse from './getresponse.png';
 import mailup from './mailup.png';
 import expertsender from './expertsender.png';
 import adobecampaign from './adobecampaign.png';
+import emarsys from './emarsys.png';
 
 export function ExpertsenderIcon({
   style,
@@ -22,6 +23,18 @@ export function ExpertsenderIcon({
 }) {
   return (
     <Icon alt="Expertsender Icon" iconFile={expertsender} style={style} className={className} />
+  );
+}
+
+export function EmarsysIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return (
+    <Icon alt="Emarsys Icon" iconFile={emarsys} style={style} className={className} />
   );
 }
 

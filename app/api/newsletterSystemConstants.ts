@@ -11,6 +11,7 @@ import {
   MailupIcon,
   ExpertsenderIcon,
   AdobeCampaignIcon,
+  EmarsysIcon,
 } from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -20,6 +21,7 @@ export type avialableSystemsType =
   | 'salesforce'
   | 'freshmail'
   // | 'klaviyo'
+  | 'emarsys'
   | 'salesmanago'
   | 'adobecampaign'
   | 'mailup'
@@ -58,6 +60,20 @@ export const newsletterSystems: {
       'adobeCampaignClientSecret',
       'adobeCampaignOrganizationId',
       'adobeCampaignApiKey',
+    ],
+  },
+  emarsys: {
+    path: '/emarsys',
+    name: 'Emarsys',
+    icon: EmarsysIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'listId',
+      'emarsysUserName',
+      'emarsysApiKey',
+      'emarsysSubDomain',
     ],
   },
   getresponse: {
@@ -260,6 +276,9 @@ export type RequestOptionsFieldName =
   | 'expertSenderVendor'
   | 'expertSenderApiDomain'
   | 'expertSenderApiKey'
+  | 'emarsysUserName'
+  | 'emarsysApiKey'
+  | 'emarsysSubDomain'
   | 'freshmailApiSecret';
 
 export const RequestOptionsData: {
@@ -378,7 +397,7 @@ export const RequestOptionsData: {
     value: '',
     required: false,
     description:
-      'Prvide a comma separated list of custom attributes e.g.: user.attributeName=attributeValue, user.anottherAttribute=anotherValue',
+      'Provide a comma separated list of custom attributes e.g.: user.attributeName=attributeValue, user.anotherAttribute=anotherValue',
   },
   mappDomain: {
     label: 'Mapp Domain',
@@ -622,22 +641,43 @@ export const RequestOptionsData: {
   mailupClientSecret: {
     label: 'Mailup Client Secret',
     valueType: 'string',
-    value: 'MAILUP_CLIENT_SECRET',
+    value: '',
     required: true,
     description: 'You can get the Mailup client secret from your Mailup backend.',
   },
   mailupUsername: {
     label: 'Mailup Username',
     valueType: 'string',
-    value: 'MAILUP_USERNAME',
+    value: '',
     required: true,
     description: 'Your mailup account username.',
   },
   mailupPassword: {
     label: 'Mailup Password',
     valueType: 'string',
-    value: 'MAILUP_PASSWORD',
+    value: '',
     required: true,
     description: 'Your mailup account password.',
+  },
+  emarsysSubDomain: {
+    label: 'Emarsys Sub Domain',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'The sub domain of your Emarsys instance e.g. api if your instance domain is https://api.emarsys.net',
+  },
+  emarsysUserName: {
+    label: 'Emarsys Username',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Your Emarsys API username.',
+  },
+  emarsysApiKey: {
+    label: 'Emarsys API Secret',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Your Emarsys API Secret',
   },
 };
