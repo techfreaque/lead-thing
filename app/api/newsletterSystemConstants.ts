@@ -12,7 +12,7 @@ import {
   ExpertsenderIcon,
   AdobeCampaignIcon,
   EmarsysIcon,
-} from '../_components/Icons2/Icons';
+} from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
   | 'getresponse'
