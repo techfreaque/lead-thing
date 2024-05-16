@@ -191,6 +191,12 @@ export interface SalesmanagoPostRequest extends PostRequest {
   salesManagoOwner: string;
 }
 
+export interface EdronePostRequest extends PostRequest {
+  gender?: 'MALE' | 'FEMALE';
+  countryCode?: string;
+  edroneAppId: string;
+}
+
 export interface ExpertsenderPostRequest extends PostRequest {
   ip: string;
   gender?: 'MALE' | 'FEMALE';
@@ -209,6 +215,7 @@ export interface AllPossiblePostRequestParameters
     SailthruPostRequest,
     SalesforcePostRequest,
     EmarsysPostRequest,
+    EdronePostRequest,
     YouleadPostRequest,
     CleverreachPostRequest,
     MailupPostRequest,

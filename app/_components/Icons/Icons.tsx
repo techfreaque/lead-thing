@@ -13,6 +13,7 @@ import mailup from './mailup.png';
 import expertsender from './expertsender.png';
 import adobecampaign from './adobecampaign.png';
 import emarsys from './emarsys.png';
+import edrone from './edrone.png';
 
 export function ExpertsenderIcon({
   style,
@@ -34,6 +35,16 @@ export function EmarsysIcon({
   className?: string | undefined;
 }) {
   return <Icon alt="Emarsys Icon" iconFile={emarsys} style={style} className={className} />;
+}
+
+export function EdroneIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="Edrone Icon" iconFile={edrone} style={style} className={className} />;
 }
 
 export function AdobeCampaignIcon({
