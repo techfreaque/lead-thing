@@ -12,6 +12,7 @@ import {
   ExpertsenderIcon,
   AdobeCampaignIcon,
   EmarsysIcon,
+  EdroneIcon,
 } from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -19,6 +20,7 @@ export type avialableSystemsType =
   | 'mapp'
   | 'sailthru'
   | 'salesforce'
+  | 'edrone'
   | 'freshmail'
   // | 'klaviyo'
   | 'emarsys'
@@ -61,6 +63,12 @@ export const newsletterSystems: {
       'adobeCampaignOrganizationId',
       'adobeCampaignApiKey',
     ],
+  },
+  edrone: {
+    path: '/edrone',
+    name: 'Edrone',
+    icon: EdroneIcon,
+    apiFields: ['firstname', 'lastname', 'email', 'gender', 'countryCode', 'edroneAppId'],
   },
   emarsys: {
     path: '/emarsys',
@@ -248,6 +256,7 @@ export type RequestOptionsFieldName =
   | 'salesforceClientSecret'
   | 'salesforceAccountId'
   | 'adobeCampaignListId'
+  | 'edroneAppId'
   | 'adobeCampaignClientId'
   | 'adobeCampaignClientSecret'
   | 'adobeCampaignOrganizationId'
@@ -680,5 +689,12 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: 'Your Emarsys API Secret',
+  },
+  edroneAppId: {
+    label: 'Edrone APP ID',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Your Edrone APP ID',
   },
 };
