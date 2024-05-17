@@ -18,6 +18,7 @@ export async function getLogin({
   const user = await prisma.user.findUnique({
     where: { email },
   });
+  console.log('debug', user, password, user?.password);
   if (!(user && bcrypt.compareSync(password, user.password))) {
     return false;
   }
