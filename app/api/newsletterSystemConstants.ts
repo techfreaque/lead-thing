@@ -13,6 +13,7 @@ import {
   AdobeCampaignIcon,
   EmarsysIcon,
   EdroneIcon,
+  ShopifyIcon,
 } from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
@@ -29,6 +30,7 @@ export type avialableSystemsType =
   | 'mailup'
   | 'cleverreach'
   | 'expertsender'
+  | 'shopify'
   | 'youlead';
 
 export interface NewsletterSystem {
@@ -139,6 +141,20 @@ export const newsletterSystems: {
     name: 'Sailthru',
     icon: SailthruIcon,
     apiFields: ['firstname', 'lastname', 'email', 'listName', 'sailthruApiKey', 'sailthruSecret'],
+  },
+  shopify: {
+    path: '/shopify',
+    name: 'Shopify',
+    icon: ShopifyIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'countryCode',
+      'tag',
+      'shopifyDomain',
+      'shopifyAccessToken',
+    ],
   },
   mailup: {
     path: '/mailup',
@@ -288,6 +304,8 @@ export type RequestOptionsFieldName =
   | 'emarsysUserName'
   | 'emarsysApiKey'
   | 'emarsysSubDomain'
+  | 'shopifyDomain'
+  | 'shopifyAccessToken'
   | 'freshmailApiSecret';
 
 export const RequestOptionsData: {
@@ -696,5 +714,19 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: 'Your Edrone APP ID',
+  },
+  shopifyDomain: {
+    label: 'Shopify Domain',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Your Shopify domain e.g. testshop.myshopify.com',
+  },
+  shopifyAccessToken: {
+    label: 'Your Shopify access token',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: '',
   },
 };
