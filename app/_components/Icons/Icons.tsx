@@ -14,6 +14,17 @@ import expertsender from './expertsender.png';
 import adobecampaign from './adobecampaign.png';
 import emarsys from './emarsys.png';
 import edrone from './edrone.png';
+import shopify from './shopify.png';
+
+export function ShopifyIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="Shopify Icon" iconFile={shopify} style={style} className={className} />;
+}
 
 export function ExpertsenderIcon({
   style,

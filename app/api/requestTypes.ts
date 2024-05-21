@@ -90,7 +90,7 @@ export interface YouleadPostRequest extends PostRequest {
   // gender: 'MALE' | 'FEMALE';
   // countryCode: string;
   // salutation: string;
-  youLeadTag: string;
+  youLeadTag?: string;
   subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
   //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
@@ -177,7 +177,7 @@ export interface SalesmanagoPostRequest extends PostRequest {
   // gender: 'MALE' | 'FEMALE';
   countryCode?: string;
   // salutation: string;
-  tag: string;
+  tag?: string;
   // listId: string | number;
   subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
   // DOUBLE_OPT_IN
@@ -195,6 +195,13 @@ export interface EdronePostRequest extends PostRequest {
   gender?: 'MALE' | 'FEMALE';
   countryCode?: string;
   edroneAppId: string;
+}
+
+export interface ShopifyPostRequest extends PostRequest {
+  countryCode?: string;
+  tag?: string;
+  shopifyDomain: string;
+  shopifyAccessToken: string;
 }
 
 export interface ExpertsenderPostRequest extends PostRequest {
@@ -219,6 +226,7 @@ export interface AllPossiblePostRequestParameters
     YouleadPostRequest,
     CleverreachPostRequest,
     MailupPostRequest,
+    ShopifyPostRequest,
     FreshmailPostRequest,
     AdobeCampaignPostRequest,
     ExpertsenderPostRequest,
