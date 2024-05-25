@@ -2,16 +2,18 @@
 
 import getConfig from 'next/config';
 import { v4 as uuidv4 } from 'uuid';
-import { generateAccessToken } from './generateAccessToken';
+
+import { handleResponse } from '@/app/_lib/apiHelpers';
 import { APP_NAME, APP_PRODUCTION_DOMAIN, subscriptionTierType } from '@/app/_lib/constants';
 import { getTotalPriceForSubscription } from '@/app/_lib/helpers';
+
 import {
   createOrder,
   getCurrentSubscription,
   getOrderFromSubscription,
   updateToPaypalOrderId,
 } from '../orders';
-import { handleResponse } from '@/app/_lib/apiHelpers';
+import { generateAccessToken } from './generateAccessToken';
 
 const { serverRuntimeConfig } = getConfig();
 

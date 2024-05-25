@@ -1,32 +1,34 @@
 import {
-  HoverCard,
-  Group,
-  Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Divider,
-  Center,
   Box,
   Burger,
-  Drawer,
+  Button,
+  Center,
   Collapse,
-  ScrollArea,
+  Divider,
+  Drawer,
+  Group,
+  HoverCard,
   rem,
+  ScrollArea,
+  SimpleGrid,
+  Text,
+  ThemeIcon,
+  UnstyledButton,
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useContext } from 'react';
-import classes from './NavBar.module.css';
-import { apiDocsPath, mySubscriptionUrl, registerPath } from '@/app/_lib/constants';
-import Logo from '../Logo/Logo';
-import NavBarUserButtons from './NavBarUserButtons';
+
 import { UserContext, UserContextType } from '@/app/_context/authentication';
-import { newsletterSystems } from '@/app/api/newsletterSystemConstants';
+import { apiDocsPath, mySubscriptionUrl, registerPath } from '@/app/_lib/constants';
 import { getNewsletterSystemDocsUrl } from '@/app/_lib/helpers';
+import { newsletterSystems } from '@/app/api/newsletterSystemConstants';
+
+import Logo from '../Logo/Logo';
+import classes from './NavBar.module.css';
+import NavBarUserButtons from './NavBarUserButtons';
 
 export default function Navbar() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);

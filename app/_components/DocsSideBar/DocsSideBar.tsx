@@ -1,14 +1,16 @@
 'use client';
 
-import { CSSProperties, ForwardRefExoticComponent, RefAttributes, useContext } from 'react';
-import { IconKey, IconReceipt2, IconLogout, IconProps, Icon } from '@tabler/icons-react';
-import Link from 'next/link';
 import { Divider, Title } from '@mantine/core';
-import classes from './DocsSideBar.module.css';
+import { Icon, IconKey, IconLogout, IconProps, IconReceipt2 } from '@tabler/icons-react';
+import Link from 'next/link';
+import { CSSProperties, ForwardRefExoticComponent, RefAttributes, useContext } from 'react';
+
 import { UserContext, UserContextType } from '@/app/_context/authentication';
 import { myApiKeyUrl, mySubscriptionUrl } from '@/app/_lib/constants';
-import { NewsletterSystem, newsletterSystems } from '@/app/api/newsletterSystemConstants';
 import { getNewsletterSystemDocsUrl } from '@/app/_lib/helpers';
+import { NewsletterSystem, newsletterSystems } from '@/app/api/newsletterSystemConstants';
+
+import classes from './DocsSideBar.module.css';
 
 export default function DocsSideBar({
   children,

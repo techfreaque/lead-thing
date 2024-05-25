@@ -1,20 +1,22 @@
 'use client';
 
 import {
-  Badge,
-  Group,
-  Text,
-  Card,
-  SimpleGrid,
-  Container,
-  rem,
-  useMantineTheme,
   Anchor,
+  Badge,
+  Card,
+  Container,
+  Group,
+  rem,
+  SimpleGrid,
+  Text,
+  useMantineTheme,
 } from '@mantine/core';
-import { IconShieldHeart, IconSpyOff, IconCloudPlus } from '@tabler/icons-react';
-import classes from './HomeFeatures.module.css';
-import { Title2, Title2SubText } from '../Texts/Texts';
+import { IconCloudPlus, IconShieldHeart, IconSpyOff } from '@tabler/icons-react';
+
 import { APP_GITHUB_URL, APP_NAME } from '@/app/_lib/constants';
+
+import { Title2, Title2SubText } from '../Texts/Texts';
+import classes from './HomeFeatures.module.css';
 
 const mockdata = [
   {

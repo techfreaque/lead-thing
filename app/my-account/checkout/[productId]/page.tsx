@@ -1,29 +1,30 @@
 'use client';
 
-import { Alert, Container, List, Paper, ThemeIcon, Title, rem } from '@mantine/core';
+import { Alert, Container, List, Paper, rem, ThemeIcon, Title } from '@mantine/core';
+import type { OnApproveData } from '@paypal/paypal-js/types/components/buttons';
 import {
-  PayPalScriptProvider,
   PayPalButtons,
+  PayPalScriptProvider,
   ReactPayPalScriptOptions,
 } from '@paypal/react-paypal-js';
-import type { OnApproveData } from '@paypal/paypal-js/types/components/buttons';
 import { IconCircleCheck, IconInfoCircle } from '@tabler/icons-react';
+import { redirect, RedirectType } from 'next/navigation';
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
-import { RedirectType, redirect } from 'next/navigation';
+
 import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
 import {
   mySubscriptionUrl,
   subscriptionTierIdType,
-  subscriptionTierType,
   subscriptionTiers,
+  subscriptionTierType,
 } from '@/app/_lib/constants';
 import { getTotalPriceForSubscription } from '@/app/_lib/helpers';
 import {
-  PaidOrderType,
   apiPeriodType,
   getCurrentSubscription,
   getOrderFromSubscription,
   markAsPaidBody,
+  PaidOrderType,
 } from '@/app/_server/orders';
 import { startPaymentBody } from '@/app/api/user/payment/create/route';
 

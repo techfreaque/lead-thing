@@ -1,21 +1,21 @@
 'use client';
 
 import {
-  Card,
-  Text,
-  Group,
-  Button,
-  SimpleGrid,
-  Container,
-  SegmentedControl,
   Badge,
+  Button,
+  Card,
+  Container,
+  Group,
+  SegmentedControl,
+  SimpleGrid,
+  Text,
 } from '@mantine/core';
 import { IconMailBolt } from '@tabler/icons-react';
 import Link from 'next/link';
-import { Suspense, useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import classes from './SubscriptionTiers.module.css';
-import { Title2, Title2SubText } from '../Texts/Texts';
+import { Suspense, useContext, useEffect, useState } from 'react';
+
+import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
 import {
   checkoutUrl,
   mySubscriptionUrl,
@@ -25,9 +25,11 @@ import {
   subscriptionTierIdType,
   subscriptionTiers,
 } from '@/app/_lib/constants';
-import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
-import { apiPeriodType, getCurrentSubscription } from '@/app/_server/orders';
 import { canUpgradeFromCurrentToTarget, objectEntries } from '@/app/_lib/helpers';
+import { apiPeriodType, getCurrentSubscription } from '@/app/_server/orders';
+
+import { Title2, Title2SubText } from '../Texts/Texts';
+import classes from './SubscriptionTiers.module.css';
 
 export default function SubscriptionTiersSection() {
   const { user } = useContext(UserContext) as UserContextType;

@@ -1,6 +1,5 @@
 'use client';
 
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import {
   Alert,
   Button,
@@ -14,17 +13,20 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconInfoCircle } from '@tabler/icons-react';
-import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
-import { APP_NAME, apiURL } from '@/app/_lib/constants';
-import { type AllPossiblePostRequestParameters } from '@/app/api/requestTypes';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
+
 import { UserContext, UserContextType } from '@/app/_context/authentication';
+import { apiURL, APP_NAME } from '@/app/_lib/constants';
 import {
-  RequestOptionsData,
-  RequestOptionsFieldName,
   avialableSystemsType,
   newsletterSystems,
   notDefinedCheckboxValue,
+  RequestOptionsData,
+  RequestOptionsFieldName,
 } from '@/app/api/newsletterSystemConstants';
+import { type AllPossiblePostRequestParameters } from '@/app/api/requestTypes';
+
+import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
 
 export default function DocsPage({ systemName }: { systemName: avialableSystemsType }) {
   const { user } = useContext(UserContext) as UserContextType;

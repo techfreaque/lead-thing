@@ -1,6 +1,12 @@
 module.exports = {
   extends: ['mantine', 'plugin:@next/next/recommended', 'plugin:jest/recommended'],
-  plugins: ['testing-library', 'jest'],
+  plugins: [
+    'testing-library',
+    'jest',
+    "react",
+    "react-hooks",
+    "simple-import-sort",
+  ],
   overrides: [
     {
       files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
@@ -12,13 +18,8 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
-    'import/extensions': 'off',
-    // 'prettier/prettier': [
-    //   'error',
-    //   {
-    //     endOfLine: 'auto',
-    //   },
-    // ],
-    // "linebreak-style": ["error", "windows"]
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "quotes": ["error", "single"]
   },
 };

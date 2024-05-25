@@ -1,6 +1,7 @@
 'use server';
 
 import { v4 as uuidv4 } from 'uuid';
+
 import { UserType } from '../_context/authentication';
 import { encryptPassword } from '../_lib/helpers';
 import sendPasswordResetMail from './mail/sendPasswordResetMail';

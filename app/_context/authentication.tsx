@@ -1,5 +1,6 @@
-import { RedirectType, redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 import React, { createContext, useEffect, useState } from 'react';
+
 import { loginPath } from '../_lib/constants';
 
 export interface UserType {

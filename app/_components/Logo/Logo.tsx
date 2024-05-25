@@ -1,10 +1,12 @@
 'use client';
 
+import { rem, Title, useMantineTheme } from '@mantine/core';
 import { IconMailBolt } from '@tabler/icons-react';
 import Link from 'next/link';
-import { Title, rem, useMantineTheme } from '@mantine/core';
-import classes from './Logo.module.css';
+
 import { APP_NAME } from '@/app/_lib/constants';
+
+import classes from './Logo.module.css';
 
 export default function Logo() {
   const theme = useMantineTheme();

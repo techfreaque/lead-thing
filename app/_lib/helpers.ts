@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
+
+import { apiPeriodType, PaidOrderType } from '../_server/orders';
 import { NewsletterSystem } from '../api/newsletterSystemConstants';
 import { apiDocsPath, subscriptionTierType } from './constants';
-import { PaidOrderType, apiPeriodType } from '../_server/orders';
 
 export function encryptPassword(password: string): string {
   return bcrypt.hashSync(password, 10);

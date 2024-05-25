@@ -1,11 +1,13 @@
 'use client';
 
-import { useContext } from 'react';
-import Link from 'next/link';
 import { Button } from '@mantine/core';
+import Link from 'next/link';
+import { useContext } from 'react';
+
 import { UserContext, UserContextType } from '@/app/_context/authentication';
-import classes from './HomeHeroButton.module.css';
 import { mySubscriptionUrl, registerPath } from '@/app/_lib/constants';
+
+import classes from './HomeHeroButton.module.css';
 
 export default function HomeHeroButton() {
   const { user } = useContext(UserContext) as UserContextType;

@@ -1,10 +1,12 @@
 'use client';
 
-import { Container, Group, Anchor } from '@mantine/core';
+import { Anchor, Container, Group } from '@mantine/core';
 import Link from 'next/link';
-import classes from './Footer.module.css';
-import Logo from '../Logo/Logo';
+
 import { apiDocsPath, contactPath, tosPath } from '@/app/_lib/constants';
+
+import Logo from '../Logo/Logo';
+import classes from './Footer.module.css';
 
 const links = [
   { link: contactPath, label: 'Contact' },

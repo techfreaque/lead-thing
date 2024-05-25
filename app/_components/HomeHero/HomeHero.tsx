@@ -1,7 +1,9 @@
-import { Container, Text, Group } from '@mantine/core';
+import { Container, Group, Text } from '@mantine/core';
+
+import { APP_NAME } from '@/app/_lib/constants';
+
 import classes from './HomeHero.module.css';
 import HomeHeroButton from './HomeHeroButton';
-import { APP_NAME } from '@/app/_lib/constants';
 
 export default function HomeHero() {
   return (

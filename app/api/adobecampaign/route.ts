@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
+
 import executeIfAuthenticated from '../../_server/apiHelpers';
 import type { AdobeCampaignPostRequest } from '../requestTypes';
-import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 
 const authUrl = 'https://ims-na1.adobelogin.com/ims/token/v3';
 const apiContactsUrl = 'https://mc.adobe.io/{ORGANIZATION}/campaign/profileAndServices/profile';

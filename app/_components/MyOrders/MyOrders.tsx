@@ -3,9 +3,10 @@
 import { Button, Table, Text, Title } from '@mantine/core';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { invoiceUrl, subscriptionTiers } from '@/app/_lib/constants';
+
 import { UserType } from '@/app/_context/authentication';
-import { PaidOrderType, getPaidOrders } from '@/app/_server/orders';
+import { invoiceUrl, subscriptionTiers } from '@/app/_lib/constants';
+import { getPaidOrders, PaidOrderType } from '@/app/_server/orders';
 
 export default function MyOrders({ user }: { user: UserType }) {
   const [orders, setOrders] = useState<PaidOrderType[]>();

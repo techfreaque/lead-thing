@@ -1,7 +1,9 @@
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import React, { Fragment } from 'react';
-import { Page, Document, Image, StyleSheet, View, Text } from '@react-pdf/renderer';
-import logo from './leadThingLogo.png';
+
 import { APP_NAME } from '@/app/_lib/constants';
+
+import logo from './leadThingLogo.png';
 
 const styles = StyleSheet.create({
   page: {

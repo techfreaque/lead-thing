@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import type { MappPostRequest } from '../requestTypes';
-import executeIfAuthenticated from '../../_server/apiHelpers';
+
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
+
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import type { MappPostRequest } from '../requestTypes';
 
 const apiContactsPath = '/api/rest/v19/contact/create';
 const apiSubscribePath = '/api/rest/v19/membership/subscribeByEmail';

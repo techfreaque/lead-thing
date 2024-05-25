@@ -1,4 +1,5 @@
 import { MantineSpacing, StyleProp, Text, Title } from '@mantine/core';
+
 import classes from './Texts.module.css';
 
 export function Title2({ children, mt = 'sm' }: { children: any; mt?: StyleProp<MantineSpacing> }) {

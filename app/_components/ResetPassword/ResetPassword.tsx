@@ -1,26 +1,28 @@
 'use client';
 
 import {
-  Paper,
-  Text,
-  TextInput,
+  Alert,
+  Anchor,
+  Box,
   Button,
+  Center,
   Container,
   Group,
-  Anchor,
-  Center,
-  Box,
+  Paper,
   rem,
-  Alert,
+  Text,
+  TextInput,
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { IconArrowLeft, IconInfoCircle } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useForm } from '@mantine/form';
+
 import { loginPath } from '@/app/_lib/constants';
-import classes from './ResetPassword.module.css';
 import { resetPassword } from '@/app/_server/resetPassword';
+
 import { TitleUserForm } from '../Texts/Texts';
+import classes from './ResetPassword.module.css';
 
 export default function ResetPassword() {
   const [formSent, setFormSent] = useState<boolean>(false);

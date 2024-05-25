@@ -1,10 +1,11 @@
 'use server';
 
 import bcrypt from 'bcryptjs';
-import getConfig from 'next/config';
 import { sign } from 'jsonwebtoken';
-import { prisma } from '@/app/_server/prisma';
+import getConfig from 'next/config';
+
 import { UserType } from '@/app/_context/authentication';
+import { prisma } from '@/app/_server/prisma';
 
 const { serverRuntimeConfig } = getConfig();
 

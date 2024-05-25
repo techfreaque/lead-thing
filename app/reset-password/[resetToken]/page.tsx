@@ -1,14 +1,16 @@
 'use client';
 
-import { Paper, Text, Button, Container, Group, Alert, PasswordInput } from '@mantine/core';
-import { IconInfoCircle } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { Alert, Button, Container, Group, Paper, PasswordInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { RedirectType, redirect } from 'next/navigation';
-import classes from '../../_components/ResetPassword/ResetPassword.module.css';
-import { isTokenValid, setPassword } from '@/app/_server/resetPassword';
+import { IconInfoCircle } from '@tabler/icons-react';
+import { redirect, RedirectType } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 import { TitleUserForm } from '@/app/_components/Texts/Texts';
 import { resetSuccessPath } from '@/app/_lib/constants';
+import { isTokenValid, setPassword } from '@/app/_server/resetPassword';
+
+import classes from '../../_components/ResetPassword/ResetPassword.module.css';
 
 export default function ConfirmPasswordReset({ params }: { params: { resetToken: string } }) {
   const [tokenIsValid, setTokenIsValid] = useState<boolean | undefined>(undefined);
