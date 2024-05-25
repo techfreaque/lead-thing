@@ -237,7 +237,10 @@ async function createApiPeriodFromOrder({
   if (lastOrder) {
     let lastApiPeriod: apiPeriodType = currentExpiredApiPeriod;
     // create expired periods in case not used for months
-    while (lastApiPeriod.validUntil.getTime() < lastOrder.validUntil.getTime()) {
+    while (
+      lastApiPeriod.validUntil.getTime() < lastOrder.validUntil.getTime() &&
+      lastApiPeriod.validUntil.getTime() < new Date().getTime()
+    ) {
       const newPeriod = (await prisma.apiPeriods.create({
         data: {
           orderId: lastOrder.transactionId,
