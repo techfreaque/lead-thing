@@ -1,9 +1,11 @@
 import '@mantine/core/styles.css';
-import React from 'react';
+
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import React from 'react';
+
 import { theme } from '../theme';
-import { APP_NAME } from './_lib/constants';
 import MainLayout from './_components/MainLayout/MainLayout';
+import { APP_NAME } from './_lib/constants';
 
 export const metadata = {
   title: APP_NAME,

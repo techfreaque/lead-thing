@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import sha1 from 'crypto-js/sha1';
-import type { YouleadPostRequest } from '../requestTypes';
-import executeIfAuthenticated from '../../_server/apiHelpers';
+import { NextRequest, NextResponse } from 'next/server';
+
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
+
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import type { YouleadPostRequest } from '../requestTypes';
 
 const apiContactsUrl = 'https://a-pd.youlead.pl/api/Command/Contact/UpsertsByEmail';
 

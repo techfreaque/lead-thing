@@ -1,8 +1,9 @@
 'use client';
 
-import { Image, Accordion, Grid, Container, Title } from '@mantine/core';
-import image from './image.svg';
+import { Accordion, Container, Grid, Image, Title } from '@mantine/core';
+
 import classes from './Faq.module.css';
+import image from './image.svg';
 
 const placeholder =
   'It can’t help but hear a pin drop from over half a mile away, so it lives deep in the mountains where there aren’t many people or Pokémon.';

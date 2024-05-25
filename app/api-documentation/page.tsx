@@ -1,6 +1,7 @@
 import { Container, Title } from '@mantine/core';
-import { APP_NAME } from '../_lib/constants';
+
 import { Title2SubText } from '../_components/Texts/Texts';
+import { APP_NAME } from '../_lib/constants';
 
 export default function DocsPage() {
   return (

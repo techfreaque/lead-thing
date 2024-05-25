@@ -1,4 +1,5 @@
 import { Container, Text, Title } from '@mantine/core';
+
 import { APP_COMPANY_COUNTRY, APP_NAME } from '../_lib/constants';
 
 export default function TosPage() {

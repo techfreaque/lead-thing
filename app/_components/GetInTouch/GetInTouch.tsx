@@ -1,21 +1,23 @@
 'use client';
 
 import {
-  TextInput,
-  Textarea,
-  SimpleGrid,
-  Group,
-  Button,
-  Container,
   Alert,
   Anchor,
+  Button,
+  Container,
+  Group,
+  SimpleGrid,
+  Textarea,
+  TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useContext, useState } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
-import { Title2, Title2SubText } from '../Texts/Texts';
+import { useContext, useState } from 'react';
+
 import { UserContext, UserContextType } from '@/app/_context/authentication';
-import { SupportRequest, sendSupportRequest } from '@/app/_server/sendSupportRequest';
+import { sendSupportRequest, SupportRequest } from '@/app/_server/sendSupportRequest';
+
+import { Title2, Title2SubText } from '../Texts/Texts';
 
 export default function GetInTouch() {
   const { user } = useContext(UserContext) as UserContextType;

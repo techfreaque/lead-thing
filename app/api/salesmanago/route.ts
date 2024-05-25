@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import type { SalesmanagoPostRequest } from '../requestTypes';
-import executeIfAuthenticated from '../../_server/apiHelpers';
+
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
+
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import type { SalesmanagoPostRequest } from '../requestTypes';
 
 const apiContactsUrl = 'https://{salesManagoDomain}/api/contact/upsert';
 

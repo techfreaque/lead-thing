@@ -1,8 +1,9 @@
 'use client';
 
+import { Button } from '@mantine/core';
 import Link from 'next/link';
 import { useContext } from 'react';
-import { Button } from '@mantine/core';
+
 import { UserContext, UserContextType } from '@/app/_context/authentication';
 import { loginPath, mySubscriptionUrl, registerPath } from '@/app/_lib/constants';
 

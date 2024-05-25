@@ -1,6 +1,7 @@
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { getMailTemplateFile, sendEmail } from './sendMail';
+
 import { APP_NAME as _APP_NAME } from '../../_lib/constants';
+import { getMailTemplateFile, sendEmail } from './sendMail';
 
 export default async function sendNoQuotaLeftWarningMail(
   name: string | null,

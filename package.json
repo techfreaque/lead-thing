@@ -12,8 +12,8 @@
     "analyze": "ANALYZE=true next build",
     "start": "prisma migrate deploy && next start",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint && npm run lint:stylelint",
-    "lint:stylelint": "stylelint '**/*.css' --cache",
+    "lint": "next lint --fix && npm run lint:stylelint",
+    "lint:stylelint": "stylelint '**/*.css' --cache --fix",
     "prettier:check": "npx prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "npx prettier --write \"**/*.{ts,tsx}\""
   },
@@ -65,6 +65,7 @@
     "eslint-plugin-jsx-a11y": "6.8.0",
     "eslint-plugin-react": "7.34.1",
     "eslint-plugin-react-hooks": "4.6.2",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-testing-library": "6.2.2",
     "mjml": "4.15.3",
     "postcss": "8.4.38",

@@ -1,7 +1,8 @@
+import fs from 'fs';
 import getConfig from 'next/config';
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
-import fs from 'fs';
+
 import { APP_NAME } from '@/app/_lib/constants';
 
 const { serverRuntimeConfig } = getConfig();

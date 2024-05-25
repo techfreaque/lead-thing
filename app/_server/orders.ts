@@ -1,8 +1,16 @@
 'use server';
 
 import getConfig from 'next/config';
-import { subscriptionTierIdType, subscriptionTierType, subscriptionTiers } from '../_lib/constants';
-import { generateAccessToken, getAuthAssertionValue } from './paypal/generateAccessToken';
+
+import {
+  subscriptionTierIdType,
+  subscriptionTiers,
+  subscriptionTierType,
+} from '../_lib/constants';
+import {
+  generateAccessToken,
+  getAuthAssertionValue,
+} from './paypal/generateAccessToken';
 import { prisma } from './prisma';
 
 const { serverRuntimeConfig } = getConfig();
@@ -174,7 +182,11 @@ export async function getAllSubscriptionPeriods({
   })) as apiPeriodType[];
 }
 
-export async function getCurrentSubscription({ email }: { email: string }): Promise<apiPeriodType> {
+export async function getCurrentSubscription({
+  email,
+}: {
+  email: string;
+}): Promise<apiPeriodType> {
   const currentApiPeriod = await getLastApiPeriod(email);
   if (!currentApiPeriod) {
     return createFirstFreeTierApiPeriod({ email });
@@ -247,7 +259,9 @@ async function createApiPeriodFromOrder({
           email,
           validFrom: new Date(lastApiPeriod.validUntil),
           validUntil: new Date(
-            new Date(lastApiPeriod.validUntil).setMonth(lastApiPeriod.validUntil.getMonth() + 1)
+            new Date(lastApiPeriod.validUntil).setMonth(
+              lastApiPeriod.validUntil.getMonth() + 1
+            )
           ),
           productId: lastApiPeriod.productId,
           apiCallsPerMonth: lastApiPeriod.apiCallsPerMonth,
@@ -269,8 +283,12 @@ async function createOrdersFromPaypalTransactions({
 }: {
   lastOrder: PaidOrderType;
 }): Promise<apiPeriodType | undefined> {
-  const transactions = await getPaypalTransactionsFromSubscription(lastOrder.subscriptionId);
-  transactions.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+  const transactions = await getPaypalTransactionsFromSubscription(
+    lastOrder.subscriptionId
+  );
+  transactions.sort(
+    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+  );
   let _lastApiPeriod: apiPeriodType | undefined;
   await Promise.all(
     transactions.map(async (transaction, index) => {
@@ -282,7 +300,8 @@ async function createOrdersFromPaypalTransactions({
         });
         if (!orderExistsAlready) {
           const isYearlySubscription =
-            subscriptionTiers[lastOrder.productId].billingPeriod[0] === 'yearly';
+            subscriptionTiers[lastOrder.productId].billingPeriod[0] ===
+            'yearly';
           const order: PaidOrderType = (await prisma.orders.create({
             data: {
               transactionId: transaction.id,
@@ -296,7 +315,9 @@ async function createOrdersFromPaypalTransactions({
                     )
                   )
                 : new Date(
-                    new Date(lastOrder.payedAt).setMonth(new Date(transaction.time).getMonth())
+                    new Date(lastOrder.payedAt).setMonth(
+                      new Date(transaction.time).getMonth()
+                    )
                   ),
               validUntil: isYearlySubscription
                 ? new Date(
@@ -305,11 +326,15 @@ async function createOrdersFromPaypalTransactions({
                     )
                   )
                 : new Date(
-                    new Date(lastOrder.payedAt).setMonth(new Date(transaction.time).getMonth() + 1)
+                    new Date(lastOrder.payedAt).setMonth(
+                      new Date(transaction.time).getMonth() + 1
+                    )
                   ),
               paymentStatus: 'paid',
               productId: lastOrder.productId,
-              amount: Number(transaction.amount_with_breakdown.gross_amount.value),
+              amount: Number(
+                transaction.amount_with_breakdown.gross_amount.value
+              ),
             },
           })) as PaidOrderType;
           // create expired periods in case not used for months
@@ -545,7 +570,11 @@ async function getPaypalTransactionsFromSubscription(subscriptionId: string) {
   return paypalTransactions.transactions;
 }
 
-async function createFirstFreeTierApiPeriod({ email }: { email: string }): Promise<apiPeriodType> {
+async function createFirstFreeTierApiPeriod({
+  email,
+}: {
+  email: string;
+}): Promise<apiPeriodType> {
   return (await prisma.apiPeriods.create({
     data: {
       orderId: freetierApiPeriodOrderId,

@@ -1,12 +1,14 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/app/_server/prisma';
+
 import { APP_NAME } from '@/app/_lib/constants';
-import { apiPeriodType, getCurrentSubscription } from './orders';
-import sendQuotaWarningMail from './mail/sendQuotaWarningMail';
-import sendNoQuotaLeftWarningMail from './mail/sendNoQuotaLeftWarningMail';
+import { prisma } from '@/app/_server/prisma';
+
 import { ApiResponse } from '../_lib/apiHelpers';
+import sendNoQuotaLeftWarningMail from './mail/sendNoQuotaLeftWarningMail';
+import sendQuotaWarningMail from './mail/sendQuotaWarningMail';
+import { apiPeriodType, getCurrentSubscription } from './orders';
 
 export default async function executeIfAuthenticated(
   request: NextRequest,
@@ -28,6 +30,7 @@ export default async function executeIfAuthenticated(
         name: user.name,
       });
       if (currentApiPeriod) {
+        await bumpApiCallsInThisPeriod({ currentApiPeriod });
         const response = await functionToexecute();
         if (response.ok) {
           await bumpApiCallsInThisPeriod({ currentApiPeriod });
@@ -57,9 +60,16 @@ async function getApiPeriodIfStillQuotaLeft({
   name: string | null;
   email: string;
 }): Promise<apiPeriodType | undefined> {
-  const currentApiPeriod: apiPeriodType = await getCurrentSubscription({ email });
-  if (currentApiPeriod.apiCallsInThisPeriod < currentApiPeriod.apiCallsPerMonth) {
-    if (currentApiPeriod.apiCallsInThisPeriod === currentApiPeriod.apiCallsPerMonth - 1) {
+  const currentApiPeriod: apiPeriodType = await getCurrentSubscription({
+    email,
+  });
+  if (
+    currentApiPeriod.apiCallsInThisPeriod < currentApiPeriod.apiCallsPerMonth
+  ) {
+    if (
+      currentApiPeriod.apiCallsInThisPeriod ===
+      currentApiPeriod.apiCallsPerMonth - 1
+    ) {
       await sendNoQuotaLeftWarningMail(name, email);
     } else if (
       currentApiPeriod.apiCallsInThisPeriod + 1 ===
@@ -72,13 +82,20 @@ async function getApiPeriodIfStillQuotaLeft({
   return undefined;
 }
 
-async function bumpApiCallsInThisPeriod({ currentApiPeriod }: { currentApiPeriod: apiPeriodType }) {
+async function bumpApiCallsInThisPeriod({
+  currentApiPeriod,
+}: {
+  currentApiPeriod: apiPeriodType;
+}) {
   await prisma.apiPeriods.update({
     where: {
       id: currentApiPeriod.id,
     },
     data: {
-      apiCallsInThisPeriod: parseInt(String(currentApiPeriod.apiCallsInThisPeriod + 1), 10),
+      apiCallsInThisPeriod: parseInt(
+        String(currentApiPeriod.apiCallsInThisPeriod + 1),
+        10
+      ),
     },
   });
 }

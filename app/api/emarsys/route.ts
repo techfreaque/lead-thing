@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import type { EmarsysPostRequest } from '../requestTypes';
-import executeIfAuthenticated from '../../_server/apiHelpers';
+import { NextRequest, NextResponse } from 'next/server';
+
 import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
+
+import executeIfAuthenticated from '../../_server/apiHelpers';
+import type { EmarsysPostRequest } from '../requestTypes';
 
 const apiContactsUrl = 'https://{subDomain}.emarsys.net/api/v2/contact';
 

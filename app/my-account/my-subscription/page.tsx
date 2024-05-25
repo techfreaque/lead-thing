@@ -1,13 +1,14 @@
 'use client';
 
 import { Alert, Container, Title } from '@mantine/core';
-import { Suspense, useContext } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { IconInfoCircle } from '@tabler/icons-react';
-import { APP_NAME } from '@/app/_lib/constants';
-import { UserContext, UserContextType } from '@/app/_context/authentication';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useContext } from 'react';
+
 import MyOrders from '@/app/_components/MyOrders/MyOrders';
 import { SubscriptionTiers } from '@/app/_components/SubscriptionTiers/SubscriptionTiers';
+import { UserContext, UserContextType } from '@/app/_context/authentication';
+import { APP_NAME } from '@/app/_lib/constants';
 
 export default function MySubsPage() {
   const { user } = useContext(UserContext) as UserContextType;

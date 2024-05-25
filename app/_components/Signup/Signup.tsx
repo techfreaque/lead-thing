@@ -1,25 +1,27 @@
 'use client';
 
-import { useForm } from '@mantine/form';
 import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  Button,
-  Divider,
-  Checkbox,
-  Anchor,
-  Stack,
-  Container,
-  SimpleGrid,
   Alert,
+  Anchor,
+  Button,
+  Checkbox,
+  Container,
+  Divider,
+  Group,
+  Paper,
+  PasswordInput,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput,
 } from '@mantine/core';
-import Link from 'next/link';
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { useForm } from '@mantine/form';
 import { IconInfoCircle } from '@tabler/icons-react';
-import { RedirectType, redirect, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { redirect, RedirectType, useSearchParams } from 'next/navigation';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+
+import { UserContext, UserContextType } from '@/app/_context/authentication';
 import {
   APP_NAME,
   loginPath,
@@ -28,10 +30,10 @@ import {
   resetPasswordPath,
   resetSuccessParam,
 } from '@/app/_lib/constants';
-import { UserContext, UserContextType } from '@/app/_context/authentication';
-import { TitleUserForm } from '../Texts/Texts';
 import { getLogin } from '@/app/_server/login';
 import { register } from '@/app/_server/register';
+
+import { TitleUserForm } from '../Texts/Texts';
 
 export default function Signup({ type }: { type: 'login' | 'register' }) {
   const [_type, setType] = useState<'login' | 'register'>(type);
@@ -86,7 +88,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         login(loginResponse);
         setMessage({
           status: 'info',
-          title: "You're in!",
+          title: 'You\'re in!',
           message: 'Successfully signed in!',
         });
       } else {
@@ -111,7 +113,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         setType('login');
         setMessage({
           status: 'info',
-          title: "You're in!",
+          title: 'You\'re in!',
           message: 'Successfully signed up, you can log in now!',
         });
       } else {
