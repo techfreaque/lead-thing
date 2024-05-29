@@ -63,6 +63,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
     initialValues: {
       email: '',
       company: '',
+      vat: '',
       name: '',
       password: '',
       terms: true,
@@ -103,6 +104,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         email: form.values.email,
         password: form.values.password,
         company: form.values.company,
+        vat: form.values.vat,
         name: form.values.name,
         website: form.values.website,
         address: form.values.address,
