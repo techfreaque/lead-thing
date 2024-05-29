@@ -64,7 +64,8 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
       email: '',
       company: '',
       vat: '',
-      name: '',
+      firstName: '',
+      lastName: '',
       password: '',
       terms: true,
       website: '',
@@ -89,7 +90,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         login(loginResponse);
         setMessage({
           status: 'info',
-          title: 'You\'re in!',
+          title: "You're in!",
           message: 'Successfully signed in!',
         });
       } else {
@@ -105,7 +106,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         password: form.values.password,
         company: form.values.company,
         vat: form.values.vat,
-        name: form.values.name,
+        name: `${form.values.firstName} ${form.values.lastName}`,
         website: form.values.website,
         address: form.values.address,
         zipCode: form.values.zipCode,
@@ -115,7 +116,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         setType('login');
         setMessage({
           status: 'info',
-          title: 'You\'re in!',
+          title: "You're in!",
           message: 'Successfully signed up, you can log in now!',
         });
       } else {
@@ -215,17 +216,33 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
                 <Divider label="Optional info only your invoice" labelPosition="center" mt={10} />
                 <SimpleGrid cols={{ base: 1, sm: 2 }}>
                   <TextInput
-                    label="Name"
-                    placeholder="Your name"
-                    value={form.values.name}
-                    onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
+                    label="First Name"
+                    placeholder="Your first name"
+                    value={form.values.firstName}
+                    onChange={(event) => form.setFieldValue('firstName', event.currentTarget.value)}
                     radius="md"
                   />
+                  <TextInput
+                    label="Last Name"
+                    placeholder="Your last name"
+                    value={form.values.lastName}
+                    onChange={(event) => form.setFieldValue('lastName', event.currentTarget.value)}
+                    radius="md"
+                  />
+                </SimpleGrid>
+                <SimpleGrid cols={{ base: 1, sm: 2 }}>
                   <TextInput
                     label="Company"
                     placeholder="Your Company"
                     value={form.values.company}
                     onChange={(event) => form.setFieldValue('company', event.currentTarget.value)}
+                    radius="md"
+                  />
+                  <TextInput
+                    label="VAT number of your Company"
+                    placeholder="VAT Number"
+                    value={form.values.vat}
+                    onChange={(event) => form.setFieldValue('vat', event.currentTarget.value)}
                     radius="md"
                   />
                 </SimpleGrid>
