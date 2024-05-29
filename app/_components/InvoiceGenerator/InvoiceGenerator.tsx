@@ -32,13 +32,13 @@ export interface Invoice {
   invoice_no: string;
   trans_date: string;
   items: invoiceItems[];
-  company: string;
-  name: string;
-  vat: string;
-  address: string;
-  email: string;
-  zip: string;
-  country: string;
+  company: string | null;
+  name: string | null;
+  vat: string | null;
+  address: string | null;
+  email: string | null;
+  zip: string | null;
+  country: string | null;
 }
 export default function InvoiceGenerator({ invoice }: { invoice: Invoice }) {
   return (
@@ -127,13 +127,13 @@ function BillTo({ invoice }: { invoice: Invoice }) {
   return (
     <View style={clientStyles.headerContainer}>
       <Text style={clientStyles.billTo}>Bill To:</Text>
-      <Text>{invoice.company}</Text>
-      <Text>{invoice.vat}</Text>
-      <Text>{invoice.name}</Text>
-      <Text>{invoice.address}</Text>
-      <Text>{invoice.zip}</Text>
-      <Text>{invoice.country}</Text>
-      <Text>{invoice.email}</Text>
+      {invoice.company ? <Text>{invoice.company}</Text> : <></>}
+      {invoice.vat ? <Text>{invoice.vat}</Text> : <></>}
+      {invoice.name ? <Text>{invoice.name}</Text> : <></>}
+      {invoice.address ? <Text>{invoice.address}</Text> : <></>}
+      {invoice.zip ? <Text>{invoice.zip}</Text> : <></>}
+      {invoice.country ? <Text>{invoice.country}</Text> : <></>}
+      {invoice.email ? <Text>{invoice.email}</Text> : <></>}
     </View>
   );
 }
