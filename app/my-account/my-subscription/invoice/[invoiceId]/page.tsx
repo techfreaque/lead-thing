@@ -26,12 +26,12 @@ export default function InvoicePage({ params }: { params: { invoiceId: string } 
               desc: `${subscriptionTiers[order.productId].title} Subscription`,
             },
           ],
-          company: `${user.company}`,
-          name: `${user.name}`,
-          vat: `${user.vat}`,
-          zip: `${user.zipCode}`,
-          country: `${user.country}`,
-          address: `${user.address}, ${user.zipCode}, ${user.country}`,
+          company: user.company,
+          name: user.name,
+          vat: user.vat,
+          zip: user.zipCode,
+          country: user.country,
+          address: user.address,
           email: user.email,
         })
       );

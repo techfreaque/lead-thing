@@ -90,7 +90,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         login(loginResponse);
         setMessage({
           status: 'info',
-          title: "You're in!",
+          title: 'You\'re in!',
           message: 'Successfully signed in!',
         });
       } else {
@@ -116,7 +116,7 @@ export default function Signup({ type }: { type: 'login' | 'register' }) {
         setType('login');
         setMessage({
           status: 'info',
-          title: "You're in!",
+          title: 'You\'re in!',
           message: 'Successfully signed up, you can log in now!',
         });
       } else {
