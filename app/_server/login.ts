@@ -29,6 +29,7 @@ export async function getLogin({
     company: user.company,
     address: user.address,
     zipCode: user.zipCode,
+    vat: user.vat,
     country: user.country,
     website: user.website,
     email: user.email,
