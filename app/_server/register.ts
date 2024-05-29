@@ -10,6 +10,7 @@ export async function register({
   password,
   company,
   name,
+  vat,
   website,
   address,
   zipCode,
@@ -19,6 +20,7 @@ export async function register({
   email: string;
   company: string;
   password: string;
+  vat: string;
   website: string;
   address: string;
   zipCode: string;
@@ -41,6 +43,7 @@ export async function register({
       address,
       zipCode,
       country,
+      vat,
       apiKey: uuidv4(),
     },
   });

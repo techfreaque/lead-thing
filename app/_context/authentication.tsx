@@ -6,6 +6,7 @@ import { loginPath } from '../_lib/constants';
 export interface UserType {
   token?: string | null;
   name: string | null;
+  vat: string | null;
   company: string | null;
   address: string | null;
   zipCode: string | null;

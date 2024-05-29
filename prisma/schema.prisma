@@ -17,6 +17,7 @@ model User {
   address                String?
   zipCode                String?
   country                String?
+  vat                    String?
   website                String?
   email                  String    @unique
   password               String

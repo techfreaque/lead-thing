@@ -33,8 +33,12 @@ export interface Invoice {
   trans_date: string;
   items: invoiceItems[];
   company: string;
+  name: string;
+  vat: string;
   address: string;
   email: string;
+  zip: string;
+  country: string;
 }
 export default function InvoiceGenerator({ invoice }: { invoice: Invoice }) {
   return (
@@ -124,7 +128,11 @@ function BillTo({ invoice }: { invoice: Invoice }) {
     <View style={clientStyles.headerContainer}>
       <Text style={clientStyles.billTo}>Bill To:</Text>
       <Text>{invoice.company}</Text>
+      <Text>{invoice.vat}</Text>
+      <Text>{invoice.name}</Text>
       <Text>{invoice.address}</Text>
+      <Text>{invoice.zip}</Text>
+      <Text>{invoice.country}</Text>
       <Text>{invoice.email}</Text>
     </View>
   );
