@@ -71,14 +71,7 @@ export const newsletterSystems: {
     path: '/edrone',
     name: 'Edrone',
     icon: EdroneIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'gender',
-      'countryCode',
-      'edroneAppId',
-    ],
+    apiFields: ['firstname', 'lastname', 'email', 'gender', 'countryCode', 'edroneAppId'],
   },
   emarsys: {
     path: '/emarsys',
@@ -98,15 +91,7 @@ export const newsletterSystems: {
     path: '/getresponse',
     name: 'GetResponse',
     icon: GetresponseIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'ip',
-      'listId',
-      'getresponseApiKey',
-      'tagId',
-    ],
+    apiFields: ['firstname', 'lastname', 'email', 'ip', 'listId', 'getresponseApiKey', 'tagId'],
   },
   cleverreach: {
     path: '/cleverreach',
@@ -142,28 +127,13 @@ export const newsletterSystems: {
     path: '/freshmail',
     name: 'FreshMail',
     icon: FreshmailIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'listHash',
-      'freshmailApiKey',
-      'freshmailApiSecret',
-      'subscriptionMode',
-    ],
+    apiFields: ['email', 'listHash', 'freshmailApiKey', 'freshmailApiSecret', 'subscriptionMode'],
   },
   sailthru: {
     path: '/sailthru',
     name: 'Sailthru',
     icon: SailthruIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'listName',
-      'sailthruApiKey',
-      'sailthruSecret',
-    ],
+    apiFields: ['firstname', 'lastname', 'email', 'listName', 'sailthruApiKey', 'sailthruSecret'],
   },
   shopify: {
     path: '/shopify',
@@ -573,8 +543,7 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: true,
-    description:
-      'The domain of your SalesManago instance e.g.: app2.salemanago.com',
+    description: 'The domain of your SalesManago instance e.g.: app2.salemanago.com',
   },
   salesManagoOwner: {
     label: 'SalesManago Owner',
@@ -603,8 +572,7 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: 'EXPERTSENDER_API_KEY',
     required: true,
-    description:
-      'Your Expertsender API key, which you can find in Settings > API.',
+    description: 'Your Expertsender API key, which you can find in Settings > API.',
   },
   freshmailApiKey: {
     label: 'Freshmail API key',
@@ -646,8 +614,7 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: false,
-    description:
-      'The tag must first be added in the youlead system Settings -> Tags',
+    description: 'The tag must first be added in the youlead system Settings -> Tags',
   },
   cleverreachSource: {
     label: 'Source Name',
@@ -661,32 +628,28 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: 'CLEVERREACH_LIST_ID',
     required: true,
-    description:
-      'Select the list id from CleverReach where the leads should be added to.',
+    description: 'Select the list id from CleverReach where the leads should be added to.',
   },
   cleverreachClientId: {
     label: 'CleverReach Client Id',
     valueType: 'string',
     value: 'CLEVERREACH_CLIENT_ID',
     required: true,
-    description:
-      'You can get the CleverReach client id from your CleverReach backend.',
+    description: 'You can get the CleverReach client id from your CleverReach backend.',
   },
   cleverreachClientSecret: {
     label: 'CleverReach Client Secret',
     valueType: 'string',
     value: 'CLEVERREACH_CLIENT_SECRET',
     required: true,
-    description:
-      'You can get the CleverReach client secret from your CleverReach backend.',
+    description: 'You can get the CleverReach client secret from your CleverReach backend.',
   },
   mailupListId: {
     label: 'Mailup List Id',
     valueType: 'string',
     value: 'MAILUP_LIST_ID',
     required: true,
-    description:
-      'Select the list id from Mailup where the leads should be added to.',
+    description: 'Select the list id from Mailup where the leads should be added to.',
   },
   mailupClientId: {
     label: 'Mailup Client Id',
@@ -700,8 +663,7 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: true,
-    description:
-      'You can get the Mailup client secret from your Mailup backend.',
+    description: 'You can get the Mailup client secret from your Mailup backend.',
   },
   mailupUsername: {
     label: 'Mailup Username',
