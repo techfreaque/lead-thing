@@ -6,12 +6,11 @@ import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 import executeIfAuthenticated from '../../_server/apiHelpers';
 import type { FreshmailPostRequest } from '../requestTypes';
 
-const apiContactsUrl = 'https://api.freshmail.com/rest/subscriber/add';
+const apiUrl = 'https://api.freshmail.com';
+const apiContactsPath = '/rest/subscriber/add';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
-    firstname,
-    lastname,
     email,
     // ip,
     // gender,
@@ -31,9 +30,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         state: subscriptionMode === 'FORCE_OPT_IN' ? 1 : 2,
       });
       const requestSha = sha1(
-        `${freshmailApiKey}${apiContactsUrl}${requestPayload}${freshmailApiSecret}`
+        `${freshmailApiKey}${apiContactsPath}${requestPayload}${freshmailApiSecret}`
       ).toString();
-      const response: Response = await fetch(apiContactsUrl, {
+      const response: Response = await fetch(apiUrl + apiContactsPath, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -51,8 +50,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
       return ApiResponse(
         `Failed to add the contact. Error: ${JSON.stringify(data)} ${formatApiCallDetails({
-          firstname,
-          lastname,
           email,
           subscriptionMode,
           listHash,
@@ -62,8 +59,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     } catch (error) {
       return ApiResponse(
         `Failed to add the contact with an unknown error. Error: ${error} ${formatApiCallDetails({
-          firstname,
-          lastname,
           email,
           subscriptionMode,
           listHash,
@@ -74,3 +69,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
   return executeIfAuthenticated(request, forwardToNewsletterSystem);
 }
+
+// async function getSubscribers(
+//   listHash: string,
+//   email: string,
+//   freshmailApiKey: string,
+//   freshmailApiSecret: string
+// ) {
+//   const getPath = `/rest/subscriber/get/${listHash}/${email}`;
+//   const t = JSON.stringify({});
+//   const requestSha = sha1(
+//     `${freshmailApiKey}${apiContactsPath}${t}${freshmailApiSecret}`
+//   ).toString();
+//   const response: Response = await fetch(apiUrl + getPath, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-Rest-ApiKey': freshmailApiKey,
+//       'X-Rest-ApiSign': requestSha,
+//       body: t,
+//     },
+//   });
+//   const data = await response.json();
+//   return data;
+// }
