@@ -118,6 +118,13 @@ export interface CleverreachPostRequest extends PostRequest {
   cleverreachClientSecret: string;
 }
 
+export interface SpotlerPlusPostRequest extends PostRequest {
+  gender?: 'MALE' | 'FEMALE';
+  spotlerAdditionalProperties?: string;
+  spotlerConsumerKey: string;
+  spotlerConsumerSecret: string;
+}
+
 export interface MailupPostRequest extends PostRequest {
   // ip: string;
   gender?: 'MALE' | 'FEMALE';
@@ -226,6 +233,7 @@ export interface AllPossiblePostRequestParameters
     YouleadPostRequest,
     CleverreachPostRequest,
     MailupPostRequest,
+    SpotlerPlusPostRequest,
     ShopifyPostRequest,
     FreshmailPostRequest,
     AdobeCampaignPostRequest,

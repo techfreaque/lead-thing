@@ -50,11 +50,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           headers,
         });
         if (subscribeResponse.ok) {
-          return ApiResponse('Contact successfully added and subscribed!', 200);
+          return ApiResponse(
+            `Contact successfully added and subscribed! ${JSON.stringify(
+              await subscribeResponse.text()
+            )}`,
+            200
+          );
         }
         return ApiResponse(
           `The contact was added to mapp, but subscribing to the list was not successful via the mapp api. Error: ${JSON.stringify(
-            await subscribeResponse.json()
+            await subscribeResponse.text()
           )} ${formatApiCallDetails({
             email,
             firstname,
@@ -72,7 +77,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
       return ApiResponse(
         `Failed to update the contact via the mapp api. Error: ${JSON.stringify(
-          await response.json()
+          await response.text()
         )} ${formatApiCallDetails({
           email,
           firstname,
@@ -193,7 +198,12 @@ async function subscribeMappContact({
   };
 }): Promise<Response> {
   const subscribeResponse: Response = await fetch(
-    `https://${mappDomain}${apiSubscribePath}?email=${email}&groupId=${parseInt(String(listId), 10)}&subscriptionMode=${subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode}`,
+    `https://${mappDomain}${apiSubscribePath}?email=${email}&groupId=${parseInt(
+      String(listId),
+      10
+    )}&subscriptionMode=${
+      subscriptionMode === 'FORCE_OPT_IN' ? 'CONFIRMED_OPT_IN' : subscriptionMode
+    }`,
     {
       method: 'post',
       headers,
