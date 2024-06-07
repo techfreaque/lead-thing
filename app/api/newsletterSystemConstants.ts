@@ -14,6 +14,7 @@ import {
   SalesforceIcon,
   SalesmanagoIcon,
   ShopifyIcon,
+  SpotlerIcon,
   YouleadIcon,
 } from '../_components/Icons/Icons';
 
@@ -26,6 +27,7 @@ export type avialableSystemsType =
   | 'freshmail'
   // | 'klaviyo'
   | 'emarsys'
+  | 'spotler'
   | 'salesmanago'
   | 'adobecampaign'
   | 'mailup'
@@ -147,6 +149,20 @@ export const newsletterSystems: {
       'tag',
       'shopifyDomain',
       'shopifyAccessToken',
+    ],
+  },
+  spotler: {
+    path: '/spotler',
+    name: 'Spotler',
+    icon: SpotlerIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'spotlerAdditionalProperties',
+      'spotlerConsumerKey',
+      'spotlerConsumerSecret',
     ],
   },
   mailup: {
@@ -297,6 +313,9 @@ export type RequestOptionsFieldName =
   | 'emarsysUserName'
   | 'emarsysApiKey'
   | 'emarsysSubDomain'
+  | 'spotlerAdditionalProperties'
+  | 'spotlerConsumerKey'
+  | 'spotlerConsumerSecret'
   | 'shopifyDomain'
   | 'shopifyAccessToken'
   | 'freshmailApiSecret';
@@ -626,23 +645,44 @@ export const RequestOptionsData: {
   cleverreachListId: {
     label: 'CleverReach List Id',
     valueType: 'string',
-    value: 'CLEVERREACH_LIST_ID',
+    value: '',
     required: true,
     description: 'Select the list id from CleverReach where the leads should be added to.',
   },
   cleverreachClientId: {
     label: 'CleverReach Client Id',
     valueType: 'string',
-    value: 'CLEVERREACH_CLIENT_ID',
+    value: '',
     required: true,
     description: 'You can get the CleverReach client id from your CleverReach backend.',
   },
   cleverreachClientSecret: {
     label: 'CleverReach Client Secret',
     valueType: 'string',
-    value: 'CLEVERREACH_CLIENT_SECRET',
+    value: '',
     required: true,
     description: 'You can get the CleverReach client secret from your CleverReach backend.',
+  },
+  spotlerAdditionalProperties: {
+    label: 'Additional properties',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'You can add additional properties here e.g.: "propertieName": [{"propertyKey": "propertyValue"}]',
+  },
+  spotlerConsumerKey: {
+    label: 'Spotler Consumer Key',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Spotler consumer key from your Spotler backend.',
+  },
+  spotlerConsumerSecret: {
+    label: 'Spotler Consumer Secret',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Spotler consumer secret from your Spotler backend.',
   },
   mailupListId: {
     label: 'Mailup List Id',
