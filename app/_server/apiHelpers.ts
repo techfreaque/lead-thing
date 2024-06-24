@@ -12,7 +12,7 @@ import { apiPeriodType, getCurrentSubscription } from './orders';
 
 export default async function executeIfAuthenticated(
   request: NextRequest,
-  functionToexecute: () => Promise<NextResponse>
+  functionToExecute: () => Promise<NextResponse>
 ) {
   const apiKey = request.headers.get('apiKey');
   if (apiKey) {
@@ -31,14 +31,14 @@ export default async function executeIfAuthenticated(
       });
       if (currentApiPeriod) {
         await bumpApiCallsInThisPeriod({ currentApiPeriod });
-        const response = await functionToexecute();
+        const response = await functionToExecute();
         if (response.ok) {
           await bumpApiCallsInThisPeriod({ currentApiPeriod });
         }
         return response;
       }
       return ApiResponse(
-        `Your ${APP_NAME} account doesnt have any api calls left for this period. Please upgade your account.`,
+        `Your ${APP_NAME} account doesnt have any api calls left for this period. Please upgrade your account.`,
         403
       );
     }
@@ -63,13 +63,8 @@ async function getApiPeriodIfStillQuotaLeft({
   const currentApiPeriod: apiPeriodType = await getCurrentSubscription({
     email,
   });
-  if (
-    currentApiPeriod.apiCallsInThisPeriod < currentApiPeriod.apiCallsPerMonth
-  ) {
-    if (
-      currentApiPeriod.apiCallsInThisPeriod ===
-      currentApiPeriod.apiCallsPerMonth - 1
-    ) {
+  if (currentApiPeriod.apiCallsInThisPeriod < currentApiPeriod.apiCallsPerMonth) {
+    if (currentApiPeriod.apiCallsInThisPeriod === currentApiPeriod.apiCallsPerMonth - 1) {
       await sendNoQuotaLeftWarningMail(name, email);
     } else if (
       currentApiPeriod.apiCallsInThisPeriod + 1 ===
@@ -82,20 +77,13 @@ async function getApiPeriodIfStillQuotaLeft({
   return undefined;
 }
 
-async function bumpApiCallsInThisPeriod({
-  currentApiPeriod,
-}: {
-  currentApiPeriod: apiPeriodType;
-}) {
+async function bumpApiCallsInThisPeriod({ currentApiPeriod }: { currentApiPeriod: apiPeriodType }) {
   await prisma.apiPeriods.update({
     where: {
       id: currentApiPeriod.id,
     },
     data: {
-      apiCallsInThisPeriod: parseInt(
-        String(currentApiPeriod.apiCallsInThisPeriod + 1),
-        10
-      ),
+      apiCallsInThisPeriod: parseInt(String(currentApiPeriod.apiCallsInThisPeriod + 1), 10),
     },
   });
 }
