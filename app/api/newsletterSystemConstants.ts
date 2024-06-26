@@ -8,6 +8,7 @@ import {
   ExpertsenderIcon,
   FreshmailIcon,
   GetresponseIcon,
+  KlaviyoIcon,
   MailupIcon,
   MappIcon,
   SailthruIcon,
@@ -25,7 +26,7 @@ export type avialableSystemsType =
   | 'salesforce'
   | 'edrone'
   | 'freshmail'
-  // | 'klaviyo'
+  | 'klaviyo'
   | 'emarsys'
   | 'spotler'
   | 'salesmanago'
@@ -69,6 +70,21 @@ export const newsletterSystems: {
       'adobeCampaignApiKey',
     ],
   },
+  cleverreach: {
+    path: '/cleverreach',
+    name: 'CleverReach',
+    icon: CleverreachIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'cleverreachListId',
+      'cleverreachSource',
+      'cleverreachClientId',
+      'cleverreachClientSecret',
+    ],
+  },
   edrone: {
     path: '/edrone',
     name: 'Edrone',
@@ -87,27 +103,6 @@ export const newsletterSystems: {
       'emarsysUserName',
       'emarsysApiKey',
       'emarsysSubDomain',
-    ],
-  },
-  getresponse: {
-    path: '/getresponse',
-    name: 'GetResponse',
-    icon: GetresponseIcon,
-    apiFields: ['firstname', 'lastname', 'email', 'ip', 'listId', 'getresponseApiKey', 'tagId'],
-  },
-  cleverreach: {
-    path: '/cleverreach',
-    name: 'CleverReach',
-    icon: CleverreachIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'gender',
-      'cleverreachListId',
-      'cleverreachSource',
-      'cleverreachClientId',
-      'cleverreachClientSecret',
     ],
   },
   expertsender: {
@@ -131,38 +126,26 @@ export const newsletterSystems: {
     icon: FreshmailIcon,
     apiFields: ['email', 'listHash', 'freshmailApiKey', 'freshmailApiSecret', 'subscriptionMode'],
   },
-  sailthru: {
-    path: '/sailthru',
-    name: 'Sailthru',
-    icon: SailthruIcon,
-    apiFields: ['firstname', 'lastname', 'email', 'listName', 'sailthruApiKey', 'sailthruSecret'],
+  getresponse: {
+    path: '/getresponse',
+    name: 'GetResponse',
+    icon: GetresponseIcon,
+    apiFields: ['firstname', 'lastname', 'email', 'ip', 'listId', 'getresponseApiKey', 'tagId'],
   },
-  shopify: {
-    path: '/shopify',
-    name: 'Shopify',
-    icon: ShopifyIcon,
+  klaviyo: {
+    path: '/klaviyo',
+    name: 'Klaviyo',
+    icon: KlaviyoIcon,
     apiFields: [
       'firstname',
       'lastname',
       'email',
-      'countryCode',
+      'ip',
       'tag',
-      'shopifyDomain',
-      'shopifyAccessToken',
-    ],
-  },
-  spotler: {
-    path: '/spotler',
-    name: 'Spotler',
-    icon: SpotlerIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'gender',
-      'spotlerAdditionalProperties',
-      'spotlerConsumerKey',
-      'spotlerConsumerSecret',
+      'country',
+      'additionalProperties',
+      'listId',
+      'klaviyoApiKey',
     ],
   },
   mailup: {
@@ -201,6 +184,12 @@ export const newsletterSystems: {
       'mappDomain',
     ],
   },
+  sailthru: {
+    path: '/sailthru',
+    name: 'Sailthru',
+    icon: SailthruIcon,
+    apiFields: ['firstname', 'lastname', 'email', 'listName', 'sailthruApiKey', 'sailthruSecret'],
+  },
   salesforce: {
     path: '/salesforce',
     name: 'Salesforce',
@@ -234,6 +223,34 @@ export const newsletterSystems: {
       'salesManagoOwner',
     ],
   },
+  shopify: {
+    path: '/shopify',
+    name: 'Shopify',
+    icon: ShopifyIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'countryCode',
+      'tag',
+      'shopifyDomain',
+      'shopifyAccessToken',
+    ],
+  },
+  spotler: {
+    path: '/spotler',
+    name: 'Spotler',
+    icon: SpotlerIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'spotlerAdditionalProperties',
+      'spotlerConsumerKey',
+      'spotlerConsumerSecret',
+    ],
+  },
   youlead: {
     path: '/youlead',
     name: 'Youlead',
@@ -249,12 +266,6 @@ export const newsletterSystems: {
       'youLeadAppSecretKey',
     ],
   },
-  // klaviyo: {
-  //   path: '/klaviyo',
-  //   name: 'Klaviyo',
-  //   icon: KlaviyoIcon,
-  //   apiFields: [],
-  // },
 };
 
 export type RequestOptionsFieldName =
@@ -298,6 +309,9 @@ export type RequestOptionsFieldName =
   | 'youLeadClientId'
   | 'youLeadAppSecretKey'
   | 'youLeadTag'
+  | 'klaviyoApiKey'
+  | 'country'
+  | 'additionalProperties'
   | 'cleverreachClientId'
   | 'cleverreachSource'
   | 'cleverreachListId'
@@ -668,7 +682,8 @@ export const RequestOptionsData: {
     valueType: 'string',
     value: '',
     required: false,
-    description: 'You can add additional properties here e.g.: "propertieName": [{"propertyKey": "propertyValue"}]',
+    description:
+      'You can add additional properties here e.g.: "propertieName": [{"propertyKey": "propertyValue"}]',
   },
   spotlerConsumerKey: {
     label: 'Spotler Consumer Key',
@@ -761,5 +776,27 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: '',
+  },
+  klaviyoApiKey: {
+    label: 'Your Klaviyo API key',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Enter your Klaviyo API key',
+  },
+  country: {
+    label: 'Country',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description: 'Pass on a country e.g. United States',
+  },
+  additionalProperties: {
+    label: 'Additional Properties',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description:
+      'Pass additional properties e.g.: "propertyName":"value", "anotherPropertyName":"anotherValue"',
   },
 };

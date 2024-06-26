@@ -5,7 +5,7 @@ export interface PostRequest {
 }
 
 export interface GetresponsePostRequest extends PostRequest {
-  ip: string;
+  ip?: string;
   // gender: 'MALE' | 'FEMALE';
   // countryCode: string;
   // salutation: string;
@@ -32,6 +32,23 @@ export interface EmarsysPostRequest extends PostRequest {
   emarsysSubDomain: string;
   emarsysUserName: string;
   emarsysApiKey: string;
+}
+
+export interface KlaviyoPostRequest extends PostRequest {
+  // gender: 'MALE' | 'FEMALE';
+  // countryCode: string;
+  // salutation: string;
+  listId: string;
+  ip?: string;
+  tag?: string;
+  country?: string;
+  additionalProperties?: string;
+  // subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
+  // DOUBLE_OPT_IN
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
+  klaviyoApiKey: string;
 }
 
 export interface MappPostRequest extends PostRequest {
@@ -212,7 +229,7 @@ export interface ShopifyPostRequest extends PostRequest {
 }
 
 export interface ExpertsenderPostRequest extends PostRequest {
-  ip: string;
+  ip?: string;
   gender?: 'MALE' | 'FEMALE';
   countryCode?: string;
   // salutation: string;
