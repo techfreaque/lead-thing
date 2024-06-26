@@ -31,7 +31,7 @@ import DocsCodeHighlighter from '../DocsCodeHighlighter/DocsCodeHighlighter';
 export default function DocsPage({ systemName }: { systemName: avialableSystemsType }) {
   const { user } = useContext(UserContext) as UserContextType;
   const [isSending, setIsSending] = useState<boolean>(false);
-  const exampleKey = user?.apiKey || `Sign in  to get your ${APP_NAME.toUpperCase()} API key`;
+  const exampleKey = user?.apiKey || `Sign in to get your ${APP_NAME.toUpperCase()} API key`;
   const [response, setResponse] = useState<
     { state: 'success' | 'error'; message: string } | undefined
   >();
