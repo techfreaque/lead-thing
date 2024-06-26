@@ -42,7 +42,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                <Firstname>${firstname}</Firstname>
                <Lastname>${lastname}</Lastname>
                ${expertSenderVendor ? `<Vendor>${expertSenderVendor}</Vendor>` : ''}
-               ${expertSenderVendor ? `<Ip>${ip}</Ip>` : ''}
+               ${ip ? `<Ip>${ip}</Ip>` : ''}
             </Data>
         </ApiRequest>
         `,
