@@ -139,7 +139,6 @@ export interface ConnectifRequest extends PostRequest {
   connectifApiKey: string;
 }
 
-
 export interface SpotlerPlusPostRequest extends PostRequest {
   gender?: 'MALE' | 'FEMALE';
   spotlerAdditionalProperties?: string;
