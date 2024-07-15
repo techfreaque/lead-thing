@@ -1,22 +1,10 @@
 'use client';
 
-import {
-  ActionIcon,
-  Container,
-  CopyButton,
-  rem,
-  Table,
-  Title,
-  Tooltip,
-} from '@mantine/core';
+import { ActionIcon, Container, CopyButton, rem, Table, Title, Tooltip } from '@mantine/core';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 import { useContext, useEffect, useState } from 'react';
 
-import {
-  UserContext,
-  UserContextType,
-  UserType,
-} from '@/app/_context/authentication';
+import { UserContext, UserContextType, UserType } from '@/app/_context/authentication';
 import { APP_NAME, subscriptionTiers } from '@/app/_lib/constants';
 import {
   apiPeriodType,
@@ -37,16 +25,8 @@ export default function MyKeyPage() {
             {user.apiKey}{' '}
             <CopyButton value={user?.apiKey}>
               {({ copied, copy }) => (
-                <Tooltip
-                  label={copied ? 'Copied' : 'Copy'}
-                  withArrow
-                  position="right"
-                >
-                  <ActionIcon
-                    color={copied ? 'teal' : 'gray'}
-                    variant="subtle"
-                    onClick={copy}
-                  >
+                <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
+                  <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
                     {copied ? (
                       <IconCheck style={{ width: rem(16) }} />
                     ) : (
