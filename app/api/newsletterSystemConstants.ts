@@ -3,6 +3,7 @@ import { CSSProperties } from 'react';
 import {
   AdobeCampaignIcon,
   CleverreachIcon,
+  ConnectifIcon,
   EdroneIcon,
   EmarsysIcon,
   ExpertsenderIcon,
@@ -27,6 +28,7 @@ export type avialableSystemsType =
   | 'edrone'
   | 'freshmail'
   | 'klaviyo'
+  | 'connectif'
   | 'emarsys'
   | 'spotler'
   | 'salesmanago'
@@ -84,6 +86,12 @@ export const newsletterSystems: {
       'cleverreachClientId',
       'cleverreachClientSecret',
     ],
+  },
+  connectif: {
+    path: '/connectif',
+    name: 'Connectif',
+    icon: ConnectifIcon,
+    apiFields: ['firstname', 'lastname', 'email', 'connectifApiKey'],
   },
   edrone: {
     path: '/edrone',
@@ -648,6 +656,14 @@ export const RequestOptionsData: {
     value: '',
     required: false,
     description: 'The tag must first be added in the youlead system Settings -> Tags',
+  },
+  connectifApiKey: {
+    label: 'Connectif API Key',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description:
+      'You can get the Connctif api key in your Connectif backend, make sure to set the permission to write contacts.',
   },
   cleverreachSource: {
     label: 'Source Name',
