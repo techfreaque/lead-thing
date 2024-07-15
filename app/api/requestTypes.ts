@@ -135,6 +135,11 @@ export interface CleverreachPostRequest extends PostRequest {
   cleverreachClientSecret: string;
 }
 
+export interface ConnectifRequest extends PostRequest {
+  connectifApiKey: string;
+}
+
+
 export interface SpotlerPlusPostRequest extends PostRequest {
   gender?: 'MALE' | 'FEMALE';
   spotlerAdditionalProperties?: string;
@@ -255,5 +260,6 @@ export interface AllPossiblePostRequestParameters
     FreshmailPostRequest,
     KlaviyoPostRequest,
     AdobeCampaignPostRequest,
+    ConnectifRequest,
     ExpertsenderPostRequest,
     SalesmanagoPostRequest {}
