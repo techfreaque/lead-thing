@@ -306,6 +306,7 @@ export type RequestOptionsFieldName =
   | 'adobeCampaignOrganizationId'
   | 'adobeCampaignApiKey'
   | 'tag'
+  | 'connectifApiKey'
   | 'tagId'
   | 'salesManagoClientId'
   | 'salesManagoApiKey'
