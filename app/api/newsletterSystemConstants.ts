@@ -4,6 +4,7 @@ import {
   AdobeCampaignIcon,
   CleverreachIcon,
   ConnectifIcon,
+  DataNextIcon,
   EdroneIcon,
   EmarsysIcon,
   ExpertsenderIcon,
@@ -29,6 +30,7 @@ export type avialableSystemsType =
   | 'freshmail'
   | 'klaviyo'
   | 'connectif'
+  | 'datanext'
   | 'emarsys'
   | 'spotler'
   | 'salesmanago'
@@ -92,6 +94,20 @@ export const newsletterSystems: {
     name: 'Connectif',
     icon: ConnectifIcon,
     apiFields: ['firstname', 'lastname', 'email', 'connectifApiKey'],
+  },
+  datanext: {
+    path: '/datanext',
+    name: 'Datanext',
+    icon: DataNextIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'gender',
+      'subscriptionMode',
+      'datanextApiKey',
+      'datanextApiSecret',
+    ],
   },
   edrone: {
     path: '/edrone',
@@ -332,6 +348,8 @@ export type RequestOptionsFieldName =
   | 'mailupPassword'
   | 'expertSenderVendor'
   | 'expertSenderApiDomain'
+  | 'datanextApiKey'
+  | 'datanextApiSecret'
   | 'expertSenderApiKey'
   | 'emarsysUserName'
   | 'emarsysApiKey'
@@ -693,6 +711,20 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: 'You can get the CleverReach client secret from your CleverReach backend.',
+  },
+  datanextApiKey: {
+    label: 'Datanext API Key',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Datanext API Key from your Datanext integration document.',
+  },
+  datanextApiSecret: {
+    label: 'Datanext API Secret',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Datanext API Secret from your Datanext integration document.',
   },
   spotlerAdditionalProperties: {
     label: 'Additional properties',

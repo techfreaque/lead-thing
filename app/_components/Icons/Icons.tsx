@@ -4,6 +4,7 @@ import { CSSProperties } from 'react';
 import adobecampaign from './adobecampaign.png';
 import cleverreach from './cleverreach.png';
 import connectif from './connectif.png';
+import datanext from './datanext.png';
 import edrone from './edrone.png';
 import emarsys from './emarsys.png';
 import expertsender from './expertsender.png';
@@ -81,6 +82,16 @@ export function AdobeCampaignIcon({
   return (
     <Icon alt="Adobe Campaign Icon" iconFile={adobecampaign} style={style} className={className} />
   );
+}
+
+export function DataNextIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="Datanext Icon" iconFile={datanext} style={style} className={className} />;
 }
 
 export function CleverreachIcon({
