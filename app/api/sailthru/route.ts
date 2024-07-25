@@ -24,7 +24,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     sailthruSecret,
   }: SailthruPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
-    const headers = {};
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
     try {
       const requestPayload = JSON.stringify({
         id: email,
@@ -37,12 +39,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         },
       });
       const requestMd5 = MD5(`${sailthruSecret + sailthruApiKey}json${requestPayload}`).toString();
+      const requestBody = new URLSearchParams();
+      requestBody.append('api_key', sailthruApiKey);
+      requestBody.append('sig', requestMd5);
+      requestBody.append('format', 'json');
+      requestBody.append('json', requestPayload);
       const response: Response = await fetch(apiContactsPath, {
         method: 'post',
         headers,
-        body: `api_key=${sailthruApiKey}&sig=${requestMd5}&format=json&json=${requestPayload}`,
+        body: requestBody.toString(),
       });
-      const data = await response.json();
+      const data = await response.text();
       if (response.ok) {
         return ApiResponse(
           `Contact successfully added and subscribed! Response: ${JSON.stringify(data)}`,
