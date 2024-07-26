@@ -235,7 +235,13 @@ function getParameter(
   exampleData: AllPossiblePostRequestParameters,
   fieldName: RequestOptionsFieldName
 ) {
-  return `${exampleData[fieldName] ? `\n        ${fieldName}: "${exampleData[fieldName]}"` : ''}`;
+  return `${
+    exampleData[fieldName]
+      ? exampleData[fieldName].includes('"')
+        ? `\n        ${fieldName}: '${exampleData[fieldName]}'`
+        : `\n        ${fieldName}: "${exampleData[fieldName]}"`
+      : ''
+  }`;
 }
 
 async function sendExampleRequest({
