@@ -237,7 +237,7 @@ function getParameter(
 ) {
   return `${
     exampleData[fieldName]
-      ? exampleData[fieldName].includes('"')
+      ? exampleData[fieldName]?.includes('"')
         ? `\n        ${fieldName}: '${exampleData[fieldName]}'`
         : `\n        ${fieldName}: "${exampleData[fieldName]}"`
       : ''
