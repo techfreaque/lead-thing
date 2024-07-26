@@ -4,6 +4,7 @@ import {
   AdobeCampaignIcon,
   CleverreachIcon,
   ConnectifIcon,
+  DataNextIcon,
   EdroneIcon,
   EmarsysIcon,
   ExpertsenderIcon,
@@ -29,6 +30,7 @@ export type avialableSystemsType =
   | 'freshmail'
   | 'klaviyo'
   | 'connectif'
+  | 'datanext'
   | 'emarsys'
   | 'spotler'
   | 'salesmanago'
@@ -92,6 +94,21 @@ export const newsletterSystems: {
     name: 'Connectif',
     icon: ConnectifIcon,
     apiFields: ['firstname', 'lastname', 'email', 'connectifApiKey'],
+  },
+  datanext: {
+    path: '/datanext',
+    name: 'Datanext',
+    icon: DataNextIcon,
+    apiFields: [
+      'firstname',
+      'lastname',
+      'email',
+      'datanextFormId',
+      'datanextCampaignId',
+      'datanextAdditionalProps',
+      'datanextApiKey',
+      'datanextApiSecret',
+    ],
   },
   edrone: {
     path: '/edrone',
@@ -332,6 +349,11 @@ export type RequestOptionsFieldName =
   | 'mailupPassword'
   | 'expertSenderVendor'
   | 'expertSenderApiDomain'
+  | 'datanextFormId'
+  | 'datanextCampaignId'
+  | 'datanextAdditionalProps'
+  | 'datanextApiKey'
+  | 'datanextApiSecret'
   | 'expertSenderApiKey'
   | 'emarsysUserName'
   | 'emarsysApiKey'
@@ -693,6 +715,42 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: 'You can get the CleverReach client secret from your CleverReach backend.',
+  },
+  datanextFormId: {
+    label: 'Datanext Form ID',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Datanext Form ID from your Datanext integration document.',
+  },
+  datanextCampaignId: {
+    label: 'Datanext Campaign ID',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Datanext Campaign ID from your Datanext integration document.',
+  },
+  datanextAdditionalProps: {
+    label: 'Datanext Additional Properties',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description:
+      'You can pass on addtional properties e.g. {"propertyName": "propertyValue", "anotherProp": "anotherValue"}',
+  },
+  datanextApiKey: {
+    label: 'Datanext API Key',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Datanext API Key from your Datanext integration document.',
+  },
+  datanextApiSecret: {
+    label: 'Datanext API Secret',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'You can get the Datanext API Secret from your Datanext integration document.',
   },
   spotlerAdditionalProperties: {
     label: 'Additional properties',

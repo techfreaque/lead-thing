@@ -139,6 +139,24 @@ export interface ConnectifRequest extends PostRequest {
   connectifApiKey: string;
 }
 
+export interface DatanextPostRequest extends PostRequest {
+  // ip: string;
+  gender?: 'MALE' | 'FEMALE';
+  // countryCode: string;
+  // salutation: string;
+  subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
+  // DOUBLE_OPT_IN
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
+
+  datanextFormId: string;
+  datanextCampaignId: string;
+  datanextAdditionalProps: string;
+  datanextApiKey: string;
+  datanextApiSecret: string;
+}
+
 export interface SpotlerPlusPostRequest extends PostRequest {
   gender?: 'MALE' | 'FEMALE';
   spotlerAdditionalProperties?: string;
@@ -257,6 +275,7 @@ export interface AllPossiblePostRequestParameters
     SpotlerPlusPostRequest,
     ShopifyPostRequest,
     FreshmailPostRequest,
+    DatanextPostRequest,
     KlaviyoPostRequest,
     AdobeCampaignPostRequest,
     ConnectifRequest,
