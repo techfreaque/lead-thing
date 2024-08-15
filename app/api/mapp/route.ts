@@ -6,6 +6,7 @@ import executeIfAuthenticated from '../../_server/apiHelpers';
 import type { MappPostRequest } from '../requestTypes';
 
 const apiContactsPath = '/api/rest/v19/contact/create';
+const apiContactsUpdatePath = '/api/rest/v19/contact/update?identifierType=EMAIL';
 const apiSubscribePath = '/api/rest/v19/membership/subscribeByEmail';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       Authorization: `Basic ${btoa(`${mappUsername}:${mappPassword}`)}`,
     };
     try {
-      const response = await createMappContact({
+      let response = await createMappContact({
         mappCustomAttributes,
         email,
         firstname,
@@ -40,7 +41,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         languageCode,
         mappDomain,
         headers,
+        updateContact: false,
       });
+      if (!response.ok) {
+        const updateResponse = await createMappContact({
+          mappCustomAttributes,
+          email,
+          firstname,
+          lastname,
+          countryCode,
+          gender,
+          languageCode,
+          mappDomain,
+          headers,
+          updateContact: true,
+        });
+        if (updateResponse.ok) {
+          response = updateResponse;
+        }
+      }
       if (response.ok) {
         const subscribeResponse = await subscribeMappContact({
           mappDomain,
@@ -126,6 +145,7 @@ async function createMappContact({
   countryCode,
   mappDomain,
   headers,
+  updateContact,
 }: {
   mappCustomAttributes: string;
   email: string;
@@ -140,6 +160,7 @@ async function createMappContact({
     'Content-Type': string;
     Authorization: string;
   };
+  updateContact: boolean;
 }): Promise<Response> {
   const rawAttributes =
     mappCustomAttributes && mappCustomAttributes?.replace(/, /g, ',').split(',');
@@ -172,11 +193,14 @@ async function createMappContact({
       ...attributes,
     ],
   };
-  const response: Response = await fetch(`https://${mappDomain}${apiContactsPath}`, {
-    method: 'post',
-    headers,
-    body: JSON.stringify(contactPayload),
-  });
+  const response: Response = await fetch(
+    `https://${mappDomain}${updateContact ? apiContactsUpdatePath : apiContactsPath}`,
+    {
+      method: 'post',
+      headers,
+      body: JSON.stringify(contactPayload),
+    }
+  );
   return response;
 }
 
