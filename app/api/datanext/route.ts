@@ -96,8 +96,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             firstName: firstname,
             // prefixes: 'string',
             lastName: lastname,
+            ...additionalPropsObj,
           },
-          ...additionalPropsObj,
           contact: {
             email,
           },
