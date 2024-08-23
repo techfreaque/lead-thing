@@ -96,10 +96,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             firstName: firstname,
             // prefixes: 'string',
             lastName: lastname,
+            contact: {
+              email,
+            },
             ...additionalPropsObj,
-          },
-          contact: {
-            email,
           },
         }),
       });
