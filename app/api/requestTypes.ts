@@ -130,6 +130,7 @@ export interface CleverreachPostRequest extends PostRequest {
   //  New contacts are added to the group with a notification if the system supports it / its enabled.
 
   cleverreachListId: string;
+  cleverreachFormId: string;
   cleverreachSource: string;
   cleverreachClientId: string;
   cleverreachClientSecret: string;

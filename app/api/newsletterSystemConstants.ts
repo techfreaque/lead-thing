@@ -84,6 +84,7 @@ export const newsletterSystems: {
       'email',
       'gender',
       'cleverreachListId',
+      'cleverreachFormId',
       'cleverreachSource',
       'cleverreachClientId',
       'cleverreachClientSecret',
@@ -340,6 +341,7 @@ export type RequestOptionsFieldName =
   | 'additionalProperties'
   | 'cleverreachClientId'
   | 'cleverreachSource'
+  | 'cleverreachFormId'
   | 'cleverreachListId'
   | 'cleverreachClientSecret'
   | 'mailupListId'
@@ -701,6 +703,13 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: 'Select the list id from CleverReach where the leads should be added to.',
+  },
+  cleverreachFormId: {
+    label: 'CleverReach Form Id',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Select the for id for the CleverReach DOI email.',
   },
   cleverreachClientId: {
     label: 'CleverReach Client Id',
