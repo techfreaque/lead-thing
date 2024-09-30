@@ -15,7 +15,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     lastname,
     email,
     // ip,
-    gender,
     // countryCode,
     // salutation,
     subscriptionMode,
