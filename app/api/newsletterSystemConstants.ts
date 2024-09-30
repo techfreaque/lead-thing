@@ -82,7 +82,6 @@ export const newsletterSystems: {
       'firstname',
       'lastname',
       'email',
-      'gender',
       'cleverreachListId',
       'cleverreachFormId',
       'cleverreachSource',

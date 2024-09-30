@@ -120,7 +120,6 @@ export interface YouleadPostRequest extends PostRequest {
 
 export interface CleverreachPostRequest extends PostRequest {
   // ip: string;
-  gender?: 'MALE' | 'FEMALE';
   // countryCode: string;
   // salutation: string;
   subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
