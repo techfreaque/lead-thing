@@ -73,6 +73,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
   }
   async function createLead(authToken: string): Promise<NextResponse> {
+    // return await subscribeToList(authToken);
+
     try {
       const response: Response = await fetch(
         apiContactsUrl.replace('{group_id}', cleverreachListId),
@@ -83,12 +85,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify({
+            deactivated: '1',
+            registered: String(Date.now() / 1000),
             email,
             ...(cleverreachSource ? { source: cleverreachSource } : {}),
             global_attributes: {
               firstname,
               lastname,
-              ...(gender ? { gender: gender.toLowerCase() } : {}),
+              // ...(gender ? { gender: gender.toLowerCase() } : {}),
             },
           }),
         }
@@ -143,7 +147,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           body: JSON.stringify({
             email,
             doidata: {
-              user_ip: '127.0.0.1',
+              user_ip: '130.0.76.152',
               referer: 'leadthing.dev',
               user_agent: 'Linux',
             },
