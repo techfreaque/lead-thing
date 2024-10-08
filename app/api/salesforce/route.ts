@@ -5,8 +5,9 @@ import { ApiResponse, formatApiCallDetails } from '@/app/_lib/apiHelpers';
 import executeIfAuthenticated from '../../_server/apiHelpers';
 import type { SalesforcePostRequest } from '../requestTypes';
 
-const authPath = '.rest.marketingcloudapis.com/v2/token';
+const authPath = '.auth.marketingcloudapis.com/v2/token';
 const apiContactsPath = '.rest.marketingcloudapis.com/contacts/v1/contacts';
+// const apiGetContactsPath = '.rest.marketingcloudapis.com/contacts/v1/contacts/key:{contactKey}';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const {
@@ -41,10 +42,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           account_id: salesforceAccountId,
         }),
       });
+
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        return ApiResponse(
+          `Failed to get authentication token from Salesforce. Status: ${response.status} - ${errorDetails}`,
+          500
+        );
+      }
+
       const authData = await response.json();
       token = authData.access_token;
     } catch (error) {
-      return ApiResponse(`Failed to get authetication token from salesforce. Error: ${error}`, 500);
+      return ApiResponse(
+        `Failed to get authentication token from Salesforce. Error: ${error}`,
+        500
+      );
     }
     try {
       const response: Response = await fetch(`https://${salesforceSubDomain}${apiContactsPath}`, {
@@ -75,17 +88,72 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               ],
             },
             {
-              name: 'Email Demographics',
+              name: 'Account_Salesforce',
               items: [
                 {
                   values: [
                     {
-                      name: 'First Name',
+                      name: 'FirstName',
                       value: firstname,
                     },
                     {
-                      name: 'Last Name',
+                      name: 'LastName',
                       value: lastname,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'Contact_Salesforce',
+              items: [
+                {
+                  values: [
+                    {
+                      name: 'FirstName',
+                      value: firstname,
+                    },
+                    {
+                      name: 'LastName',
+                      value: lastname,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'User_Salesforce',
+              items: [
+                {
+                  values: [
+                    {
+                      name: 'FirstName',
+                      value: firstname,
+                    },
+                    {
+                      name: 'LastName',
+                      value: lastname,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'GroupConnect LINE Addresses',
+              items: [
+                {
+                  values: [
+                    {
+                      name: 'Address ID',
+                      value: 'addressId_from_api',
+                    },
+                    {
+                      name: 'Created Date',
+                      value: new Date().toISOString(), // Correct date format
+                    },
+                    {
+                      name: 'Modified Date',
+                      value: new Date().toISOString(), // Correct date format
                     },
                   ],
                 },
@@ -99,6 +167,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     {
                       name: 'Channel ID',
                       value: String(listId),
+                    },
+                    {
+                      name: 'Address ID',
+                      value: 'addressId_from_api',
+                    },
+                    {
+                      name: 'Is Subscribed',
+                      value: true, // or false depending on the subscription status
+                    },
+                    {
+                      name: 'Created Date',
+                      value: new Date().toISOString(), // Correct date format
+                    },
+                    {
+                      name: 'Modified Date',
+                      value: new Date().toISOString(), // Correct date format
                     },
                   ],
                 },
@@ -137,3 +221,101 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
   return executeIfAuthenticated(request, forwardToNewsletterSystem);
 }
+
+// async function getContact(salesforceSubDomain: string, token: string, email: string) {
+//   try {
+//     const response: Response = await fetch(
+//       `https://${salesforceSubDomain}${apiGetContactsPath.replace('{contactKey}', email)}`,
+//       {
+//         method: 'get',
+//         headers: {
+//           Accept: 'application/json',
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+
+//     const data = await response.json();
+//     if (response.ok) {
+//       return ApiResponse(`Contact retrieved successfully! Response: ${JSON.stringify(data)}`, 200);
+//     }
+//     return ApiResponse(`Failed to retrieve the contact. Error: ${JSON.stringify(data)}`, 500);
+//   } catch (error) {
+//     return ApiResponse(
+//       `Failed to retrieve the contact with an unknown error. Error: ${error}`,
+//       500
+//     );
+//   }
+// }
+
+// async function getDataExtensionAttributes(salesforceSubDomain: string, token: string) {
+//   try {
+//     const response = await fetch(
+//       `https://${salesforceSubDomain}.rest.marketingcloudapis.com/contacts/v1/attributeSetDefinitions`,
+//       {
+//         method: 'get',
+//         headers: {
+//           Accept: 'application/json',
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+//     if (!response.ok) {
+//       throw new Error(`Failed to retrieve schema. Status: ${response.status}`);
+//     }
+//     const data = await response.json();
+//     return ApiResponse(JSON.stringify(data), 200);
+//   } catch (error) {
+//     console.error(`Error fetching attributes: ${error}`);
+//     return ApiResponse(JSON.stringify(error), 500);
+//   }
+// }
+
+// async function getListIds(salesforceSubDomain: string, token: string) {
+//   try {
+//     const soapRequest = `
+//     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://exacttarget.com/wsdl/partnerAPI">
+//        <soapenv:Header>
+//           <ns:fueloauth>${token}</ns:fueloauth>
+//        </soapenv:Header>
+//        <soapenv:Body>
+//           <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">
+//              <RetrieveRequest>
+//                 <ObjectType>DataExtensionObject[GroupConnectLineSubscriptions]</ObjectType>
+//                 <Properties>Id</Properties>
+//                 <Properties>Name</Properties>
+//                 <Properties>Status</Properties>
+//                 <Filter xsi:type="SimpleFilterPart" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+//                    <Property>Status</Property>
+//                    <SimpleOperator>equals</SimpleOperator>
+//                    <Value>Active</Value>
+//                 </Filter>
+//              </RetrieveRequest>
+//           </RetrieveRequestMsg>
+//        </soapenv:Body>
+//     </soapenv:Envelope>`;
+//     const response = await fetch(
+//       `${'https://mcbtwqkzn5n9d7zf-9bskyk361k8.soap.marketingcloudapis.com'}/Service.asmx`,
+//       {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'text/xml',
+//           SOAPAction: 'Retrieve',
+//         },
+//         body: soapRequest,
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const responseText = await response.text();
+//     console.log('SOAP Response:', responseText);
+//     return ApiResponse(JSON.stringify(responseText), 200);
+//   } catch (error) {
+//     console.error('Failed to retrieve active channels:', error);
+//     return ApiResponse(JSON.stringify(error), 500);
+//   }
+// }

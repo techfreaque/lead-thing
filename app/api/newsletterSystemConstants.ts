@@ -15,7 +15,6 @@ import {
   MailupIcon,
   MappIcon,
   SailthruIcon,
-  SalesforceIcon,
   SalesmanagoIcon,
   ShopifyIcon,
   SpotlerIcon,
@@ -27,7 +26,7 @@ export type avialableSystemsType =
   | 'getresponse'
   | 'mapp'
   | 'sailthru'
-  | 'salesforce'
+  // | 'salesforce'
   | 'edrone'
   | 'freshmail'
   | 'klaviyo'
@@ -223,21 +222,21 @@ export const newsletterSystems: {
     icon: SailthruIcon,
     apiFields: ['firstname', 'lastname', 'email', 'listName', 'sailthruApiKey', 'sailthruSecret'],
   },
-  salesforce: {
-    path: '/salesforce',
-    name: 'Salesforce',
-    icon: SalesforceIcon,
-    apiFields: [
-      'firstname',
-      'lastname',
-      'email',
-      'listId',
-      'salesforceSubDomain',
-      'salesforceClientId',
-      'salesforceClientSecret',
-      'salesforceAccountId',
-    ],
-  },
+  // salesforce: {
+  //   path: '/salesforce',
+  //   name: 'Salesforce',
+  //   icon: SalesforceIcon,
+  //   apiFields: [
+  //     'firstname',
+  //     'lastname',
+  //     'email',
+  //     'listId',
+  //     'salesforceSubDomain',
+  //     'salesforceClientId',
+  //     'salesforceClientSecret',
+  //     'salesforceAccountId',
+  //   ],
+  // },
   salesmanago: {
     path: '/salesmanago',
     name: 'SalesManago',
