@@ -51,6 +51,19 @@ export interface KlaviyoPostRequest extends PostRequest {
   klaviyoApiKey: string;
 }
 
+export interface AcumbamailPostRequest extends PostRequest {
+  // gender: 'MALE' | 'FEMALE';
+  // countryCode: string;
+  // salutation: string;
+  subscriptionMode: 'FORCE_OPT_IN' | 'DOUBLE_OPT_IN';
+  // DOUBLE_OPT_IN
+  //  New contacts receive an invitation to join the group via email. The contact must accept the invitation before they are added to the group.
+  // FORCE_OPT_IN
+  //  New contacts are added to the group with a notification if the system supports it / its enabled.
+  listId: string;
+  acumbamailApiKey: string;
+}
+
 export interface MappPostRequest extends PostRequest {
   // ip: string;
   gender?: 'MALE' | 'FEMALE';

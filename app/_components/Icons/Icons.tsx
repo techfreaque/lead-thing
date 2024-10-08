@@ -1,6 +1,7 @@
 import { StaticImageData } from 'next/image';
 import { CSSProperties } from 'react';
 
+import acumbamail from './acumbamail.png';
 import adobecampaign from './adobecampaign.png';
 import cleverreach from './cleverreach.png';
 import connectif from './connectif.png';
@@ -28,6 +29,16 @@ export function SpotlerIcon({
   className?: string | undefined;
 }) {
   return <Icon alt="Spotler Icon" iconFile={spotler} style={style} className={className} />;
+}
+
+export function AcumbamailIcon({
+  style,
+  className,
+}: {
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+}) {
+  return <Icon alt="Acumbamail Icon" iconFile={acumbamail} style={style} className={className} />;
 }
 
 export function ShopifyIcon({

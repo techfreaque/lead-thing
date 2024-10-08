@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
 
 import {
+  AcumbamailIcon,
   AdobeCampaignIcon,
   CleverreachIcon,
   ConnectifIcon,
@@ -22,6 +23,7 @@ import {
 } from '../_components/Icons/Icons';
 
 export type avialableSystemsType =
+  | 'acumbamail'
   | 'getresponse'
   | 'mapp'
   | 'sailthru'
@@ -59,6 +61,12 @@ export const notDefinedCheckboxValue = 'not defined';
 export const newsletterSystems: {
   [key in avialableSystemsType]: NewsletterSystem;
 } = {
+  acumbamail: {
+    path: '/acumbamail',
+    name: 'Acumbamail',
+    icon: AcumbamailIcon,
+    apiFields: ['firstname', 'lastname', 'email', 'subscriptionMode', 'listId', 'acumbamailApiKey'],
+  },
   adobecampaign: {
     path: '/adobecampaign',
     name: 'Adobe Campaign',
@@ -343,6 +351,7 @@ export type RequestOptionsFieldName =
   | 'cleverreachFormId'
   | 'cleverreachListId'
   | 'cleverreachClientSecret'
+  | 'acumbamailApiKey'
   | 'mailupListId'
   | 'mailupClientId'
   | 'mailupClientSecret'
@@ -504,6 +513,13 @@ export const RequestOptionsData: {
     value: 'SAILTHRU_SECRET',
     required: true,
     description: '',
+  },
+  acumbamailApiKey: {
+    label: 'Acumbamail API Key / API Auth Token',
+    valueType: 'string',
+    value: '',
+    required: true,
+    description: 'Enter your Acumbamail API Key / API Auth Token',
   },
   adobeCampaignListId: {
     label: 'Adobe Campaign List Id / Service Id',
