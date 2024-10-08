@@ -292,5 +292,6 @@ export interface AllPossiblePostRequestParameters
     KlaviyoPostRequest,
     AdobeCampaignPostRequest,
     ConnectifRequest,
+    AcumbamailPostRequest,
     ExpertsenderPostRequest,
     SalesmanagoPostRequest {}
