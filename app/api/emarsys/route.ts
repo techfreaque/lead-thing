@@ -17,9 +17,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     emarsysUserName,
     emarsysApiKey,
     emarsysSubDomain,
+    emarsysAdditionalProperties,
   }: EmarsysPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
     try {
+      const additionalProps = emarsysAdditionalProperties
+        ? JSON.parse(emarsysAdditionalProperties)
+        : {};
       const response: Response = await fetch(
         apiContactsUrl.replace('{subDomain}', emarsysSubDomain),
         {
@@ -35,6 +39,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 1: firstname,
                 2: lastname,
                 3: email,
+                ...additionalProps,
               },
             ],
             contact_list_id: listId,

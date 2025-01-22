@@ -135,6 +135,7 @@ export const newsletterSystems: {
       'emarsysUserName',
       'emarsysApiKey',
       'emarsysSubDomain',
+      'emarsysAdditionalProperties',
     ],
   },
   expertsender: {
@@ -367,6 +368,7 @@ export type RequestOptionsFieldName =
   | 'emarsysUserName'
   | 'emarsysApiKey'
   | 'emarsysSubDomain'
+  | 'emarsysAdditionalProperties'
   | 'spotlerAdditionalProperties'
   | 'spotlerConsumerKey'
   | 'spotlerConsumerSecret'
@@ -853,6 +855,14 @@ export const RequestOptionsData: {
     value: '',
     required: true,
     description: 'Your Emarsys API Secret',
+  },
+  emarsysAdditionalProperties: {
+    label: 'Additional properties',
+    valueType: 'string',
+    value: '',
+    required: false,
+    description:
+      'You can add additional properties here e.g.: {propertyId: "propertyValue", anotherPropertyId: "anotherValue"}',
   },
   edroneAppId: {
     label: 'Edrone APP ID',

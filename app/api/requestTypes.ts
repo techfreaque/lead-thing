@@ -32,6 +32,7 @@ export interface EmarsysPostRequest extends PostRequest {
   emarsysSubDomain: string;
   emarsysUserName: string;
   emarsysApiKey: string;
+  emarsysAdditionalProperties?: string;
 }
 
 export interface KlaviyoPostRequest extends PostRequest {
