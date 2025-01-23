@@ -21,9 +21,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }: EmarsysPostRequest = await request.json();
   async function forwardToNewsletterSystem() {
     try {
-      const additionalProps = emarsysAdditionalProperties
-        ? JSON.parse(emarsysAdditionalProperties)
-        : {};
+      const additionalProps: { [id: number]: string | number } = {};
+      if (emarsysAdditionalProperties) {
+        const rawAdditionalProps = JSON.parse(emarsysAdditionalProperties) as {
+          [id: string]: string | number;
+        };
+        Object.entries(rawAdditionalProps).forEach(([key, value]) => {
+          additionalProps[parseInt(key, 10)] = value;
+        });
+      }
+
       const response: Response = await fetch(
         apiContactsUrl.replace('{subDomain}', emarsysSubDomain),
         {
