@@ -17,3 +17,4 @@ docker run -d  --log-driver none --name leadthing --network caddy_internal -v /l
 # docker stop leadthing
 # docker rm leadthing
 # docker run -d  --name leadthing --network caddy_internal -v /leadthing-data:/app/prisma/db leadthing
+# docker logs -f leadthing
