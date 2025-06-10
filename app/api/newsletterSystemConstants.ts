@@ -113,6 +113,8 @@ export const newsletterSystems: {
       'datanextFormId',
       'datanextCampaignId',
       'datanextAdditionalProps',
+      'gender',
+      'subscriptionMode',
       'datanextApiKey',
       'datanextApiSecret',
     ],
@@ -741,6 +743,7 @@ export const RequestOptionsData: {
     required: true,
     description: 'You can get the CleverReach client secret from your CleverReach backend.',
   },
+
   datanextFormId: {
     label: 'Datanext Form ID',
     valueType: 'string',

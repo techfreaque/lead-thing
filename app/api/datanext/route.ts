@@ -17,7 +17,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // gender,
     // countryCode,
     // salutation,
-    // subscriptionMode,
+    subscriptionMode,
     datanextFormId,
     datanextCampaignId,
     datanextAdditionalProps,
@@ -38,10 +38,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             lastname,
             email,
             datanextAdditionalProps,
+            datanextFormId,
+            datanextCampaignId,
           })}`,
           500
         );
       }
+
       const authResponse = await fetch(oAuthUrl, {
         method: 'POST',
         headers: {
@@ -62,6 +65,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           lastname,
           email,
           datanextAdditionalProps,
+          subscriptionMode,
+          datanextFormId,
+          datanextCampaignId,
         })}`,
         500
       );
@@ -73,6 +79,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             lastname,
             email,
             datanextAdditionalProps,
+            subscriptionMode,
+            datanextFormId,
+            datanextCampaignId,
           }
         )}`,
         500
@@ -100,6 +109,28 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
               email,
             },
             ...additionalPropsObj,
+            // birthDate: '2024-07-02T14:22:35.196Z',
+          },
+          consentData: {
+            cof: {
+              serviceName: 'string',
+              serviceId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              serviceTimestamp: '2024-07-02T14:22:35.196Z',
+              question: 'string',
+              type: 'string',
+              processingActivityId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              sourceSystemId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              rootEventTimestamp: '2024-07-02T14:22:35.196Z',
+              consentQuestions: [
+                {
+                  consentQuestionId: 'a44f5f5e-cb6d-455c-a761-ef2ab4d73aa3',
+                  offeringId: '6bae9e33-048f-409b-a049-e5caff4e2e39',
+                },
+              ],
+            },
+          },
+          contact: {
+            email,
           },
         }),
       });
@@ -116,6 +147,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           lastname,
           email,
           datanextAdditionalProps,
+          subscriptionMode,
+          datanextFormId,
+          datanextCampaignId,
         })}`,
         500
       );
@@ -126,6 +160,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           lastname,
           email,
           datanextAdditionalProps,
+          subscriptionMode,
+          datanextFormId,
+          datanextCampaignId,
         })}`,
         500
       );
