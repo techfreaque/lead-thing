@@ -1,10 +1,8 @@
 import '@mantine/core/styles.css';
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript } from '@mantine/core';
 import React from 'react';
 
-import { theme } from '../theme';
-import MainLayout from './_components/MainLayout/MainLayout';
 import { APP_NAME } from './_lib/constants';
 
 export const metadata = {
@@ -13,7 +11,7 @@ export const metadata = {
     'Get a unified and simplified API interface to create leads on many newsletter systems.',
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout() {
   return (
     <html lang="en">
       <head>
@@ -25,9 +23,15 @@ export default function RootLayout({ children }: { children: any }) {
         <ColorSchemeScript forceColorScheme="dark" defaultColorScheme="dark" />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="dark">
+        <h1>Leadthing has been retired.</h1>
+        <h2>
+          If you already have an active account,
+          you can use it until the end of the year for free.
+          Potentially longer in case the API is still used by others.
+        </h2>
+        {/* <MantineProvider theme={theme} defaultColorScheme="dark">
           <MainLayout>{children}</MainLayout>
-        </MantineProvider>
+        </MantineProvider> */}
       </body>
     </html>
   );
